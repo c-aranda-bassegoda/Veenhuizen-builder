@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BuildingScriptableObject", menuName = "Scriptable Objects/BuildingScriptableObject")]
 public class BuildingScriptableObject : ScriptableObject
 {
-    public string name;
+    public new string name;
     public Transform prefab;
     public Transform visual;
     public int width;

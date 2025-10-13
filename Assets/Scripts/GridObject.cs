@@ -2,24 +2,19 @@ using UnityEngine;
 
 public class GridObject
 {
-    private bool value;
     private Grid<GridObject> grid;
-    private int x, y;
+    private int x, z;
 
-    public GridObject(Grid<GridObject> grid, int x, int y)
+    public GridObject(Grid<GridObject> grid, int x, int z)
     {
         this.grid = grid;
         this.x = x;
-        this.y = y;
+        this.z = z;
     }
 
-    public void SetValue(bool newValue)
+    public override string ToString()
     {
-        value = newValue;
-        // Notify grid that this cell changed
-        grid.TriggerGridObjChanged(x, y);
+        return x + "," + z;
     }
-
-    public override string ToString() => value.ToString();
 }
 

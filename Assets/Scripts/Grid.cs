@@ -53,11 +53,11 @@ public class Grid<TGridObject>
         Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.green, 100f); 
     }
 
-    private Vector3 GetWorldPosition(int i, int j) {
+    public Vector3 GetWorldPosition(int i, int j) {
         return new Vector3(i, 0, j) * cellSize;
     }
 
-    private void GetXYZ(Vector3 worldPosition, out int x, out int y, out int z)
+    public void GetXYZ(Vector3 worldPosition, out int x, out int y, out int z)
     {
         x = Mathf.FloorToInt(worldPosition.x / cellSize);
         y = Mathf.FloorToInt(worldPosition.y / cellSize);
