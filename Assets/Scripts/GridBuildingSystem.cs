@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    [SerializeField] public BuildingScriptableObject buildingSO;
+    [SerializeField] private List<BuildingScriptableObject> buildingSOList;
+    private BuildingScriptableObject buildingSO;
     private Grid<GridObject> grid;
     private BuildingScriptableObject.Dir dir = BuildingScriptableObject.Dir.Down;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -14,8 +15,11 @@ public class GridBuildingSystem : MonoBehaviour
         int gridHeight = 10;
         float cellSize = 10f;
         grid = new Grid<GridObject>(gridHeight, gridWidth, cellSize, (Grid<GridObject> g, int i, int j) => new GridObject(g, i, j));
+
+        buildingSO = buildingSOList[0];
     }
 
+    int buildingIdx = 0;
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -82,6 +86,16 @@ public class GridBuildingSystem : MonoBehaviour
         {
             dir = BuildingScriptableObject.GetNextDir(dir);
             Debug.Log("Direction updated: " + dir);
+        }
+
+        
+        if(Input.GetKeyDown(KeyCode.N)) // As in Next building, TODO: UI so you can seect the building type
+        {
+            buildingIdx += 1;
+            if (buildingIdx > buildingSOList.Count - 1)
+                buildingIdx = 0;
+            Debug.Log(buildingIdx);
+            buildingSO = buildingSOList[buildingIdx];
         }
 
     }
