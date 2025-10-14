@@ -18,6 +18,8 @@ public class Grid<TGridObject>
     private TextMesh[,] textMesh;
     public Grid(int width, int height, float cellSize, Func<Grid<TGridObject>, int, int, TGridObject> createGridObj)
     {
+        bool debugging = true;
+
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
@@ -33,24 +35,29 @@ public class Grid<TGridObject>
             }
         }
 
-                for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                textMesh[i,j] = UtilitiesClass.CreateWorldText(gridArray[i, j]?.ToString(), null, GetWorldPosition(i, j) + new Vector3(cellSize / 2, 0, cellSize / 2));
 
-                Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i, j + 1), Color.green, 100f);
-                Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i + 1, j), Color.green, 100f);
+        if (debugging)
+        {
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    textMesh[i, j] = UtilitiesClass.CreateWorldText(gridArray[i, j]?.ToString(), null, GetWorldPosition(i, j) + new Vector3(cellSize / 2, 0, cellSize / 2));
+
+                    Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i, j + 1), Color.green, 100f);
+                    Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i + 1, j), Color.green, 100f);
+                }
             }
+            Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.green, 100f);
+            Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.green, 100f);
         }
 
         OnGridObjChanged += (object sender, OnGridObjChangedEventArgs e) =>
         {
-            textMesh[e.i, e.j].text = gridArray[e.i, e.j]?.ToString();
+            if (debugging)
+                textMesh[e.i, e.j].text = gridArray[e.i, e.j]?.ToString();
         };
 
-        Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.green, 100f);
-        Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.green, 100f); 
     }
 
     public Vector3 GetWorldPosition(int i, int j) {

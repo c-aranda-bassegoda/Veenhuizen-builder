@@ -4,6 +4,7 @@ public class GridObject
 {
     private Grid<GridObject> grid;
     private int x, z;
+    private Transform transform;
 
     public GridObject(Grid<GridObject> grid, int x, int z)
     {
@@ -12,9 +13,24 @@ public class GridObject
         this.z = z;
     }
 
+    public void SetTransform(Transform transform)
+    {
+        this.transform = transform;
+        grid.TriggerGridObjChanged(x,z);
+    }
+
+    public bool CanPlace()
+    {
+        return transform == null;
+    }
+
+    public void ClearTransform()
+    {
+        transform = null;
+    }
     public override string ToString()
     {
-        return x + "," + z;
+        return x + "," + z + "\n" + transform;
     }
 }
 
