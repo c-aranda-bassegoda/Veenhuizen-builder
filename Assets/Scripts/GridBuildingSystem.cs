@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    [SerializeField] private BuildingScriptableObject buildingSO;
+    [SerializeField] public BuildingScriptableObject buildingSO;
     private Grid<GridObject> grid;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -23,28 +23,29 @@ public class GridBuildingSystem : MonoBehaviour
 
             List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x,z));
             
-            bool canBuild = true;
+            bool canPlace = true;
             foreach (Vector2Int position in gridPositionList)
             {
                 GridObject gridObject = grid.GetGridObj(position.x, position.y);
                 if (gridObject == null) 
                 { 
                     Debug.Log("not in grid");
-                    canBuild = false; break;
+                    canPlace = false; break;
                 }
                 else
                 {
                     if (!gridObject.CanPlace())
                     {
-                        canBuild = false; break;
+                        canPlace = false; break;
                     }
                 }
             }
-            if (canBuild)
+            if (canPlace)
             {
-                Transform newTransform = Instantiate(buildingSO.prefab, grid.GetWorldPosition(x, z), Quaternion.identity);
+                Debug.Log(buildingSO.ToString());
+                PlacedObject placedObj = PlacedObject.Create(grid.GetWorldPosition(x, z), new Vector2Int(x, z), buildingSO);
                 foreach (Vector2Int position in gridPositionList)
-                    grid.GetGridObj(position.x, position.y).SetTransform(newTransform);
+                    grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
             }
             else
             {
@@ -53,6 +54,26 @@ public class GridBuildingSystem : MonoBehaviour
             }
             
         }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("right click");
+            GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
+            PlacedObject placedObject = gridObject.GetPlacedObject();
+            if (placedObject != null)
+            {
+                placedObject.Destructor();
+
+                List<Vector2Int> gridPositionList = placedObject.GetGridPositionList();
+
+                foreach (Vector2Int position in gridPositionList)
+                {
+                    grid.GetGridObj(position.x, position.y).ClearPlacedObject();
+                }
+
+            }
+        }
+
     }
 
 }
