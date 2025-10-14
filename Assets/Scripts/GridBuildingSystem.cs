@@ -6,6 +6,7 @@ public class GridBuildingSystem : MonoBehaviour
 {
     [SerializeField] public BuildingScriptableObject buildingSO;
     private Grid<GridObject> grid;
+    private BuildingScriptableObject.Dir dir = BuildingScriptableObject.Dir.Down;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -21,7 +22,7 @@ public class GridBuildingSystem : MonoBehaviour
         {
             grid.GetXYZ(UtilitiesClass.GetMouseWorldPositionXZ(), out int x, out int y, out int z);
 
-            List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x,z));
+            List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x,z), dir);
             
             bool canPlace = true;
             foreach (Vector2Int position in gridPositionList)
@@ -43,7 +44,10 @@ public class GridBuildingSystem : MonoBehaviour
             if (canPlace)
             {
                 Debug.Log(buildingSO.ToString());
-                PlacedObject placedObj = PlacedObject.Create(grid.GetWorldPosition(x, z), new Vector2Int(x, z), buildingSO);
+                Vector2Int rotationOffset = buildingSO.GetRotationOffset(dir);
+                Vector3 rotatedObjWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
+
+                PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), dir, buildingSO);
                 foreach (Vector2Int position in gridPositionList)
                     grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
             }
@@ -72,6 +76,12 @@ public class GridBuildingSystem : MonoBehaviour
                 }
 
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            dir = BuildingScriptableObject.GetNextDir(dir);
+            Debug.Log("Direction updated: " + dir);
         }
 
     }

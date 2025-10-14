@@ -13,6 +13,7 @@ public class Grid<TGridObject>
     private int width;
     private int height;
     private float cellSize;
+    public float GetCellSize() { return cellSize; }
 
     private TGridObject[,] gridArray;
     private TextMesh[,] textMesh;
