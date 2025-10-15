@@ -6,7 +6,7 @@ public class PlacedObject : MonoBehaviour
 {
     public static PlacedObject Create(Vector3 worldPosition, Vector2Int origin, BuildingScriptableObject.Dir dir, BuildingScriptableObject placedObjectSO)
     {
-        Transform placedObjTransform = Instantiate(placedObjectSO.prefab, worldPosition, Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0));
+        GameObject placedObjTransform = Instantiate(placedObjectSO.prefab, worldPosition, Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0));
         
         PlacedObject placedObject = placedObjTransform.GetComponent<PlacedObject>();
         placedObject.placedSctiptableObject = placedObjectSO;
