@@ -2,24 +2,41 @@ using UnityEngine;
 
 public class GridObject
 {
-    private bool value;
     private Grid<GridObject> grid;
-    private int x, y;
+    private int x, z;
+    private PlacedObject placedObj;
 
-    public GridObject(Grid<GridObject> grid, int x, int y)
+    public GridObject(Grid<GridObject> grid, int x, int z)
     {
         this.grid = grid;
         this.x = x;
-        this.y = y;
+        this.z = z;
     }
 
-    public void SetValue(bool newValue)
+    public void SetPlacedObject(PlacedObject placedObj)
     {
-        value = newValue;
-        // Notify grid that this cell changed
-        grid.TriggerGridObjChanged(x, y);
+        this.placedObj = placedObj;
+        grid.TriggerGridObjChanged(x,z);
     }
 
-    public override string ToString() => value.ToString();
+    public PlacedObject GetPlacedObject()
+    {
+        return this.placedObj;
+    }
+
+    public bool CanPlace()
+    {
+        return placedObj == null;
+    }
+
+    public void ClearPlacedObject()
+    {
+        placedObj = null;
+        grid.TriggerGridObjChanged(x, z);
+    }
+    public override string ToString()
+    {
+        return x + "," + z + "\n";
+    }
 }
 
