@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-
+//TODO: Refactoring :(
 public class InputManager : MonoBehaviour
 {
     public event Action OnClicked, OnExit;

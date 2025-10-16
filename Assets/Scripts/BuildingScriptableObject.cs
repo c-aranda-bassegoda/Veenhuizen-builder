@@ -26,8 +26,8 @@ public class BuildingScriptableObject : ScriptableObject
     }
 
     public new string name;
+    // id?
     public GameObject prefab;
-    public Transform visual;
     public int width;
     public int height;
     private Dir dir;
