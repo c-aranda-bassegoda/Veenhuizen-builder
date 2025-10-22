@@ -12,7 +12,7 @@ public class PreviewSystem : MonoBehaviour
     [SerializeField] private Material previewMaterialPrefab;
     private Material previewMaterial;
 
-    private void Start()
+    private void Awake()
     {
         previewMaterial = new Material(previewMaterialPrefab);
     }
