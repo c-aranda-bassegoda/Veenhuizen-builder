@@ -101,7 +101,6 @@ public class GridBuildingSystem : MonoBehaviour
             GridObject gridObject = grid.GetGridObj(position.x, position.y);
             if (gridObject == null)
             {
-                Debug.Log("not in grid");
                 canPlace = false; break;
             }
             else
