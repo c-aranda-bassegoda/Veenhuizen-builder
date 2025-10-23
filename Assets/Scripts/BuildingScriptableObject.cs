@@ -30,8 +30,7 @@ public class BuildingScriptableObject : ScriptableObject
     public GameObject prefab;
     public int width;
     public int height;
-    private Dir dir;
-    public Dir Direction { get => dir; set { dir = value; } }
+    public Dir Direction { get; set; }
 
     public int GetRotationAngle(Dir dir)
     {

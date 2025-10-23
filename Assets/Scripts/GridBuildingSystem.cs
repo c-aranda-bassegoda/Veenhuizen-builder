@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GridBuildingSystem : MonoBehaviour
 {
@@ -10,48 +11,52 @@ public class GridBuildingSystem : MonoBehaviour
     private Grid<GridObject> grid;
 
     [SerializeField] private PreviewSystem previewSystem;
-    private int buildingIdx = 0;
 
-    private Vector2Int lastPosition; //TODO: less updates
+    public bool AddingBuilding { get; set; }
+    public bool RemovingBuilding { get; set; }
+
+    private Vector2Int lastPosition; 
     private void Awake()
     {
         int gridWidth = 10;
         int gridHeight = 10;
         float cellSize = 10f;
         grid = new Grid<GridObject>(gridHeight, gridWidth, cellSize, (Grid<GridObject> g, int i, int j) => new GridObject(g, i, j));
-
-        buildingSO = buildingSOList[0];
-
-        previewSystem.StartPlacementPreview(buildingSO);
+        AddingBuilding = false;
+        RemovingBuilding = false;
     }
 
-    public void PlaceObject()
+    private Vector3 GetRotatedObjectPositionAt(int x, int z)
     {
-        grid.GetXYZ(UtilitiesClass.GetMouseWorldPositionXZ(), out int x, out int y, out int z);
         Vector2Int rotationOffset = buildingSO.GetRotationOffset(buildingSO.Direction);
-        Vector3 rotatedObjWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
+        return grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
+    }
+    public void PlaceObject(Vector3 worldPosition, int buildingIdx)
+    {
+        buildingSO = buildingSOList[buildingIdx];
 
+        grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
+        Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
 
         if (CanPlace(gridPositionList))
-            {
-                PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), buildingSO.Direction, buildingSO);
-                foreach (Vector2Int position in gridPositionList)
-                    grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
-            }
-            else
-            {
-                //TODO: "can't place" pop up message for player
-                Debug.Log("Can't build");
-            }
+        {
+            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), buildingSO.Direction, buildingSO);
+            foreach (Vector2Int position in gridPositionList)
+                grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+        }
+        else
+        {
+            //TODO: "can't place" pop up message for player
+            Debug.Log("Can't build");
+        }
     }
 
-    public void RemoveObject()
+    public void RemoveObject(Vector3 worldPosition)
     {
-        grid.GetXYZ(UtilitiesClass.GetMouseWorldPositionXZ(), out int x, out int y, out int z);
+        grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
-
 
         GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
         PlacedObject placedObject = gridObject.GetPlacedObject();
@@ -80,37 +85,27 @@ public class GridBuildingSystem : MonoBehaviour
     private void Update()
     {
         grid.GetXYZ(UtilitiesClass.GetMouseWorldPositionXZ(), out int x, out int y, out int z);
+        Vector2Int newPosition = new Vector2Int(x, z);
+        if (AddingBuilding && newPosition != lastPosition && buildingSO != null)
+        {
+            lastPosition = newPosition;
+            List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
+            Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
-        Vector2Int rotationOffset = buildingSO.GetRotationOffset(buildingSO.Direction);
-        Vector3 rotatedObjWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
+            previewSystem.UpdatePreview(rotatedObjWorldPosition, CanPlace(gridPositionList));
+        }
 
-        List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x,z), buildingSO.Direction);
 
-        previewSystem.UpdatePreview(rotatedObjWorldPosition, CanPlace(gridPositionList));
 
-        
-
-        if (Input.GetMouseButtonDown(1)) // TODO: Replace with UI (user friendly)
+        if (Input.GetMouseButtonDown(1)) // shortcut
         {
             Debug.Log("right click");
-            RemoveObject();
+            RemoveObject(UtilitiesClass.GetMouseWorldPositionXZ());
         }
 
-        if(Input.GetKeyDown(KeyCode.R)) // TODO: add ui option but we can keep this as shortcut
+        if (Input.GetKeyDown(KeyCode.R)) // shortcut
         {
             RotateObject();
-        }
-
-        
-        if(Input.GetKeyDown(KeyCode.N)) // As in Next building, TODO: UI so you can seect the building type
-        {
-            previewSystem.StopPlacementPreview();
-            buildingIdx += 1;
-            if (buildingIdx > buildingSOList.Count - 1)
-                buildingIdx = 0;
-            Debug.Log(buildingIdx);
-            buildingSO = buildingSOList[buildingIdx];
-            previewSystem.StartPlacementPreview(buildingSO);
         }
 
     }
@@ -135,4 +130,16 @@ public class GridBuildingSystem : MonoBehaviour
         }
         return canPlace;
     }
+
+    internal void StartPlacementPreview(int buildingIdx)
+    {
+        buildingSO = buildingSOList[buildingIdx];
+
+        previewSystem.StartPlacementPreview(buildingSO);
+    }
+    internal void StopPlacementPreview()
+    {
+        previewSystem.StopPlacementPreview();
+    }
+
 }
