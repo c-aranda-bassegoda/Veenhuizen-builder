@@ -52,9 +52,14 @@ public class GameManager : MonoBehaviour
             return;
         }
         if (gridBuildingSystem.RemovingBuilding)
+        {
             gridBuildingSystem.RemoveObject(position);
+        }
         if (gridBuildingSystem.AddingBuilding)
+        {
             gridBuildingSystem.PlaceObject(position, buildingIdx);
+        }
+        controller.HideHousingPanel();
     }
 
     private void OnDestroy()
