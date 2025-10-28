@@ -9,11 +9,14 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] private List<BuildingScriptableObject> buildingSOList;
     private BuildingScriptableObject buildingSO;
     private Grid<GridObject> grid;
+    [SerializeField] BuildingScriptableObject roadSO;
 
     [SerializeField] private PreviewSystem previewSystem;
+    [SerializeField] private RoadManager roadManager;
 
     public bool AddingBuilding { get; set; }
     public bool RemovingBuilding { get; set; }
+    public bool PlacingRoad { get; set; }
 
     private Vector2Int lastPosition; 
     private void Awake()
@@ -24,6 +27,7 @@ public class GridBuildingSystem : MonoBehaviour
         grid = new Grid<GridObject>(gridHeight, gridWidth, cellSize, (Grid<GridObject> g, int i, int j) => new GridObject(g, i, j));
         AddingBuilding = false;
         RemovingBuilding = false;
+        PlacingRoad = false;
     }
 
     private Vector3 GetRotatedObjectPositionAt(int x, int z)
@@ -45,6 +49,31 @@ public class GridBuildingSystem : MonoBehaviour
             PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), buildingSO.Direction, buildingSO);
             foreach (Vector2Int position in gridPositionList)
                 grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+        }
+        else
+        {
+            //TODO: "can't place" pop up message for player
+            Debug.Log("Can't build");
+        }
+    }
+
+    public void PlaceRoad(Vector3 worldPosition)
+    {
+        buildingSO = roadSO;
+
+        grid.GetXYZ(worldPosition, out int x, out int y, out int z);
+        List<Vector2Int> gridPositionList = roadSO.GetGridPositionList(new Vector2Int(x, z), roadSO.Direction);
+        Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
+
+
+        if (CanPlace(gridPositionList))
+        {
+            Debug.Log($"Placing road at {new Vector2Int(x, z)}");
+            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), roadSO.Direction, roadSO);
+            foreach (Vector2Int position in gridPositionList)
+                grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+
+            roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).GetComponent<MeshFilter>());
         }
         else
         {

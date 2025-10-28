@@ -11,40 +11,59 @@ public class RoadManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        //if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        //{
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit hit;
+
+        //    // Raycast into the scene
+        //    if (Physics.Raycast(ray, out hit, 100f, roadTestLayer))
+        //    {
+        //        Vector2Int roadPos = new();
+        //        roadPos.x = (int)Mathf.Round(hit.point.x);
+        //        roadPos.y = (int)Mathf.Round(hit.point.z);
+
+        //        if (Input.GetMouseButton(0))
+        //        {
+        //            if (!placedRoads.ContainsKey(roadPos))
+        //            {
+        //                GameObject newRoad = Instantiate(roadPrefab, new Vector3(roadPos.x, 2, roadPos.y), Quaternion.identity);
+        //                newRoad.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+        //                MeshFilter roadMeshFilter = newRoad.GetComponent<MeshFilter>();
+
+        //                placedRoads.Add(roadPos, roadMeshFilter);
+        //                UpdateRoads(roadPos);
+        //            }
+        //        }
+        //        else if (Input.GetMouseButton(1))
+        //        {
+        //            if (placedRoads.ContainsKey(roadPos))
+        //            {
+        //                Destroy(GetPlacedRoad(roadPos));
+        //                placedRoads.Remove(roadPos);
+        //                UpdateRoads(roadPos);
+        //            }
+        //        }
+        //    }
+        //}
+    }
+
+    public void PlaceRoad(Vector2Int roadPos, MeshFilter newRoadMesh)
+    {
+        if (!placedRoads.ContainsKey(roadPos))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            placedRoads.Add(roadPos, newRoadMesh);
+            UpdateRoads(roadPos);
+        }
+    }
 
-            // Raycast into the scene
-            if (Physics.Raycast(ray, out hit, 100f, roadTestLayer))
-            {
-                Vector2Int roadPos = new();
-                roadPos.x = (int)Mathf.Round(hit.point.x);
-                roadPos.y = (int)Mathf.Round(hit.point.z);
-
-                if (Input.GetMouseButton(0))
-                {
-                    if (!placedRoads.ContainsKey(roadPos))
-                    {
-                        GameObject newRoad = Instantiate(roadPrefab, new Vector3(roadPos.x, 2, roadPos.y), Quaternion.identity);
-                        newRoad.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
-                        MeshFilter roadMeshFilter = newRoad.GetComponent<MeshFilter>();
-
-                        placedRoads.Add(roadPos, roadMeshFilter);
-                        UpdateRoads(roadPos);
-                    }
-                }
-                else if (Input.GetMouseButton(1))
-                {
-                    if (placedRoads.ContainsKey(roadPos))
-                    {
-                        Destroy(GetPlacedRoad(roadPos));
-                        placedRoads.Remove(roadPos);
-                        UpdateRoads(roadPos);
-                    }
-                }
-            }
+    public void RemoveRoad(Vector2Int roadPos)
+    {
+        if (placedRoads.ContainsKey(roadPos))
+        {
+            Destroy(GetPlacedRoad(roadPos));
+            placedRoads.Remove(roadPos);
+            UpdateRoads(roadPos);
         }
     }
     void UpdateRoads(Vector2Int roadPos)
