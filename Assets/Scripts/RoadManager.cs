@@ -4,29 +4,65 @@ using System.Collections.Generic;
 
 public class RoadManager : MonoBehaviour
 {
-    [SerializeField] GameObject roadStraight, roadTurn, roadIntsct4, roadIntsct3;
-    public Dictionary<Vector2Int, GameObject> placedRoads;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        roadPositions = new();
-    }
+    [SerializeField] Mesh roadStraight, roadTurn, roadCrossroad, roadIntsct3;
+    public Dictionary<Vector2Int, MeshFilter> placedRoads = new();
+    [SerializeField] GameObject roadPrefab;
+    [SerializeField] LayerMask roadTestLayer;
 
-    // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        
-    }
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
+            // Raycast into the scene
+            if (Physics.Raycast(ray, out hit, 100f, roadTestLayer))
+            {
+                Vector2Int roadPos = new();
+                roadPos.x = (int)Mathf.Round(hit.point.x);
+                roadPos.y = (int)Mathf.Round(hit.point.z);
+
+                if (Input.GetMouseButton(0))
+                {
+                    if (!placedRoads.ContainsKey(roadPos))
+                    {
+                        GameObject newRoad = Instantiate(roadPrefab, new Vector3(roadPos.x, 2, roadPos.y), Quaternion.identity);
+                        newRoad.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+                        MeshFilter roadMeshFilter = newRoad.GetComponent<MeshFilter>();
+
+                        placedRoads.Add(roadPos, roadMeshFilter);
+                        UpdateRoads(roadPos);
+                    }
+                }
+                else if (Input.GetMouseButton(1))
+                {
+                    if (placedRoads.ContainsKey(roadPos))
+                    {
+                        Destroy(GetPlacedRoad(roadPos));
+                        placedRoads.Remove(roadPos);
+                        UpdateRoads(roadPos);
+                    }
+                }
+            }
+        }
+    }
     void UpdateRoads(Vector2Int roadPos)
     {
         List<Vector2Int> roadsToUpdate = GetAdjacentRoadPositions(roadPos);
         roadsToUpdate.Add(roadPos);
 
-        foreach(Vector2Int pos in roadsToUpdate)
+        foreach (Vector2Int pos in roadsToUpdate)
         {
-            GameObject roadToUpdate = GetPlacedRoad(pos);
+            Debug.Log($"{pos.x}, {pos.y}");
+        }
+
+        foreach (Vector2Int pos in roadsToUpdate)
+        {
+            MeshFilter roadToUpdate = GetPlacedRoad(pos);
             if(roadToUpdate == null) continue;
+
+            Debug.Log($"Checking adjacent positions for {pos.x}, {pos.y}");
 
             //Sorted: Up, Down, Right, Left
             List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(pos);
@@ -35,9 +71,10 @@ public class RoadManager : MonoBehaviour
             for(int i = 0; i < adjacentRoadPositions.Count; i++)
             {
                 Vector2Int adjPos = adjacentRoadPositions[i];
-                GameObject adjRoad = GetPlacedRoad(adjPos);
+                MeshFilter adjRoad = GetPlacedRoad(adjPos);
                 if(adjRoad != null)
                 {
+                    Debug.Log($"Adjacent road found for {pos.x}, {pos.y} at {adjacentRoadPositions[i].x}, {adjacentRoadPositions[i].y}");
                     isRoadThere[i] = true;
                 }
             }
@@ -47,72 +84,82 @@ public class RoadManager : MonoBehaviour
         }
     }
 
-    void UpdateRoad(GameObject road, string config)
+    void UpdateRoad(MeshFilter road, string config)
     {
         //4 way intersection
         if(config == "crossroad" || config == "zero")
         {
-
+            road.mesh = roadCrossroad;
         }
 
         //straight road vertical
         else if(config == "oneUp" || config == "oneDown" || config == "upDown")
         {
-
+            road.mesh = roadStraight;
+            road.transform.rotation = Quaternion.identity;
         }
 
         //straight road horizontal
         else if(config == "oneLeft" || config == "oneRight" || config == "rightLeft")
         {
-
+            road.mesh = roadStraight;
+            road.transform.rotation = Quaternion.Euler(0, 90, 0);
         }
 
         //turn: ^ >
         else if(config == "downRight")
         {
-
+            road.mesh = roadTurn;
+            road.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
 
         //turn ^ <
         else if(config == "downLeft")
         {
-
+            road.mesh = roadTurn;
+            road.transform.rotation = Quaternion.Euler(0, 270, 0);
         }
 
         //turn: > ^ 
         else if(config == "upLeft")
         {
-
+            road.mesh = roadTurn;
+            road.transform.rotation = Quaternion.identity;
         }
 
         //turn: < ^ 
         else if(config == "upRight")
         {
-
+            road.mesh = roadTurn;
+            road.transform.rotation = Quaternion.Euler(0, 90, 0);
         }
 
         //3 way, not up
         else if(config == "notUp")
         {
-
+            road.mesh = roadIntsct3;
+            road.transform.rotation = Quaternion.Euler(0, 270, 0);
         }
 
         //3 way, not down
         else if(config == "notDown")
         {
-
+            road.mesh = roadIntsct3;
+            road.transform.rotation = Quaternion.Euler(0, 90, 0);
         }
 
         //3 way, not right
         else if(config == "notRight")
         {
-
+            road.mesh = roadIntsct3;
+            road.transform.rotation = Quaternion.identity;
         }
 
         //3 way, not left
         else if(config == "notLeft")
         {
-
+            road.mesh = roadIntsct3;
+            road.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 
@@ -171,7 +218,11 @@ public class RoadManager : MonoBehaviour
         else if(isRoadUp && isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "notLeft";
 
         //4 surrounding roads, crossroads
-        else if(!isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "crossroad";
+        else if(isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "crossroad";
+
+        Debug.Log($"Config for road: {roadConfig}");
+
+        return roadConfig;
     }
 
     List<Vector2Int> GetAdjacentRoadPositions(Vector2Int roadPos)
@@ -179,27 +230,27 @@ public class RoadManager : MonoBehaviour
         List<Vector2Int> adjacentRoads = new();
 
         Vector2Int roadUp = roadPos;
-        roadUp.y + 1;
+        roadUp.y += 1;
         adjacentRoads.Add(roadUp);
 
         Vector2Int roadDown = roadPos;
-        roadUp.y - 1;
+        roadDown.y -= 1;
         adjacentRoads.Add(roadDown);
 
         Vector2Int roadRight = roadPos;
-        roadRight.x + 1;
+        roadRight.x += 1;
         adjacentRoads.Add(roadRight);
 
         Vector2Int roadLeft = roadPos;
-        roadRight.x - 1;
+        roadLeft.x -= 1;
         adjacentRoads.Add(roadLeft);
 
         return adjacentRoads;
     }
 
-    GameObject GetPlacedRoad(Vector2Int roadPos)
+    MeshFilter GetPlacedRoad(Vector2Int roadPos)
     {
-        if(placedRoads[roadPos] != null)
+        if(placedRoads.ContainsKey(roadPos))
         {
             return placedRoads[roadPos];
         }
