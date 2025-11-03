@@ -8,7 +8,7 @@ public class UIController : MonoBehaviour
 {
     public Action<int> OnPlaceBuilding;
     public Action OnDelete, OnRotate, OnPlaceRoad;
-    public Button houseButton, farmButton, roadButton, instButton, deleteButton, rotateButton, housingButton, placeholder, hidePanelButton;
+    public Button houseButton, farmButton, roadButton, instButton, deleteButton, rotateButton, housingButton, hidePanelButton;
     public GameObject panelHousing;
 
     public Color outlineColor;
@@ -16,22 +16,27 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        buttons = new List<Button> {housingButton, houseButton, farmButton, roadButton, instButton,  deleteButton, rotateButton, placeholder, hidePanelButton};
+        buttons = new List<Button> {housingButton, houseButton, farmButton, roadButton, instButton,  deleteButton, rotateButton, hidePanelButton};
         rotateButton.interactable = false;
 
         housingButton.onClick.AddListener(() =>
         {
             ShowHousingPanel();
+            ModifyOutline(housingButton);
         });
         hidePanelButton.onClick.AddListener(() =>
         {
             HideHousingPanel();
+            if (houseButton.GetComponent<Outline>().enabled == false)
+                housingButton.GetComponent<Outline>().enabled = false;
+
         });
         houseButton.onClick.AddListener(()=>
         {
             rotateButton.interactable = true;
             ResetButtonColor();
             ModifyOutline(houseButton);
+            ModifyOutline(housingButton);
             OnPlaceBuilding?.Invoke(0);
             HideHousingPanel();
         });
@@ -55,6 +60,7 @@ public class UIController : MonoBehaviour
             rotateButton.interactable = true;
             ResetButtonColor();
             ModifyOutline(instButton);
+            ModifyOutline(housingButton);
             OnPlaceBuilding?.Invoke(2);
             HideHousingPanel();
         });
@@ -76,14 +82,12 @@ public class UIController : MonoBehaviour
     public void HideHousingPanel()
     {
         housingButton.gameObject.SetActive(true);
-        placeholder.gameObject.SetActive(false);
         panelHousing.SetActive(false);
     }
 
     private void ShowHousingPanel()
     {
         housingButton.gameObject.SetActive(false);
-        placeholder.gameObject.SetActive(true);
         panelHousing.SetActive(true);
     }
 
