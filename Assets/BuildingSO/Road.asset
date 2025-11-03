@@ -16,3 +16,5 @@ MonoBehaviour:
   prefab: {fileID: 6600959261270428487, guid: d8be45d8e8347e54186826e1797a6daf, type: 3}
   width: 1
   height: 1
+  hapiness: 5
+  control: 0

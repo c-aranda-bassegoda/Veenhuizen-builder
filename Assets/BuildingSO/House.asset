@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: House
   prefab: {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
-  visual: {fileID: 0}
   width: 1
   height: 1
+  hapiness: 10
+  control: 0

@@ -74,14 +74,14 @@ public class GameManager : MonoBehaviour
         if(gridBuildingSystem.PlacingRoad)
         {
             gridBuildingSystem.PlaceRoad(position);
-            if (buildingCount.ContainsKey("road"))
+            if (buildingCount.ContainsKey("Road"))
             {
-                buildingCount["road"] += 1;
-                Debug.Log(buildingCount["road"]);
-                Debug.Log("roads: " + buildingCount["road"]);
+                buildingCount["Road"] += 1;
+                Debug.Log(buildingCount["Road"]);
+                Debug.Log("Roads: " + buildingCount["Road"]);
             } else
             {
-                buildingCount.Add("road", 1);
+                buildingCount.Add("Road", 1);
             }
         }
 
