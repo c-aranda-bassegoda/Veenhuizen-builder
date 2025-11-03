@@ -73,8 +73,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("Handling mouse click");
         if(gridBuildingSystem.PlacingRoad)
         {
-            objectSO = gridBuildingSystem.PlaceRoad(position);
-            economyManager.HandleNewBuilding(objectSO); // TODO: remove hardcoding, is it worth it?
+            objectSO = gridBuildingSystem.roadSO;
+            if (economyManager.HandleNewBuilding(objectSO))
+                gridBuildingSystem.PlaceRoad(position);
             uiManager.UpdateStats();
         }
 
@@ -91,8 +92,9 @@ public class GameManager : MonoBehaviour
         }
         if (gridBuildingSystem.AddingBuilding)
         {
-            objectSO = gridBuildingSystem.PlaceObject(position, buildingIdx);
-            economyManager.HandleNewBuilding(objectSO);
+            objectSO = gridBuildingSystem.GetBuildingByIdx(buildingIdx);
+            if (economyManager.HandleNewBuilding(objectSO))
+                gridBuildingSystem.PlaceObject(position, buildingIdx);
             uiManager.UpdateStats();
         }
         controller.HideHousingPanel();

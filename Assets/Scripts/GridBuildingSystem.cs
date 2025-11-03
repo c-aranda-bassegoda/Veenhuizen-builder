@@ -9,7 +9,7 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] public List<BuildingScriptableObject> buildingSOList;
     private BuildingScriptableObject buildingSO;
     private Grid<GridObject> grid;
-    [SerializeField] BuildingScriptableObject roadSO;
+    [SerializeField] public BuildingScriptableObject roadSO;
 
     [SerializeField] private PreviewSystem previewSystem;
     [SerializeField] private RoadManager roadManager;
@@ -29,6 +29,8 @@ public class GridBuildingSystem : MonoBehaviour
         RemovingBuilding = false;
         PlacingRoad = false;
     }
+
+    public BuildingScriptableObject GetBuildingByIdx(int idx) {  return buildingSOList[idx]; }
 
     private Vector3 GetRotatedObjectPositionAt(int x, int z)
     {

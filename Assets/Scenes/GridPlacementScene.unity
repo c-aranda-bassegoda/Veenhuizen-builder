@@ -3076,11 +3076,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   happy: 0
   control: 0
-  listSO:
-  - {fileID: 11400000, guid: 69c4bf55c6421a3468524f42a69b5e94, type: 2}
-  - {fileID: 11400000, guid: ca34e4c73ba11b542a26b11206625995, type: 2}
-  - {fileID: 11400000, guid: 778a458ee0bcecc4e88fc69c22832cf9, type: 2}
-  - {fileID: 11400000, guid: 6c670bdf9f938de45aa5c6ea90603faf, type: 2}
+  maxBuildingCount:
+  - building: Farm
+    maxCount: 10
+  - building: House
+    maxCount: 10
+  - building: Road
+    maxCount: 20
+  - building: Institution
+    maxCount: 3
 --- !u!1 &1823393341
 GameObject:
   m_ObjectHideFlags: 0
