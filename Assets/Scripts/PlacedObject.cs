@@ -12,6 +12,7 @@ public class PlacedObject : MonoBehaviour
         placedObject.placedSctiptableObject = placedObjectSO;
         placedObject.origin = origin;
         placedObject.dir = dir;
+        placedObject.name = placedObjectSO.name;
 
         return placedObject;
     }

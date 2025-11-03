@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
     public Action<int> OnPlaceBuilding;
     public Action OnDelete, OnRotate, OnPlaceRoad;
     public Button houseButton, farmButton, roadButton, instButton, deleteButton, rotateButton, housingButton, hidePanelButton;
+    public GameObject happyOut, controlOut;
     public GameObject panelHousing;
 
     public Color outlineColor;
@@ -18,6 +19,7 @@ public class UIController : MonoBehaviour
     {
         buttons = new List<Button> {housingButton, houseButton, farmButton, roadButton, instButton,  deleteButton, rotateButton, hidePanelButton};
         rotateButton.interactable = false;
+        ResetButtonColor();
 
         housingButton.onClick.AddListener(() =>
         {
@@ -27,7 +29,7 @@ public class UIController : MonoBehaviour
         hidePanelButton.onClick.AddListener(() =>
         {
             HideHousingPanel();
-            if (houseButton.GetComponent<Outline>().enabled == false)
+            if (houseButton.GetComponent<Outline>().enabled != true || instButton.GetComponent<Outline>().enabled != true)
                 housingButton.GetComponent<Outline>().enabled = false;
 
         });
