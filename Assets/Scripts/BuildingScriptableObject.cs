@@ -30,6 +30,10 @@ public class BuildingScriptableObject : ScriptableObject
     public GameObject prefab;
     public int width;
     public int height;
+    public float hapiness;
+    public float control;
+    public float GetControl() { return control; }
+    public float GetHapiness() { return hapiness; }
     public Dir Direction { get; set; }
 
     public int GetRotationAngle(Dir dir)

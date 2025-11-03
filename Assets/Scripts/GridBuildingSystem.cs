@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    [SerializeField] private List<BuildingScriptableObject> buildingSOList;
+    [SerializeField] public List<BuildingScriptableObject> buildingSOList;
     private BuildingScriptableObject buildingSO;
     private Grid<GridObject> grid;
     [SerializeField] BuildingScriptableObject roadSO;
@@ -82,8 +82,9 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
 
-    public void RemoveObject(Vector3 worldPosition)
+    public string RemoveObject(Vector3 worldPosition)
     {
+        string buildingID = "";
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
 
@@ -91,6 +92,7 @@ public class GridBuildingSystem : MonoBehaviour
         PlacedObject placedObject = gridObject.GetPlacedObject();
         if (placedObject != null)
         {
+            buildingID += placedObject.name;
             placedObject.Destructor();
 
             //If object is a road, make sure to remove it from road list
@@ -107,6 +109,7 @@ public class GridBuildingSystem : MonoBehaviour
             }
 
         }
+        return buildingID;
     }
 
     public void RotateObject()

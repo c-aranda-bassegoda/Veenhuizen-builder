@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UIElements;
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GridBuildingSystem gridBuildingSystem;
     public UIController controller;
     int buildingIdx = -1;
+    private Dictionary<string, int> buildingCount;
 
     private void Start()
     {
@@ -16,6 +18,8 @@ public class GameManager : MonoBehaviour
         controller.OnRotate += BuildingRotateHandler;
         controller.OnDelete += BuildingDeletionHandler;
         controller.OnPlaceRoad += RoadPlacingHandler;
+
+        buildingCount = new Dictionary<string, int>();
     }
 
     private void BuildingDeletionHandler()
@@ -43,6 +47,8 @@ public class GameManager : MonoBehaviour
         buildingIdx = idx;
         gridBuildingSystem.StartPlacementPreview(buildingIdx);
 
+        //HandleStats(buildingIdx);
+
         inputManager.OnClicked -= HandleMouseClick; 
         inputManager.OnClicked += HandleMouseClick;
     }
@@ -55,6 +61,8 @@ public class GameManager : MonoBehaviour
         gridBuildingSystem.PlacingRoad = true;
         gridBuildingSystem.StartRoadPlacementPreview();
 
+        //HandleStats();
+
         inputManager.OnClicked -= HandleMouseClick;
         inputManager.OnClicked += HandleMouseClick;
         //gridBuildingSystem.PlaceRoad();
@@ -66,6 +74,15 @@ public class GameManager : MonoBehaviour
         if(gridBuildingSystem.PlacingRoad)
         {
             gridBuildingSystem.PlaceRoad(position);
+            if (buildingCount.ContainsKey("road"))
+            {
+                buildingCount["road"] += 1;
+                Debug.Log(buildingCount["road"]);
+                Debug.Log("roads: " + buildingCount["road"]);
+            } else
+            {
+                buildingCount.Add("road", 1);
+            }
         }
 
         if (buildingIdx < 0)
@@ -75,11 +92,30 @@ public class GameManager : MonoBehaviour
         }
         if (gridBuildingSystem.RemovingBuilding)
         {
-            gridBuildingSystem.RemoveObject(position);
+            string buildingName = gridBuildingSystem.RemoveObject(position);
+            if (buildingCount.ContainsKey(buildingName))
+            {
+                buildingCount[buildingName] -= 1;
+                Debug.Log(buildingName + "s: " + buildingCount[buildingName]);
+            }
+            else
+            {
+                Debug.LogError("No building named "+ buildingName);
+            }
         }
         if (gridBuildingSystem.AddingBuilding)
         {
             gridBuildingSystem.PlaceObject(position, buildingIdx);
+            string buildingName = gridBuildingSystem.buildingSOList[buildingIdx].name;
+            if (buildingCount.ContainsKey(buildingName))
+            {
+                buildingCount[buildingName] += 1;
+                Debug.Log(buildingName + "s: " + buildingCount[buildingName]);
+            }
+            else
+            {
+                buildingCount.Add(buildingName, 1);
+            }
         }
         controller.HideHousingPanel();
     }
