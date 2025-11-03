@@ -597,6 +597,7 @@ MonoBehaviour:
   inputManager: {fileID: 271108951}
   gridBuildingSystem: {fileID: 1434945243}
   controller: {fileID: 916037047}
+  uiManager: {fileID: 996262686}
   economyManager: {fileID: 1754685237}
 --- !u!4 &215312192
 Transform:
@@ -1835,6 +1836,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 971500537}
   m_CullTransparentMesh: 1
+--- !u!1 &996262685
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 996262687}
+  - component: {fileID: 996262686}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &996262686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996262685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a61006a94958f418fb11444aafa812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  happyOut: {fileID: 648340502}
+  controlOut: {fileID: 455709620}
+  manager: {fileID: 1754685237}
+--- !u!4 &996262687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996262685}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1083125603
 GameObject:
   m_ObjectHideFlags: 0
@@ -3026,8 +3074,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1abd06eee2bc2e64d95b13423e37805a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  happyOut: {fileID: 648340502}
-  controlOut: {fileID: 455709620}
+  happy: 0
+  control: 0
   listSO:
   - {fileID: 11400000, guid: 69c4bf55c6421a3468524f42a69b5e94, type: 2}
   - {fileID: 11400000, guid: ca34e4c73ba11b542a26b11206625995, type: 2}
@@ -4055,3 +4103,4 @@ SceneRoots:
   - {fileID: 215312192}
   - {fileID: 94027757}
   - {fileID: 1754685236}
+  - {fileID: 996262687}

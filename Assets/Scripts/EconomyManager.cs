@@ -2,13 +2,11 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class EconomyManager : MonoBehaviour
 {
     private Dictionary<string, int> buildingCount;
-    private float happy, control;
-    public GameObject happyOut, controlOut;
+    public float happy, control;
     [SerializeField] private List<BuildingScriptableObject> listSO;
 
     private void Start()
@@ -35,9 +33,6 @@ public class EconomyManager : MonoBehaviour
         happy += newObject.hapiness;
         control += newObject.control;
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString());
-
-        happyOut.GetComponentInChildren<TMP_Text>().text = happy.ToString();
-        controlOut.GetComponentInChildren<TMP_Text>().text = control.ToString();
     }
 
     public void HandleRemovedBuilding(BuildingScriptableObject oldObject)
@@ -57,8 +52,5 @@ public class EconomyManager : MonoBehaviour
         happy -= oldObject.hapiness;
         control -= oldObject.control;
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString());
-
-        happyOut.GetComponentInChildren<TMP_Text>().text = happy.ToString();
-        controlOut.GetComponentInChildren<TMP_Text>().text = control.ToString();
     }
 }

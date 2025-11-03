@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public InputManager inputManager;
     public GridBuildingSystem gridBuildingSystem;
     public UIController controller;
+    public UIManager uiManager;
     public EconomyManager economyManager;
     int buildingIdx = -1;
 
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviour
         {
             objectSO = gridBuildingSystem.PlaceRoad(position);
             economyManager.HandleNewBuilding(objectSO); // TODO: remove hardcoding, is it worth it?
+            uiManager.UpdateStats();
         }
 
         if (buildingIdx < 0)
@@ -85,11 +87,13 @@ public class GameManager : MonoBehaviour
         {
             objectSO = gridBuildingSystem.RemoveObject(position);
             economyManager.HandleRemovedBuilding(objectSO);
+            uiManager.UpdateStats();
         }
         if (gridBuildingSystem.AddingBuilding)
         {
             objectSO = gridBuildingSystem.PlaceObject(position, buildingIdx);
             economyManager.HandleNewBuilding(objectSO);
+            uiManager.UpdateStats();
         }
         controller.HideHousingPanel();
     }
