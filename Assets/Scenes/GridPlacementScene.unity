@@ -597,6 +597,7 @@ MonoBehaviour:
   inputManager: {fileID: 271108951}
   gridBuildingSystem: {fileID: 1434945243}
   controller: {fileID: 916037047}
+  economyManager: {fileID: 1754685237}
 --- !u!4 &215312192
 Transform:
   m_ObjectHideFlags: 0
@@ -1424,8 +1425,6 @@ MonoBehaviour:
   rotateButton: {fileID: 1083125606}
   housingButton: {fileID: 1385676295}
   hidePanelButton: {fileID: 283569273}
-  happyOut: {fileID: 648340502}
-  controlOut: {fileID: 455709620}
   panelHousing: {fileID: 709715305}
   outlineColor: {r: 0.059807636, g: 0.29221556, b: 0.9056604, a: 1}
 --- !u!1 &938775257
@@ -2983,6 +2982,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1747918192}
   m_CullTransparentMesh: 1
+--- !u!1 &1754685235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1754685236}
+  - component: {fileID: 1754685237}
+  m_Layer: 0
+  m_Name: EconomyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1754685236
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754685235}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 559.87366, y: 190.88446, z: -116.62376}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1754685237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754685235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1abd06eee2bc2e64d95b13423e37805a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  happyOut: {fileID: 648340502}
+  controlOut: {fileID: 455709620}
 --- !u!1 &1823393341
 GameObject:
   m_ObjectHideFlags: 0
@@ -4004,3 +4049,4 @@ SceneRoots:
   - {fileID: 271108950}
   - {fileID: 215312192}
   - {fileID: 94027757}
+  - {fileID: 1754685236}

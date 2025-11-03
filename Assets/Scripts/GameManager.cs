@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
     public InputManager inputManager;
     public GridBuildingSystem gridBuildingSystem;
     public UIController controller;
+    public EconomyManager economyManager;
     int buildingIdx = -1;
-    private Dictionary<string, int> buildingCount;
 
     private void Start()
     {
@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
         controller.OnRotate += BuildingRotateHandler;
         controller.OnDelete += BuildingDeletionHandler;
         controller.OnPlaceRoad += RoadPlacingHandler;
-
-        buildingCount = new Dictionary<string, int>();
     }
 
     private void BuildingDeletionHandler()
@@ -74,15 +72,7 @@ public class GameManager : MonoBehaviour
         if(gridBuildingSystem.PlacingRoad)
         {
             gridBuildingSystem.PlaceRoad(position);
-            if (buildingCount.ContainsKey("Road"))
-            {
-                buildingCount["Road"] += 1;
-                Debug.Log(buildingCount["Road"]);
-                Debug.Log("Roads: " + buildingCount["Road"]);
-            } else
-            {
-                buildingCount.Add("Road", 1);
-            }
+            economyManager.HandleNewBuilding("Road"); // TODO: remove hardcoding, is it worth it?
         }
 
         if (buildingIdx < 0)
@@ -93,29 +83,13 @@ public class GameManager : MonoBehaviour
         if (gridBuildingSystem.RemovingBuilding)
         {
             string buildingName = gridBuildingSystem.RemoveObject(position);
-            if (buildingCount.ContainsKey(buildingName))
-            {
-                buildingCount[buildingName] -= 1;
-                Debug.Log(buildingName + "s: " + buildingCount[buildingName]);
-            }
-            else
-            {
-                Debug.LogError("No building named "+ buildingName);
-            }
+            economyManager.HandleRemovedBuilding(buildingName);
         }
         if (gridBuildingSystem.AddingBuilding)
         {
             gridBuildingSystem.PlaceObject(position, buildingIdx);
             string buildingName = gridBuildingSystem.buildingSOList[buildingIdx].name;
-            if (buildingCount.ContainsKey(buildingName))
-            {
-                buildingCount[buildingName] += 1;
-                Debug.Log(buildingName + "s: " + buildingCount[buildingName]);
-            }
-            else
-            {
-                buildingCount.Add(buildingName, 1);
-            }
+            economyManager.HandleNewBuilding(buildingName);
         }
         controller.HideHousingPanel();
     }

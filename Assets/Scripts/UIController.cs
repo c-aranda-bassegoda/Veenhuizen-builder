@@ -9,7 +9,6 @@ public class UIController : MonoBehaviour
     public Action<int> OnPlaceBuilding;
     public Action OnDelete, OnRotate, OnPlaceRoad;
     public Button houseButton, farmButton, roadButton, instButton, deleteButton, rotateButton, housingButton, hidePanelButton;
-    public GameObject happyOut, controlOut;
     public GameObject panelHousing;
 
     public Color outlineColor;
