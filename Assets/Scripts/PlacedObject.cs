@@ -20,6 +20,7 @@ public class PlacedObject : MonoBehaviour
     private Vector2Int origin;
     private BuildingScriptableObject.Dir dir;
 
+    public BuildingScriptableObject GetScriptableObject() {  return placedSctiptableObject; }
     public List<Vector2Int> GetGridPositionList()
     {
         return placedSctiptableObject.GetGridPositionList(origin, dir);

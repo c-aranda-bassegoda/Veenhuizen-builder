@@ -17,4 +17,4 @@ MonoBehaviour:
   width: 1
   height: 1
   hapiness: 10
-  control: 0
+  control: -5

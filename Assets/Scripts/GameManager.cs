@@ -68,11 +68,12 @@ public class GameManager : MonoBehaviour
 
     private void HandleMouseClick(Vector3 position)
     {
+        BuildingScriptableObject objectSO = null;
         Debug.Log("Handling mouse click");
         if(gridBuildingSystem.PlacingRoad)
         {
-            gridBuildingSystem.PlaceRoad(position);
-            economyManager.HandleNewBuilding("Road"); // TODO: remove hardcoding, is it worth it?
+            objectSO = gridBuildingSystem.PlaceRoad(position);
+            economyManager.HandleNewBuilding(objectSO); // TODO: remove hardcoding, is it worth it?
         }
 
         if (buildingIdx < 0)
@@ -82,14 +83,13 @@ public class GameManager : MonoBehaviour
         }
         if (gridBuildingSystem.RemovingBuilding)
         {
-            string buildingName = gridBuildingSystem.RemoveObject(position);
-            economyManager.HandleRemovedBuilding(buildingName);
+            objectSO = gridBuildingSystem.RemoveObject(position);
+            economyManager.HandleRemovedBuilding(objectSO);
         }
         if (gridBuildingSystem.AddingBuilding)
         {
-            gridBuildingSystem.PlaceObject(position, buildingIdx);
-            string buildingName = gridBuildingSystem.buildingSOList[buildingIdx].name;
-            economyManager.HandleNewBuilding(buildingName);
+            objectSO = gridBuildingSystem.PlaceObject(position, buildingIdx);
+            economyManager.HandleNewBuilding(objectSO);
         }
         controller.HideHousingPanel();
     }

@@ -1,18 +1,28 @@
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class EconomyManager : MonoBehaviour
 {
     private Dictionary<string, int> buildingCount;
+    private float happy, control;
     public GameObject happyOut, controlOut;
+    [SerializeField] private List<BuildingScriptableObject> listSO;
 
     private void Start()
     {
         buildingCount = new Dictionary<string, int>();
+        happy = 0;
+        control = 0;
     }
 
-    public void HandleNewBuilding(string buildingName)
+    public void HandleNewBuilding(BuildingScriptableObject newObject)
     {
+        if (newObject == null)
+            Debug.LogError("No new object");
+        string buildingName = newObject.name;
         if (buildingCount.ContainsKey(buildingName))
         {
             buildingCount[buildingName] += 1;
@@ -22,10 +32,19 @@ public class EconomyManager : MonoBehaviour
         {
             buildingCount.Add(buildingName, 1);
         }
+        happy += newObject.hapiness;
+        control += newObject.control;
+        Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString());
+
+        happyOut.GetComponentInChildren<TMP_Text>().text = happy.ToString();
+        controlOut.GetComponentInChildren<TMP_Text>().text = control.ToString();
     }
 
-    public void HandleRemovedBuilding(string buildingName)
+    public void HandleRemovedBuilding(BuildingScriptableObject oldObject)
     {
+        if (oldObject == null)
+            Debug.LogError("No new object");
+        string buildingName = oldObject.name;
         if (buildingCount.ContainsKey(buildingName))
         {
             buildingCount[buildingName] -= 1;
@@ -35,5 +54,11 @@ public class EconomyManager : MonoBehaviour
         {
             Debug.LogError("No building named " + buildingName);
         }
+        happy -= oldObject.hapiness;
+        control -= oldObject.control;
+        Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString());
+
+        happyOut.GetComponentInChildren<TMP_Text>().text = happy.ToString();
+        controlOut.GetComponentInChildren<TMP_Text>().text = control.ToString();
     }
 }
