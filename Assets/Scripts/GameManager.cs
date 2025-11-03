@@ -15,12 +15,14 @@ public class GameManager : MonoBehaviour
         controller.OnPlaceBuilding += BuildingPlacementHandler;
         controller.OnRotate += BuildingRotateHandler;
         controller.OnDelete += BuildingDeletionHandler;
+        controller.OnPlaceRoad += RoadPlacingHandler;
     }
 
     private void BuildingDeletionHandler()
     {
         gridBuildingSystem.RemovingBuilding = true;
         gridBuildingSystem.AddingBuilding = false;
+        gridBuildingSystem.PlacingRoad = false;
         gridBuildingSystem.StopPlacementPreview();
 
         inputManager.OnClicked -= HandleMouseClick;
@@ -36,6 +38,7 @@ public class GameManager : MonoBehaviour
     {
         gridBuildingSystem.RemovingBuilding = false;
         gridBuildingSystem.AddingBuilding = true;
+        gridBuildingSystem.PlacingRoad = false;
         gridBuildingSystem.StopPlacementPreview();
         buildingIdx = idx;
         gridBuildingSystem.StartPlacementPreview(buildingIdx);
@@ -44,8 +47,26 @@ public class GameManager : MonoBehaviour
         inputManager.OnClicked += HandleMouseClick;
     }
 
+    private void RoadPlacingHandler()
+    {
+        gridBuildingSystem.StopPlacementPreview();
+        gridBuildingSystem.RemovingBuilding = false;
+        gridBuildingSystem.AddingBuilding = false;
+        gridBuildingSystem.PlacingRoad = true;
+
+        inputManager.OnClicked -= HandleMouseClick;
+        inputManager.OnClicked += HandleMouseClick;
+        //gridBuildingSystem.PlaceRoad();
+    }
+
     private void HandleMouseClick(Vector3 position)
     {
+        Debug.Log("Handling mouse click");
+        if(gridBuildingSystem.PlacingRoad)
+        {
+            gridBuildingSystem.PlaceRoad(position);
+        }
+
         if (buildingIdx < 0)
         {
             Debug.LogWarning("No building selected!");

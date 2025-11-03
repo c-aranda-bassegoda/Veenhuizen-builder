@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     public Action<int> OnPlaceBuilding;
-    public Action OnDelete, OnRotate;
-    public Button houseButton, farmButton, instButton, deleteButton, rotateButton, housingButton, placeholder, hidePanelButton;
+    public Action OnDelete, OnRotate, OnPlaceRoad;
+    public Button houseButton, farmButton, roadButton, instButton, deleteButton, rotateButton, housingButton, placeholder, hidePanelButton;
     public GameObject panelHousing;
 
     public Color outlineColor;
@@ -16,7 +16,7 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        buttons = new List<Button> {housingButton, houseButton, farmButton, instButton,  deleteButton, rotateButton, placeholder, hidePanelButton};
+        buttons = new List<Button> {housingButton, houseButton, farmButton, roadButton, instButton,  deleteButton, rotateButton, placeholder, hidePanelButton};
         rotateButton.interactable = false;
 
         housingButton.onClick.AddListener(() =>
@@ -41,6 +41,13 @@ public class UIController : MonoBehaviour
             ResetButtonColor();
             ModifyOutline(farmButton);
             OnPlaceBuilding?.Invoke(1);
+            HideHousingPanel();
+        });
+        roadButton.onClick.AddListener(() =>
+        {
+            ResetButtonColor();
+            ModifyOutline(roadButton);
+            OnPlaceRoad?.Invoke();
             HideHousingPanel();
         });
         instButton.onClick.AddListener(() =>
