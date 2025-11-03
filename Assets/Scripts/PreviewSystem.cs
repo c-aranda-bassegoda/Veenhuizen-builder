@@ -10,11 +10,20 @@ public class PreviewSystem : MonoBehaviour
     private GameObject buildingPreview;
 
     [SerializeField] private Material previewMaterialPrefab;
+    [SerializeField] private Material roadPreviewMaterial;
+    [SerializeField] private RoadManager roadManager;
+    [SerializeField] private GridBuildingSystem gridSystem;
     private Material previewMaterial;
 
     private void Awake()
     {
         previewMaterial = new Material(previewMaterialPrefab);
+    }
+
+    public void StartRoadPlacementPreview(BuildingScriptableObject roadSO)
+    {
+        buildingPreview = Instantiate(roadSO.prefab, new Vector3(0, 0, 0), Quaternion.identity);
+        buildingPreview.transform.GetChild(0).GetComponent<MeshRenderer>().material = roadPreviewMaterial;
     }
 
     public void StartPlacementPreview(BuildingScriptableObject buildingSO)
@@ -58,5 +67,11 @@ public class PreviewSystem : MonoBehaviour
     private void MovePreview(Vector3 worldPosition)
     {
         buildingPreview.transform.position = new Vector3(worldPosition.x, worldPosition.y + previewYOffset, worldPosition.z);
+        if(buildingPreview.CompareTag("Road"))
+        {
+            gridSystem.GetGrid().GetXYZ(UtilitiesClass.GetMouseWorldPositionXZ(), out int x, out int y, out int z);
+            Vector2Int newPosition = new Vector2Int(x, z);
+            roadManager.UpdatePreviewRoad(buildingPreview, newPosition);
+        }
     }
 }

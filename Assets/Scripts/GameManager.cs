@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
         gridBuildingSystem.RemovingBuilding = false;
         gridBuildingSystem.AddingBuilding = false;
         gridBuildingSystem.PlacingRoad = true;
+        gridBuildingSystem.StartRoadPlacementPreview();
 
         inputManager.OnClicked -= HandleMouseClick;
         inputManager.OnClicked += HandleMouseClick;

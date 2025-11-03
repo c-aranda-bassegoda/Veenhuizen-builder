@@ -93,6 +93,12 @@ public class GridBuildingSystem : MonoBehaviour
         {
             placedObject.Destructor();
 
+            //If object is a road, make sure to remove it from road list
+            if (placedObject.CompareTag("Road"))
+            {
+                roadManager.RemoveRoad(new Vector2Int(x, z));
+            }
+
             gridPositionList = placedObject.GetGridPositionList();
 
             foreach (Vector2Int position in gridPositionList)
@@ -115,7 +121,7 @@ public class GridBuildingSystem : MonoBehaviour
     {
         grid.GetXYZ(UtilitiesClass.GetMouseWorldPositionXZ(), out int x, out int y, out int z);
         Vector2Int newPosition = new Vector2Int(x, z);
-        if (AddingBuilding && newPosition != lastPosition && buildingSO != null)
+        if ( (AddingBuilding || PlacingRoad) && newPosition != lastPosition && (buildingSO != null && roadSO != null))
         {
             lastPosition = newPosition;
             List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
@@ -169,6 +175,16 @@ public class GridBuildingSystem : MonoBehaviour
     internal void StopPlacementPreview()
     {
         previewSystem.StopPlacementPreview();
+    }
+
+    internal void StartRoadPlacementPreview()
+    {
+        previewSystem.StartRoadPlacementPreview(roadSO);
+    }
+
+    public Grid<GridObject> GetGrid()
+    {
+        return grid;
     }
 
 }

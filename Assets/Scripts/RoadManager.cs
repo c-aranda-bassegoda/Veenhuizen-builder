@@ -1,6 +1,7 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class RoadManager : MonoBehaviour
 {
@@ -61,10 +62,19 @@ public class RoadManager : MonoBehaviour
     {
         if (placedRoads.ContainsKey(roadPos))
         {
-            Destroy(GetPlacedRoad(roadPos));
+            //Destroy(GetPlacedRoad(roadPos));
             placedRoads.Remove(roadPos);
             UpdateRoads(roadPos);
         }
+    }
+
+    public void UpdatePreviewRoad(GameObject previewRoad, Vector2Int newPosition)
+    {
+        MeshFilter roadToUpdate = previewRoad.transform.GetChild(0).gameObject.GetComponent<MeshFilter>();
+        List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(newPosition);
+        List<bool> isRoadThere = FindAdjacentRoads(adjacentRoadPositions, newPosition);
+        string roadConfig = CheckAdjacentRoads(isRoadThere);
+        UpdateRoad(roadToUpdate, roadConfig);
     }
     void UpdateRoads(Vector2Int roadPos)
     {
@@ -85,22 +95,39 @@ public class RoadManager : MonoBehaviour
 
             //Sorted: Up, Down, Right, Left
             List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(pos);
-            List<bool> isRoadThere = new() {false, false, false, false};
+            //List<bool> isRoadThere = new() {false, false, false, false};
 
-            for(int i = 0; i < adjacentRoadPositions.Count; i++)
-            {
-                Vector2Int adjPos = adjacentRoadPositions[i];
-                MeshFilter adjRoad = GetPlacedRoad(adjPos);
-                if(adjRoad != null)
-                {
-                    Debug.Log($"Adjacent road found for {pos.x}, {pos.y} at {adjacentRoadPositions[i].x}, {adjacentRoadPositions[i].y}");
-                    isRoadThere[i] = true;
-                }
-            }
+            //for(int i = 0; i < adjacentRoadPositions.Count; i++)
+            //{
+            //    Vector2Int adjPos = adjacentRoadPositions[i];
+            //    MeshFilter adjRoad = GetPlacedRoad(adjPos);
+            //    if(adjRoad != null)
+            //    {
+            //        Debug.Log($"Adjacent road found for {pos.x}, {pos.y} at {adjacentRoadPositions[i].x}, {adjacentRoadPositions[i].y}");
+            //        isRoadThere[i] = true;
+            //    }
+            //}
+            List<bool> isRoadThere = FindAdjacentRoads(adjacentRoadPositions, pos);
 
             string roadConfig = CheckAdjacentRoads(isRoadThere);
             UpdateRoad(roadToUpdate, roadConfig);
         }
+    }
+
+    List<bool> FindAdjacentRoads(List<Vector2Int> adjacentRoadPositions, Vector2Int pos)
+    {
+        List<bool> isRoadThere = new() { false, false, false, false };
+        for (int i = 0; i < adjacentRoadPositions.Count; i++)
+        {
+            Vector2Int adjPos = adjacentRoadPositions[i];
+            MeshFilter adjRoad = GetPlacedRoad(adjPos);
+            if (adjRoad != null)
+            {
+                Debug.Log($"Adjacent road found for {pos.x}, {pos.y} at {adjacentRoadPositions[i].x}, {adjacentRoadPositions[i].y}");
+                isRoadThere[i] = true;
+            }
+        }
+        return isRoadThere;
     }
 
     void UpdateRoad(MeshFilter road, string config)
