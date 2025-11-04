@@ -9,7 +9,7 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] public List<BuildingScriptableObject> buildingSOList;
     private BuildingScriptableObject buildingSO;
     private Grid<GridObject> grid;
-    [SerializeField] BuildingScriptableObject roadSO;
+    [SerializeField] public BuildingScriptableObject roadSO;
 
     [SerializeField] private PreviewSystem previewSystem;
     [SerializeField] private RoadManager roadManager;
@@ -30,12 +30,14 @@ public class GridBuildingSystem : MonoBehaviour
         PlacingRoad = false;
     }
 
+    public BuildingScriptableObject GetBuildingByIdx(int idx) {  return buildingSOList[idx]; }
+
     private Vector3 GetRotatedObjectPositionAt(int x, int z)
     {
         Vector2Int rotationOffset = buildingSO.GetRotationOffset(buildingSO.Direction);
         return grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
     }
-    public void PlaceObject(Vector3 worldPosition, int buildingIdx)
+    public BuildingScriptableObject PlaceObject(Vector3 worldPosition, int buildingIdx)
     {
         buildingSO = buildingSOList[buildingIdx];
 
@@ -55,12 +57,11 @@ public class GridBuildingSystem : MonoBehaviour
             //TODO: "can't place" pop up message for player
             Debug.Log("Can't build");
         }
+        return buildingSO;
     }
 
-    public void PlaceRoad(Vector3 worldPosition)
+    public BuildingScriptableObject PlaceRoad(Vector3 worldPosition)
     {
-        buildingSO = roadSO;
-
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         List<Vector2Int> gridPositionList = roadSO.GetGridPositionList(new Vector2Int(x, z), roadSO.Direction);
         Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
@@ -80,11 +81,11 @@ public class GridBuildingSystem : MonoBehaviour
             //TODO: "can't place" pop up message for player
             Debug.Log("Can't build");
         }
+        return roadSO;
     }
 
-    public string RemoveObject(Vector3 worldPosition)
+    public BuildingScriptableObject RemoveObject(Vector3 worldPosition)
     {
-        string buildingID = "";
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
 
@@ -92,7 +93,6 @@ public class GridBuildingSystem : MonoBehaviour
         PlacedObject placedObject = gridObject.GetPlacedObject();
         if (placedObject != null)
         {
-            buildingID += placedObject.name;
             placedObject.Destructor();
 
             //If object is a road, make sure to remove it from road list
@@ -109,7 +109,7 @@ public class GridBuildingSystem : MonoBehaviour
             }
 
         }
-        return buildingID;
+        return placedObject.GetScriptableObject();
     }
 
     public void RotateObject()
