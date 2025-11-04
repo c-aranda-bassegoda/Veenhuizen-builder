@@ -42,15 +42,17 @@ public class GridBuildingSystem : MonoBehaviour
         buildingSO = buildingSOList[buildingIdx];
 
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
-        List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
+        Vector2Int gridPos = new Vector2Int(x, z);
+        List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(gridPos, buildingSO.Direction);
         Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
 
         if (CanPlace(gridPositionList))
         {
-            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), buildingSO.Direction, buildingSO);
+            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO);
             foreach (Vector2Int position in gridPositionList)
                 grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+            roadManager.UpdateRoads(gridPos, false);
         }
         else
         {
@@ -149,7 +151,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     }
 
-    private bool CanPlace(List<Vector2Int> gridPositionList)
+    public bool CanPlace(List<Vector2Int> gridPositionList)
     {
         bool canPlace = true;
         foreach (Vector2Int position in gridPositionList)

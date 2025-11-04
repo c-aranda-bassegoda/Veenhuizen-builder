@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
 
 public class RoadManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class RoadManager : MonoBehaviour
     public Dictionary<Vector2Int, MeshFilter> placedRoads = new();
     [SerializeField] GameObject roadPrefab;
     [SerializeField] LayerMask roadTestLayer;
+    [SerializeField] GridBuildingSystem gridBuildingSystem;
 
     public void Update()
     {
@@ -76,10 +78,10 @@ public class RoadManager : MonoBehaviour
         string roadConfig = CheckAdjacentRoads(isRoadThere);
         UpdateRoad(roadToUpdate, roadConfig);
     }
-    void UpdateRoads(Vector2Int roadPos)
+    public void UpdateRoads(Vector2Int roadPos, bool placingRoad = true)
     {
         List<Vector2Int> roadsToUpdate = GetAdjacentRoadPositions(roadPos);
-        roadsToUpdate.Add(roadPos);
+        if(placingRoad) roadsToUpdate.Add(roadPos);
 
         foreach (Vector2Int pos in roadsToUpdate)
         {
@@ -95,18 +97,6 @@ public class RoadManager : MonoBehaviour
 
             //Sorted: Up, Down, Right, Left
             List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(pos);
-            //List<bool> isRoadThere = new() {false, false, false, false};
-
-            //for(int i = 0; i < adjacentRoadPositions.Count; i++)
-            //{
-            //    Vector2Int adjPos = adjacentRoadPositions[i];
-            //    MeshFilter adjRoad = GetPlacedRoad(adjPos);
-            //    if(adjRoad != null)
-            //    {
-            //        Debug.Log($"Adjacent road found for {pos.x}, {pos.y} at {adjacentRoadPositions[i].x}, {adjacentRoadPositions[i].y}");
-            //        isRoadThere[i] = true;
-            //    }
-            //}
             List<bool> isRoadThere = FindAdjacentRoads(adjacentRoadPositions, pos);
 
             string roadConfig = CheckAdjacentRoads(isRoadThere);
@@ -119,12 +109,22 @@ public class RoadManager : MonoBehaviour
         List<bool> isRoadThere = new() { false, false, false, false };
         for (int i = 0; i < adjacentRoadPositions.Count; i++)
         {
-            Vector2Int adjPos = adjacentRoadPositions[i];
-            MeshFilter adjRoad = GetPlacedRoad(adjPos);
-            if (adjRoad != null)
+            Grid<GridObject> grid = gridBuildingSystem.GetGrid();
+            GridObject gridObject = grid.GetGridObj(adjacentRoadPositions[i].x, adjacentRoadPositions[i].y);
+
+            //Vector2Int adjPos = adjacentRoadPositions[i];
+            //MeshFilter adjRoad = GetPlacedRoad(adjPos);
+            if (gridObject != null)
             {
-                Debug.Log($"Adjacent road found for {pos.x}, {pos.y} at {adjacentRoadPositions[i].x}, {adjacentRoadPositions[i].y}");
-                isRoadThere[i] = true;
+                if (!gridObject.CanPlace())
+                {
+                    Debug.Log($"Adjacent road found for {pos.x}, {pos.y} at {adjacentRoadPositions[i].x}, {adjacentRoadPositions[i].y}");
+                    isRoadThere[i] = true;
+                }
+            }
+            else
+            {
+                Debug.Log($"No object found at {adjacentRoadPositions[i].x}, {adjacentRoadPositions[i].y}");
             }
         }
         return isRoadThere;
@@ -266,7 +266,7 @@ public class RoadManager : MonoBehaviour
         //4 surrounding roads, crossroads
         else if(isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "crossroad";
 
-        Debug.Log($"Config for road: {roadConfig}");
+        Debug.Log($"Config for road: {roadConfig} ({isRoadUp}, {isRoadDown}, {isRoadRight}, {isRoadLeft}");
 
         return roadConfig;
     }
