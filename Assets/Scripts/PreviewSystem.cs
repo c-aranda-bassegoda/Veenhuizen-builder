@@ -62,6 +62,7 @@ public class PreviewSystem : MonoBehaviour
         Color c = validity ? Color.blue : Color.red;
         c.a = 0.5f;
         previewMaterial.color = c;
+        roadPreviewMaterial.color = c;
     }
 
     private void MovePreview(Vector3 worldPosition)
