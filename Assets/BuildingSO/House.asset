@@ -18,3 +18,4 @@ MonoBehaviour:
   height: 1
   hapiness: 10
   control: -5
+  maxPlacements: 10
