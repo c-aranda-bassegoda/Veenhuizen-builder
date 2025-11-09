@@ -32,6 +32,7 @@ public class BuildingScriptableObject : ScriptableObject
     public int height;
     public float hapiness;
     public float control;
+    public int maxPlacements;
     public float GetControl() { return control; }
     public float GetHapiness() { return hapiness; }
     public Dir Direction { get; set; }

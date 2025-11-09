@@ -7,8 +7,14 @@ using UnityEngine.UI;
 public class EconomyManager : MonoBehaviour
 {
     private Dictionary<string, int> buildingCount;
+    public int GetBuildingCount(string name) 
+    { 
+        if (buildingCount.ContainsKey(name)) return buildingCount[name]; 
+        else { Debug.LogError("No building " + name); return -1; } 
+    }
+
     public float happy, control;
-    [SerializeField] private List<BuildingConditions> maxBuildingCount;
+    [SerializeField] private List<BuildingScriptableObject> buildings;
     private Dictionary<string, int> maxCount;
 
     private void Start()
@@ -18,10 +24,10 @@ public class EconomyManager : MonoBehaviour
         control = 0;
 
         maxCount = new Dictionary<string, int>();
-        foreach (BuildingConditions condition in maxBuildingCount)
+        foreach (BuildingScriptableObject building in buildings)
         {
-            maxCount.Add(condition.building,condition.maxCount);
-            buildingCount.Add(condition.building, 0);
+            maxCount.Add(building.name, building.maxPlacements);
+            buildingCount.Add(building.name, 0);
         }
     }
 
@@ -75,9 +81,3 @@ public class EconomyManager : MonoBehaviour
     }
 }
 
-[System.Serializable]
-public class BuildingConditions
-{
-    public string building;
-    public int maxCount;
-}

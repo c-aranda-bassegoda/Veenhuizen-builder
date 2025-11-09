@@ -83,6 +83,7 @@ public class UIController : MonoBehaviour
     public void HideHousingPanel()
     {
         housingButton.gameObject.SetActive(true);
+        TooltipSystem.Hide();
         panelHousing.SetActive(false);
     }
 
