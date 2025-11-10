@@ -20,7 +20,11 @@ public class PlacedObject : MonoBehaviour
     private Vector2Int origin;
     private BuildingScriptableObject.Dir dir;
 
+    public GameObject exclamationMark;
+    public List<PlacedObject> connectedObjects;
+
     public BuildingScriptableObject GetScriptableObject() {  return placedSctiptableObject; }
+    public Vector2Int GetOrigin() { return origin; }
     public List<Vector2Int> GetGridPositionList()
     {
         return placedSctiptableObject.GetGridPositionList(origin, dir);

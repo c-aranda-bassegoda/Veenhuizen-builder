@@ -103,13 +103,16 @@ public class GridBuildingSystem : MonoBehaviour
                 roadManager.RemoveRoad(new Vector2Int(x, z));
             }
 
+
             gridPositionList = placedObject.GetGridPositionList();
+
 
             foreach (Vector2Int position in gridPositionList)
             {
                 grid.GetGridObj(position.x, position.y).ClearPlacedObject();
             }
 
+            roadManager.CheckRoadConnectionOnDelete(new Vector2Int(x, z));
         }
         return placedObject.GetScriptableObject();
     }
