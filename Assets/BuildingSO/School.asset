@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
-  m_Name: Road
+  m_Name: School
   m_EditorClassIdentifier: 
-  name: Road
-  prefab: {fileID: 6600959261270428487, guid: d8be45d8e8347e54186826e1797a6daf, type: 3}
+  name: School
+  prefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
   width: 1
   height: 1
-  hapiness: 5
-  control: 5
+  hapiness: 15
+  control: 10
   maxPlacements: 20

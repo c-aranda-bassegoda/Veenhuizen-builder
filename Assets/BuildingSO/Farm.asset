@@ -17,5 +17,5 @@ MonoBehaviour:
   width: 2
   height: 1
   hapiness: 10
-  control: 2
+  control: 10
   maxPlacements: 10

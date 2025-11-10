@@ -109,7 +109,6 @@ public class RoadManager : MonoBehaviour
 
             UpdateObjectNotConnectedWarning(connectedObject);
         }
-
     }
 
     public void CheckRoadConnectionOnDelete(Vector2Int pos)
@@ -169,7 +168,12 @@ public class RoadManager : MonoBehaviour
                 checkedPositions.Add(uncheckedPos);
 
                 GridObject gridObject = grid.GetGridObj(uncheckedPos.x, uncheckedPos.y);
-                PlacedObject placedObject = gridObject.GetPlacedObject();
+                PlacedObject placedObject = null;
+
+                if (gridObject != null)
+                {
+                    placedObject = gridObject.GetPlacedObject();
+                }
 
                 if (placedObject == null && !skipFirstObjectCheck) continue;
 

@@ -16,6 +16,6 @@ MonoBehaviour:
   prefab: {fileID: 3202509837292703422, guid: 6712742dd9dc1d844b77cd59231b08d0, type: 3}
   width: 3
   height: 3
-  hapiness: 0
-  control: 10
+  hapiness: 10
+  control: 15
   maxPlacements: 3

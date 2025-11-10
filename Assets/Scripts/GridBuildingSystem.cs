@@ -113,8 +113,9 @@ public class GridBuildingSystem : MonoBehaviour
             }
 
             roadManager.CheckRoadConnectionOnDelete(new Vector2Int(x, z));
+            return placedObject.GetScriptableObject();
         }
-        return placedObject.GetScriptableObject();
+        return null;
     }
 
     public void RotateObject()

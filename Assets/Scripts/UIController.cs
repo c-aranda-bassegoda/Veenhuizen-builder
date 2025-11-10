@@ -8,7 +8,7 @@ public class UIController : MonoBehaviour
 {
     public Action<int> OnPlaceBuilding;
     public Action OnDelete, OnRotate, OnPlaceRoad;
-    public Button houseButton, farmButton, roadButton, instButton, deleteButton, rotateButton, housingButton, hidePanelButton;
+    public Button houseButton, farmButton, roadButton, instButton, schoolButton, deleteButton, rotateButton, housingButton, hidePanelButton;
     public GameObject panelHousing;
 
     public Color outlineColor;
@@ -16,10 +16,10 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        buttons = new List<Button> {housingButton, houseButton, farmButton, roadButton, instButton,  deleteButton, rotateButton, hidePanelButton};
+        buttons = new List<Button> {housingButton, houseButton, farmButton, roadButton, instButton, schoolButton,  deleteButton, rotateButton, hidePanelButton};
         rotateButton.interactable = false;
         ResetButtonColor();
-
+        /*
         housingButton.onClick.AddListener(() =>
         {
             ShowHousingPanel();
@@ -32,6 +32,7 @@ public class UIController : MonoBehaviour
                 housingButton.GetComponent<Outline>().enabled = false;
 
         });
+        */
         houseButton.onClick.AddListener(()=>
         {
             rotateButton.interactable = true;
@@ -61,8 +62,17 @@ public class UIController : MonoBehaviour
             rotateButton.interactable = true;
             ResetButtonColor();
             ModifyOutline(instButton);
-            ModifyOutline(housingButton);
+            //ModifyOutline(housingButton);
             OnPlaceBuilding?.Invoke(2);
+            HideHousingPanel();
+        });
+        schoolButton.onClick.AddListener(() =>
+        {
+            rotateButton.interactable = true;
+            ResetButtonColor();
+            ModifyOutline(schoolButton);
+            //ModifyOutline(housingButton);
+            OnPlaceBuilding?.Invoke(3);
             HideHousingPanel();
         });
         deleteButton.onClick.AddListener(() =>
@@ -95,10 +105,16 @@ public class UIController : MonoBehaviour
 
     private void ModifyOutline(Button button)
     {
+        foreach(Button btn in buttons)
+        {
+            Outline buttonOutline = button.GetComponent<Outline>();
+            buttonOutline.effectColor = Color.black;
+        }
         var outline = button.GetComponent<Outline>();
         if (outline == null)
             Debug.Log("no outline");
-        outline.effectColor = outlineColor;
+        //outline.effectColor = outlineColor;
+        outline.effectColor = Color.blue;
         outline.enabled = true;
     }
 

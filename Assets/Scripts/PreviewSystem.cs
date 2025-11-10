@@ -67,12 +67,16 @@ public class PreviewSystem : MonoBehaviour
 
     private void MovePreview(Vector3 worldPosition)
     {
-        buildingPreview.transform.position = new Vector3(worldPosition.x, worldPosition.y + previewYOffset, worldPosition.z);
         if(buildingPreview.CompareTag("Road"))
         {
+            buildingPreview.transform.position = new Vector3(worldPosition.x - 10, worldPosition.y + previewYOffset, worldPosition.z - 10);
             gridSystem.GetGrid().GetXYZ(UtilitiesClass.GetMouseWorldPositionXZ(), out int x, out int y, out int z);
             Vector2Int newPosition = new Vector2Int(x, z);
             roadManager.UpdatePreviewRoad(buildingPreview, newPosition);
+        }
+        else
+        {
+            buildingPreview.transform.position = new Vector3(worldPosition.x, worldPosition.y + previewYOffset, worldPosition.z);
         }
     }
 }
