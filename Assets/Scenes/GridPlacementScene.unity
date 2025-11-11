@@ -157,6 +157,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   gridBuildingSystem: {fileID: 1434945243}
+  economyManager: {fileID: 1754685237}
 --- !u!4 &94027757
 Transform:
   m_ObjectHideFlags: 0
@@ -1510,7 +1511,7 @@ GameObject:
   - component: {fileID: 602164945}
   - component: {fileID: 602164944}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3349,9 +3350,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1263.4921, y: 230.33507}
+  m_AnchoredPosition: {x: -22.9335, y: 278.97757}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: -1.0793651, y: 1.1970409}
+  m_Pivot: {x: 0.47133312, y: 1.3051355}
 --- !u!114 &1106767903
 MonoBehaviour:
   m_ObjectHideFlags: 0
