@@ -74,8 +74,8 @@ public class GameManager : MonoBehaviour
         if(gridBuildingSystem.PlacingRoad)
         {
             objectSO = gridBuildingSystem.roadSO;
-            if (economyManager.HandleNewBuilding(objectSO))
-                gridBuildingSystem.PlaceRoad(position);
+            //if (economyManager.HandleNewBuilding(objectSO))
+            gridBuildingSystem.PlaceRoad(position);
             uiManager.UpdateStats();
         }
 
@@ -86,15 +86,16 @@ public class GameManager : MonoBehaviour
         }
         if (gridBuildingSystem.RemovingBuilding)
         {
-            objectSO = gridBuildingSystem.RemoveObject(position);
-            economyManager.HandleRemovedBuilding(objectSO);
+            PlacedObject objToRemove = gridBuildingSystem.RemoveObject(position);
+            objectSO = objToRemove.GetScriptableObject();
+            economyManager.HandleRemovedBuilding(objectSO, objToRemove);
             uiManager.UpdateStats();
         }
         if (gridBuildingSystem.AddingBuilding)
         {
             objectSO = gridBuildingSystem.GetBuildingByIdx(buildingIdx);
-            if (economyManager.HandleNewBuilding(objectSO))
-                gridBuildingSystem.PlaceObject(position, buildingIdx);
+            //if (economyManager.HandleNewBuilding(objectSO))
+            gridBuildingSystem.PlaceObject(position, buildingIdx);
             uiManager.UpdateStats();
         }
         controller.HideHousingPanel();

@@ -86,7 +86,7 @@ public class GridBuildingSystem : MonoBehaviour
         return roadSO;
     }
 
-    public BuildingScriptableObject RemoveObject(Vector3 worldPosition)
+    public PlacedObject RemoveObject(Vector3 worldPosition)
     {
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
@@ -113,7 +113,7 @@ public class GridBuildingSystem : MonoBehaviour
             }
 
             roadManager.CheckRoadConnectionOnDelete(new Vector2Int(x, z));
-            return placedObject.GetScriptableObject();
+            return placedObject;
         }
         return null;
     }
@@ -142,11 +142,11 @@ public class GridBuildingSystem : MonoBehaviour
 
 
 
-        if (Input.GetMouseButtonDown(1)) // shortcut
-        {
-            Debug.Log("right click");
-            RemoveObject(UtilitiesClass.GetMouseWorldPositionXZ());
-        }
+        //if (Input.GetMouseButtonDown(1)) // shortcut
+        //{
+        //    Debug.Log("right click");
+        //    RemoveObject(UtilitiesClass.GetMouseWorldPositionXZ());
+        //}
 
         if (Input.GetKeyDown(KeyCode.R)) // shortcut
         {

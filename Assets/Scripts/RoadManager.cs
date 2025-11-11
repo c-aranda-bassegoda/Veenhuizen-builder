@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,6 +13,7 @@ public class RoadManager : MonoBehaviour
     [SerializeField] GameObject roadPrefab;
     [SerializeField] LayerMask roadTestLayer;
     [SerializeField] GridBuildingSystem gridBuildingSystem;
+    [SerializeField] EconomyManager economyManager;
 
     public void Update()
     {
@@ -214,13 +216,17 @@ public class RoadManager : MonoBehaviour
 
     public void UpdateObjectNotConnectedWarning(PlacedObject obj)
     {
+        BuildingScriptableObject buildingSO = obj.GetScriptableObject();
         if(obj.connectedObjects.Count > 0)
         {
             obj.exclamationMark.SetActive(false);
+            Debug.Log($"Connected: {obj.name}");
+            if (buildingSO != null) economyManager.HandleNewBuilding(buildingSO, obj);
         }
         else
         {
             obj.exclamationMark.SetActive(true);
+            if(buildingSO != null) economyManager.HandleRemovedBuilding(buildingSO, obj);
         }
     }
         
