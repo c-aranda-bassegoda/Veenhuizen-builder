@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
@@ -125,5 +126,10 @@ public class UIController : MonoBehaviour
             if (button != null && button.GetComponent<Outline>() != null)
                 button.GetComponent<Outline>().enabled = false;
         }
+    }
+
+    public void ExitToMainMenu()
+    {
+        SceneManager.LoadSceneAsync("MainMenu");
     }
 }
