@@ -15,10 +15,12 @@ public class EconomyManager : MonoBehaviour
 
     public float happy, control;
     [SerializeField] private List<BuildingScriptableObject> buildings;
+    private List<PlacedObject> placedObjects;
     private Dictionary<string, int> maxCount;
 
     private void Start()
     {
+        placedObjects = new();
         buildingCount = new Dictionary<string, int>();
         happy = 0;
         control = 0;
@@ -31,17 +33,19 @@ public class EconomyManager : MonoBehaviour
         }
     }
 
-    public bool HandleNewBuilding(BuildingScriptableObject newObject)
+    public void HandleNewBuilding(BuildingScriptableObject newObject, PlacedObject building)
     {
 
         if (newObject == null)
             Debug.LogError("No new object");
+
+        if (placedObjects.Contains(building)) return;
+
         string buildingName = newObject.name;
 
         if (maxCount[buildingName] <= buildingCount[buildingName])
         {
-            Debug.Log("Can't place more buildings of type " + buildingName);
-            return false;
+            Debug.LogError("Can't place more buildings of type " + buildingName);
         }
 
         if (buildingCount.ContainsKey(buildingName))
@@ -53,18 +57,19 @@ public class EconomyManager : MonoBehaviour
         {
             buildingCount.Add(buildingName, 1);
         }
+        placedObjects.Add(building);
         happy += newObject.hapiness;
         control += newObject.control;
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString());
-
-        return true;
     }
 
-    public void HandleRemovedBuilding(BuildingScriptableObject oldObject)
+    public void HandleRemovedBuilding(BuildingScriptableObject oldObject, PlacedObject building)
     {
         if (oldObject == null)
             Debug.LogError("No new object");
         string buildingName = oldObject.name;
+
+        if (!placedObjects.Contains(building)) return;
 
         if (buildingCount.ContainsKey(buildingName))
         {
@@ -75,6 +80,7 @@ public class EconomyManager : MonoBehaviour
         {
             Debug.LogError("No building named " + buildingName);
         }
+        placedObjects.Remove(building);
         happy -= oldObject.hapiness;
         control -= oldObject.control;
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString());

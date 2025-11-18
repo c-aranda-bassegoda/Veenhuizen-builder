@@ -62,16 +62,21 @@ public class PreviewSystem : MonoBehaviour
         Color c = validity ? Color.blue : Color.red;
         c.a = 0.5f;
         previewMaterial.color = c;
+        roadPreviewMaterial.color = c;
     }
 
     private void MovePreview(Vector3 worldPosition)
     {
-        buildingPreview.transform.position = new Vector3(worldPosition.x, worldPosition.y + previewYOffset, worldPosition.z);
         if(buildingPreview.CompareTag("Road"))
         {
+            buildingPreview.transform.position = new Vector3(worldPosition.x, worldPosition.y + previewYOffset, worldPosition.z);
             gridSystem.GetGrid().GetXYZ(UtilitiesClass.GetMouseWorldPositionXZ(), out int x, out int y, out int z);
             Vector2Int newPosition = new Vector2Int(x, z);
             roadManager.UpdatePreviewRoad(buildingPreview, newPosition);
+        }
+        else
+        {
+            buildingPreview.transform.position = new Vector3(worldPosition.x, worldPosition.y + previewYOffset, worldPosition.z);
         }
     }
 }
