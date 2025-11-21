@@ -14,6 +14,9 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] private PreviewSystem previewSystem;
     [SerializeField] private RoadManager roadManager;
 
+    [SerializeField] private AudioClip placeObjectSound;
+    [SerializeField] private AudioClip errorSound;
+    [SerializeField] private AudioClip deleteSound;
     public bool AddingBuilding { get; set; }
     public bool RemovingBuilding { get; set; }
     public bool PlacingRoad { get; set; }
@@ -53,11 +56,14 @@ public class GridBuildingSystem : MonoBehaviour
             foreach (Vector2Int position in gridPositionList)
                 grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
             roadManager.UpdateRoads(gridPos, false);
+
+            SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
         }
         else
         {
             //TODO: "can't place" pop up message for player
             Debug.Log("Can't build");
+            SoundFXManager.Instance.PlaySoundFXClip(errorSound, transform, 1f);
         }
         return buildingSO;
     }
@@ -77,11 +83,14 @@ public class GridBuildingSystem : MonoBehaviour
                 grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
 
             roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).GetComponent<MeshFilter>());
+
+            SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
         }
         else
         {
             //TODO: "can't place" pop up message for player
             Debug.Log("Can't build");
+            SoundFXManager.Instance.PlaySoundFXClip(errorSound, transform, 1f);
         }
         return roadSO;
     }
@@ -113,6 +122,8 @@ public class GridBuildingSystem : MonoBehaviour
             }
 
             roadManager.CheckRoadConnectionOnDelete(new Vector2Int(x, z));
+
+            SoundFXManager.Instance.PlaySoundFXClip(deleteSound, placedObject.transform, 0.1f);
             return placedObject;
         }
         return null;

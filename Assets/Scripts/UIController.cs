@@ -12,6 +12,8 @@ public class UIController : MonoBehaviour
     public Button houseButton, farmButton, roadButton, instButton, schoolButton, deleteButton, rotateButton, housingButton, hidePanelButton;
     public GameObject panelHousing;
 
+    [SerializeField] private AudioClip clickSound;
+
     public Color outlineColor;
     List<Button> buttons;
 
@@ -36,6 +38,7 @@ public class UIController : MonoBehaviour
         */
         houseButton.onClick.AddListener(()=>
         {
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             rotateButton.interactable = true;
             ResetButtonColor();
             ModifyOutline(houseButton);
@@ -45,6 +48,7 @@ public class UIController : MonoBehaviour
         });
         farmButton.onClick.AddListener(() =>
         {
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             rotateButton.interactable = true;
             ResetButtonColor();
             ModifyOutline(farmButton);
@@ -53,6 +57,7 @@ public class UIController : MonoBehaviour
         });
         roadButton.onClick.AddListener(() =>
         {
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             ResetButtonColor();
             ModifyOutline(roadButton);
             OnPlaceRoad?.Invoke();
@@ -60,6 +65,7 @@ public class UIController : MonoBehaviour
         });
         instButton.onClick.AddListener(() =>
         {
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             rotateButton.interactable = true;
             ResetButtonColor();
             ModifyOutline(instButton);
@@ -69,6 +75,7 @@ public class UIController : MonoBehaviour
         });
         schoolButton.onClick.AddListener(() =>
         {
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             rotateButton.interactable = true;
             ResetButtonColor();
             ModifyOutline(schoolButton);
@@ -78,6 +85,7 @@ public class UIController : MonoBehaviour
         });
         deleteButton.onClick.AddListener(() =>
         {
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             rotateButton.interactable = false;
             ResetButtonColor();
             ModifyOutline(deleteButton);
@@ -86,6 +94,7 @@ public class UIController : MonoBehaviour
         });
         rotateButton.onClick.AddListener(() =>
         {
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             OnRotate?.Invoke();
             HideHousingPanel();
         });
