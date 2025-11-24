@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Farm
   m_EditorClassIdentifier: 
   name: Farm
-  prefab: {fileID: 5185062708764795021, guid: 99d37fb3bc7ddf64dad3701af31b965f, type: 3}
+  prefab: {fileID: 6600959261270428487, guid: c818ad8b62927c543b17f512eae963bd, type: 3}
   width: 2
   height: 1
   hapiness: 10

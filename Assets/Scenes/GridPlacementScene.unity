@@ -3335,6 +3335,7 @@ MonoBehaviour:
   roadButton: {fileID: 1466140200}
   instButton: {fileID: 1895383133}
   schoolButton: {fileID: 1108551718}
+  churchButton: {fileID: 2110306864}
   deleteButton: {fileID: 367815095}
   rotateButton: {fileID: 1436973778}
   housingButton: {fileID: 1385676295}
@@ -5917,6 +5918,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 69c4bf55c6421a3468524f42a69b5e94, type: 2}
   - {fileID: 11400000, guid: 778a458ee0bcecc4e88fc69c22832cf9, type: 2}
   - {fileID: 11400000, guid: 8ae7f22080169254e9b5edff03987756, type: 2}
+  - {fileID: 11400000, guid: 2b6c817f2e55d6047936f1b213a87a2b, type: 2}
   roadSO: {fileID: 11400000, guid: 6c670bdf9f938de45aa5c6ea90603faf, type: 2}
   previewSystem: {fileID: 763488385}
   roadManager: {fileID: 94027756}
@@ -6806,7 +6808,7 @@ RectTransform:
   m_GameObject: {fileID: 1538186662}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.35029283, y: 0.35029283, z: 0.35029283}
+  m_LocalScale: {x: 0.39674166, y: 0.39674166, z: 0.39674166}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2110306860}
@@ -6836,7 +6838,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Religion
+  m_text: Church
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7919,6 +7921,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 778a458ee0bcecc4e88fc69c22832cf9, type: 2}
   - {fileID: 11400000, guid: 6c670bdf9f938de45aa5c6ea90603faf, type: 2}
   - {fileID: 11400000, guid: 8ae7f22080169254e9b5edff03987756, type: 2}
+  - {fileID: 11400000, guid: 2b6c817f2e55d6047936f1b213a87a2b, type: 2}
 --- !u!1 &1814985201
 GameObject:
   m_ObjectHideFlags: 0
@@ -10579,7 +10582,7 @@ GameObject:
   - component: {fileID: 2110306862}
   - component: {fileID: 2110306861}
   m_Layer: 5
-  m_Name: Religion
+  m_Name: Church
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10617,7 +10620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3880acc483aa700418abc7b6e2f66b76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingSO: {fileID: 11400000, guid: 778a458ee0bcecc4e88fc69c22832cf9, type: 2}
+  buildingSO: {fileID: 11400000, guid: 2b6c817f2e55d6047936f1b213a87a2b, type: 2}
   economyManager: {fileID: 1754685237}
 --- !u!114 &2110306862
 MonoBehaviour:
@@ -10626,13 +10629,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2110306859}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 1
-  header: Institution
+  header: Church
   body: 'Happiness: +5
 
     Control:+10
@@ -10653,7 +10656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
   m_EffectDistance: {x: 2.13, y: 1.56}
   m_UseGraphicAlpha: 1
 --- !u!114 &2110306864
@@ -10663,7 +10666,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2110306859}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 

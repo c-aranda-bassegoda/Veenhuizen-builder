@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Church
   m_EditorClassIdentifier: 
   name: Church
-  prefab: {fileID: 7071875515064730989, guid: 25e94c4e9f48ecd45a584f524c9bf078, type: 3}
+  prefab: {fileID: 6600959261270428487, guid: 80d3ebaa941b85545868173bb448ad3c, type: 3}
   width: 2
   height: 1
   hapiness: 10

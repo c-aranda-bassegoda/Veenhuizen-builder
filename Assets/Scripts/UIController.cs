@@ -9,7 +9,7 @@ public class UIController : MonoBehaviour
 {
     public Action<int> OnPlaceBuilding;
     public Action OnDelete, OnRotate, OnPlaceRoad;
-    public Button houseButton, farmButton, roadButton, instButton, schoolButton, deleteButton, rotateButton, housingButton, hidePanelButton;
+    public Button houseButton, farmButton, roadButton, instButton, schoolButton, churchButton, deleteButton, rotateButton, housingButton, hidePanelButton;
     public GameObject panelHousing;
 
     [SerializeField] private AudioClip clickSound;
@@ -19,7 +19,7 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        buttons = new List<Button> {housingButton, houseButton, farmButton, roadButton, instButton, schoolButton,  deleteButton, rotateButton, hidePanelButton};
+        buttons = new List<Button> {housingButton, houseButton, farmButton, roadButton, instButton, schoolButton, churchButton, deleteButton, rotateButton, hidePanelButton};
         rotateButton.interactable = false;
         ResetButtonColor();
         /*
@@ -81,6 +81,16 @@ public class UIController : MonoBehaviour
             ModifyOutline(schoolButton);
             //ModifyOutline(housingButton);
             OnPlaceBuilding?.Invoke(3);
+            HideHousingPanel();
+        });
+        churchButton.onClick.AddListener(() =>
+        {
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
+            rotateButton.interactable = true;
+            ResetButtonColor();
+            ModifyOutline(churchButton);
+            //ModifyOutline(housingButton);
+            OnPlaceBuilding?.Invoke(4);
             HideHousingPanel();
         });
         deleteButton.onClick.AddListener(() =>
