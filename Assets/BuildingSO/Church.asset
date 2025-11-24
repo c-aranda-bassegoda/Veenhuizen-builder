@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
-  m_Name: House
+  m_Name: Church
   m_EditorClassIdentifier: 
-  name: House
-  prefab: {fileID: 5061598780134758495, guid: e6ff2e0ea49389d4d89f9719abd7b1b1, type: 3}
-  width: 1
+  name: Church
+  prefab: {fileID: 7071875515064730989, guid: 25e94c4e9f48ecd45a584f524c9bf078, type: 3}
+  width: 2
   height: 1
-  hapiness: 15
-  control: -5
+  hapiness: 10
+  control: 10
   maxPlacements: 10
