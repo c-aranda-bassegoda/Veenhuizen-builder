@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -22,6 +23,29 @@ public class PlacedObject : MonoBehaviour
 
     public GameObject exclamationMark;
     public List<PlacedObject> connectedObjects;
+
+    [Header("People")]
+    [SerializeField] NPC person;
+    [SerializeField] int personAmount;
+    [SerializeField] float timeBetweenSpawns;
+    List<NPC> associatedPeople;
+
+    private void Start()
+    {
+        StartCoroutine(SpawnPeople());
+    }
+
+    IEnumerator SpawnPeople()
+    {
+        associatedPeople = new();
+
+        for(int i = 0; i < associatedPeople.Count; i++)
+        {
+            NPC newNpc = Instantiate(person, transform.position, transform.rotation);
+            associatedPeople.Add(newNpc);
+            yield return new WaitForSeconds(timeBetweenSpawns);
+        }
+    }
 
     public BuildingScriptableObject GetScriptableObject() {  return placedSctiptableObject; }
     public Vector2Int GetOrigin() { return origin; }
