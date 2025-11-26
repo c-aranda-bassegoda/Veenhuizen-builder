@@ -56,6 +56,7 @@ public class GridBuildingSystem : MonoBehaviour
             foreach (Vector2Int position in gridPositionList)
                 grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
             roadManager.UpdateRoads(gridPos, false);
+            placedObj.OnPlace();
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
         }
