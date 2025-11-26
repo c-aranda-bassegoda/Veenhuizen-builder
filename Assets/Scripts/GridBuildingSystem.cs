@@ -50,7 +50,7 @@ public class GridBuildingSystem : MonoBehaviour
         Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
 
-        if (CanPlace(gridPositionList) || (buildingSO.module && CanSubstitute(gridPositionList)))
+        if (CanPlace(gridPositionList))
         {
             PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false);
             foreach (Vector2Int position in gridPositionList)
@@ -58,6 +58,11 @@ public class GridBuildingSystem : MonoBehaviour
             roadManager.UpdateRoads(gridPos, false);
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
+        }
+        else if ((buildingSO.module && CanSubstitute(gridPositionList)))
+        {
+            RemoveModule(worldPosition);
+            PlaceModule(worldPosition, buildingIdx);
         }
         else
         {
@@ -68,6 +73,15 @@ public class GridBuildingSystem : MonoBehaviour
         return buildingSO;
     }
 
+    private void PlaceModule(Vector3 worldPosition, int buildingIdx)
+    {
+        PlaceObject(worldPosition, buildingIdx); //Placeholder
+    }
+
+    private void RemoveModule(Vector3 worldPosition)
+    {
+        RemoveObject(worldPosition); //Placeholder
+    }
 
     public BuildingScriptableObject PlaceRoad(Vector3 worldPosition)
     {
