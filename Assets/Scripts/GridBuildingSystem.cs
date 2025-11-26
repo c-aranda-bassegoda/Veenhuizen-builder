@@ -50,9 +50,9 @@ public class GridBuildingSystem : MonoBehaviour
         Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
 
-        if (CanPlace(gridPositionList))
+        if (CanPlace(gridPositionList) || (buildingSO.module && CanSubstitute(gridPositionList)))
         {
-            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO);
+            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false);
             foreach (Vector2Int position in gridPositionList)
                 grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
             roadManager.UpdateRoads(gridPos, false);
@@ -68,6 +68,7 @@ public class GridBuildingSystem : MonoBehaviour
         return buildingSO;
     }
 
+
     public BuildingScriptableObject PlaceRoad(Vector3 worldPosition)
     {
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
@@ -78,7 +79,7 @@ public class GridBuildingSystem : MonoBehaviour
         if (CanPlace(gridPositionList))
         {
             Debug.Log($"Placing road at {new Vector2Int(x, z)}");
-            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), roadSO.Direction, roadSO);
+            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), roadSO.Direction, roadSO, false);
             foreach (Vector2Int position in gridPositionList)
                 grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
 
@@ -185,6 +186,28 @@ public class GridBuildingSystem : MonoBehaviour
             }
         }
         return canPlace;
+    }
+
+    private bool CanSubstitute(List<Vector2Int> gridPositionList)
+    {
+        bool canSub = true;
+        foreach (Vector2Int position in gridPositionList)
+        {
+            GridObject gridObject = grid.GetGridObj(position.x, position.y);
+            if (gridObject == null)
+            {
+                canSub = false; break;
+            }
+            else
+            {
+                if (!gridObject.CanPlace())
+                {
+                    if (!gridObject.GetPlacedObject().isModule)
+                    canSub = false; break;
+                }
+            }
+        }
+        return canSub;
     }
 
     internal void StartPlacementPreview(int buildingIdx)
