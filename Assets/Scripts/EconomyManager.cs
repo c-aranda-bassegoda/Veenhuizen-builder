@@ -13,14 +13,17 @@ public class EconomyManager : MonoBehaviour
         else { Debug.LogError("No building " + name); return -1; } 
     }
 
-    public float happy, control;
+    public float happy, control, money;
     [SerializeField] private List<BuildingScriptableObject> buildings;
+    [SerializeField] private List<BuildingScriptableObject> placedBSOs;
     private List<PlacedObject> placedObjects;
     private Dictionary<string, int> maxCount;
 
     private void Start()
     {
         placedObjects = new();
+        placedBSOs = new();
+
         buildingCount = new Dictionary<string, int>();
         happy = 0;
         control = 0;
@@ -33,7 +36,19 @@ public class EconomyManager : MonoBehaviour
         }
     }
 
-    public void HandleNewBuilding(BuildingScriptableObject newObject, PlacedObject building)
+    public bool CanAfford(BuildingScriptableObject buildingSO)
+    {
+        if (buildingSO.buildCost <= money) return true;
+        else return false;
+    }
+
+    public void HandleNewPlacedBuilding(BuildingScriptableObject newObject, PlacedObject building)
+    {
+        placedBSOs.Add(newObject);
+        money -= newObject.buildCost;
+    }
+
+    public void HandleNewConnectedBuilding(BuildingScriptableObject newObject, PlacedObject building)
     {
 
         if (newObject == null)

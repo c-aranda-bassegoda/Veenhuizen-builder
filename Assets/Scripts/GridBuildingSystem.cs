@@ -13,6 +13,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     [SerializeField] private PreviewSystem previewSystem;
     [SerializeField] private RoadManager roadManager;
+    [SerializeField] private EconomyManager economyManager;
 
     [SerializeField] private AudioClip placeObjectSound;
     [SerializeField] private AudioClip errorSound;
@@ -49,6 +50,13 @@ public class GridBuildingSystem : MonoBehaviour
     {
         buildingSO = buildingSOList[buildingIdx];
 
+        if(!economyManager.CanAfford(buildingSO))
+        {
+            Debug.Log("Can't afford building");
+            //show some UI message
+            return buildingSO;
+        }
+
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         Vector2Int gridPos = new Vector2Int(x, z);
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(gridPos, buildingSO.Direction);
@@ -61,6 +69,7 @@ public class GridBuildingSystem : MonoBehaviour
             foreach (Vector2Int position in gridPositionList)
                 grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
             roadManager.UpdateRoads(gridPos, false);
+            economyManager.HandleNewPlacedBuilding(buildingSO, placedObj);
             placedObj.OnPlace();
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);

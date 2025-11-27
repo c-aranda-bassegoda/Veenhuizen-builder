@@ -221,7 +221,7 @@ public class RoadManager : MonoBehaviour
         {
             obj.exclamationMark.SetActive(false);
             Debug.Log($"Connected: {obj.name}");
-            if (buildingSO != null) economyManager.HandleNewBuilding(buildingSO, obj);
+            if (buildingSO != null) economyManager.HandleNewConnectedBuilding(buildingSO, obj);
         }
         else
         {
