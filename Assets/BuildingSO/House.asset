@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: House
   m_EditorClassIdentifier: 
   name: House
-  prefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
+  prefab: {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  modulePrefab: {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  modules: []
   width: 1
   height: 1
   hapiness: 15
   control: -5
   maxPlacements: 10
+  module: 1
+  modular: 0

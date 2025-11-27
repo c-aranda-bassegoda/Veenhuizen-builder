@@ -28,11 +28,15 @@ public class BuildingScriptableObject : ScriptableObject
     public new string name;
     // id?
     public GameObject prefab;
+    public GameObject modulePrefab;
+    public List<GameObject> modules;
     public int width;
     public int height;
     public float hapiness;
     public float control;
     public int maxPlacements;
+    public bool module;
+    public bool modular;
     public float GetControl() { return control; }
     public float GetHapiness() { return hapiness; }
     public Dir Direction { get; set; }
