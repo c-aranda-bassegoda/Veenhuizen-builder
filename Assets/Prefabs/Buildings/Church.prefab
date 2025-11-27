@@ -161,6 +161,14 @@ MonoBehaviour:
   person: {fileID: 2982783663046607287, guid: 03509c7b27dbb11499f9a4c9f0bb2adf, type: 3}
   personAmount: 3
   timeBetweenSpawns: 1
+  associatedPeople: []
+  buildingOrigin: {fileID: 0}
+  moveToCentreMultiplier: 0.01
+  moveToPlaceMultiplier: 0.1
+  matchVelocityMultiplier: 0.125
+  minimumBoidDistance: 3
+  minMoveBounds: {x: 0, y: 0, z: 0}
+  maxMoveBounds: {x: 0, y: 0, z: 0}
 --- !u!1 &7833422715444941167
 GameObject:
   m_ObjectHideFlags: 0

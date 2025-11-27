@@ -28,15 +28,14 @@ public class PlacedObject : MonoBehaviour
     [SerializeField] NPC person;
     [SerializeField] int personAmount;
     [SerializeField] float timeBetweenSpawns;
-    List<NPC> associatedPeople;
-    Transform buildingOrigin;
+    [SerializeField] List<NPC> associatedPeople;
+    [SerializeField] Transform buildingOrigin;
     bool spawnedPeople;
 
     [SerializeField] private float moveToCentreMultiplier = 0.01f;
     [SerializeField] private float moveToPlaceMultiplier = 0.01f;
     [SerializeField] private float matchVelocityMultiplier = 0.125f;
-    [SerializeField] private float distanceMultiplier = 5f;
-    [SerializeField] private float minimumBoidDistance = 10f;
+    [SerializeField] private float minimumBoidDistance = 3f;
 
     [SerializeField] private Vector3 minMoveBounds;
     [SerializeField] private Vector3 maxMoveBounds;
@@ -46,8 +45,9 @@ public class PlacedObject : MonoBehaviour
         Debug.Log("building start");
         buildingOrigin = transform.GetChild(0);
 
-        minMoveBounds = buildingOrigin.position + (buildingOrigin.forward * 5) + (-buildingOrigin.right * 5);
-        maxMoveBounds = buildingOrigin.position + (buildingOrigin.forward * 10) + (-buildingOrigin.right * 5);
+        minMoveBounds = buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(+10, 0, -10));
+        maxMoveBounds = buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(-10, 0, +10));
+
         StartCoroutine(SpawnPeople());
     }
 
@@ -57,7 +57,7 @@ public class PlacedObject : MonoBehaviour
 
         for(int i = 0; i < personAmount; i++)
         {
-            NPC newNpc = Instantiate(person, buildingOrigin.position, transform.rotation);
+            NPC newNpc = Instantiate(person, buildingOrigin.position + new Vector3(0, 3, 0), transform.rotation);
             associatedPeople.Add(newNpc);
             newNpc.SetOrigin(this);
             yield return new WaitForSeconds(timeBetweenSpawns);
@@ -94,6 +94,13 @@ public class PlacedObject : MonoBehaviour
     }
     public void Destructor()
     {
+        int associatedPeopleAmt = associatedPeople.Count;
+        foreach(NPC _npc in associatedPeople)
+        {
+            Destroy(_npc.gameObject);
+        }
+        associatedPeople.Clear();
+
         Destroy(gameObject);
     }
     //Make the boids move as a group
@@ -114,7 +121,8 @@ public class PlacedObject : MonoBehaviour
         if (float.IsNaN(((percievedCentreOfMass - npc.transform.position) * moveToCentreMultiplier).y)) return Vector3.zero;
         if (float.IsNaN(((percievedCentreOfMass - npc.transform.position) * moveToCentreMultiplier).z)) return Vector3.zero;
 
-        Debug.Log($"Rule 1: {(percievedCentreOfMass - npc.transform.position) * moveToCentreMultiplier}");
+        //Debug.Log($"Rule 1: {(percievedCentreOfMass - npc.transform.position) * moveToCentreMultiplier}");
+        percievedCentreOfMass.y = 0;
         return (percievedCentreOfMass - npc.transform.position) * moveToCentreMultiplier;
     }
 
@@ -124,16 +132,17 @@ public class PlacedObject : MonoBehaviour
         Vector3 displacement = new Vector3(0, 0, 0);
         foreach (NPC _npc in associatedPeople)
         {
-            if (npc.gameObject != _npc.gameObject)
+            if (npc != _npc)
             {
-                if (Vector2.Distance(_npc.transform.position, npc.transform.position) < minimumBoidDistance)
+                if (Vector3.Distance(_npc.transform.position, npc.transform.position) < minimumBoidDistance)
                 {
-                    displacement = (displacement - (_npc.transform.position - npc.transform.position)) * distanceMultiplier;
+                    displacement = displacement - (_npc.transform.position - npc.transform.position);
+                    //if(associatedPeople.IndexOf(npc) == 0) Debug.Log($"Rule 2: {displacement} ({Vector3.Distance(_npc.transform.position, npc.transform.position)})");
                 }
             }
         }
 
-        Debug.Log($"Rule 2: {displacement}");
+        displacement.y = 0;
         return displacement;
     }
 
@@ -158,7 +167,8 @@ public class PlacedObject : MonoBehaviour
         if (float.IsNaN(percievedVelocity.y * matchVelocityMultiplier)) return Vector3.zero;
         if (float.IsNaN(percievedVelocity.z * matchVelocityMultiplier)) return Vector3.zero;
 
-        Debug.Log($"Rule 3: {percievedVelocity * matchVelocityMultiplier}");
+        percievedVelocity.y = 0;
+        //Debug.Log($"Rule 3: {percievedVelocity * matchVelocityMultiplier}");
         return percievedVelocity * matchVelocityMultiplier;
     }
 
@@ -174,7 +184,8 @@ public class PlacedObject : MonoBehaviour
         if (npc.transform.position.z < minMoveBounds.z) boundsCorrection.z = 10;
         else if (npc.transform.position.z > maxMoveBounds.z) boundsCorrection.z = -10;
 
-        Debug.Log($"Rule 4: {boundsCorrection}");
+        //Debug.Log($"Rule 4: {boundsCorrection}");
+        boundsCorrection.y = 0;
         return boundsCorrection;
     }
 }
