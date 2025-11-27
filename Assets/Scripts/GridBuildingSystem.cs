@@ -40,6 +40,11 @@ public class GridBuildingSystem : MonoBehaviour
         Vector2Int rotationOffset = buildingSO.GetRotationOffset(buildingSO.Direction);
         return grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
     }
+    private Vector3 GetRotatedObjectPositionAt(int x, int z, BuildingScriptableObject.Dir dir)
+    {
+        Vector2Int rotationOffset = buildingSO.GetRotationOffset(dir);
+        return grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
+    }
     public BuildingScriptableObject PlaceObject(Vector3 worldPosition, int buildingIdx)
     {
         buildingSO = buildingSOList[buildingIdx];
@@ -59,10 +64,9 @@ public class GridBuildingSystem : MonoBehaviour
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
         }
-        else if ((buildingSO.module && CanSubstitute(gridPositionList)))
+        else if (buildingSO.module && CanSubstitute(gridPositionList))
         {
-            RemoveModule(worldPosition);
-            PlaceModule(worldPosition, buildingIdx);
+            ReplaceModule(worldPosition, buildingIdx);
         }
         else
         {
@@ -78,6 +82,22 @@ public class GridBuildingSystem : MonoBehaviour
         PlaceObject(worldPosition, buildingIdx); //Placeholder
     }
 
+    private void ReplaceModule(Vector3 worldPosition, int buildingIdx)
+    {
+        GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
+        PlacedObject placedObject = gridObject.GetPlacedObject();
+
+        grid.GetXYZ(worldPosition, out int x, out int y, out int z);
+        Vector2Int gridPos = new Vector2Int(x, z);
+        List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(gridPos, placedObject.GetDir());
+
+        PlacedObject placedObj = placedObject.Repalace(buildingSO, false);
+        foreach (Vector2Int position in gridPositionList)
+            grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+        roadManager.UpdateRoads(gridPos, false);
+
+        SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
+    }
     private void RemoveModule(Vector3 worldPosition)
     {
         RemoveObject(worldPosition); //Placeholder
