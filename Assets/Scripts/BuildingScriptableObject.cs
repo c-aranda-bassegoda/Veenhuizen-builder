@@ -36,6 +36,7 @@ public class BuildingScriptableObject : ScriptableObject
     public float control;
     public float buildCost;
     public float yearlyCost;
+    public float yearlyEarnings;
     public int maxPlacements;
     public bool module;
     public bool modular;

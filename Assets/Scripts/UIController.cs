@@ -7,92 +7,22 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    public Action<int> OnPlaceBuilding;
+    public Action<BuildingScriptableObject> OnPlaceBuilding;
     public Action OnDelete, OnRotate, OnPlaceRoad;
-    public Button houseButton, farmButton, roadButton, instButton, schoolButton, churchButton, deleteButton, rotateButton, housingButton, hidePanelButton;
+    public Button  deleteButton, rotateButton;
     public GameObject panelHousing;
 
-    [SerializeField] private AudioClip clickSound;
+    [SerializeField] public AudioClip clickSound;
 
     public Color outlineColor;
     List<Button> buttons;
 
     private void Start()
     {
-        buttons = new List<Button> {housingButton, houseButton, farmButton, roadButton, instButton, schoolButton, churchButton, deleteButton, rotateButton, hidePanelButton};
+        buttons = new List<Button> {deleteButton, rotateButton};
         rotateButton.interactable = false;
         ResetButtonColor();
-        /*
-        housingButton.onClick.AddListener(() =>
-        {
-            ShowHousingPanel();
-            ModifyOutline(housingButton);
-        });
-        hidePanelButton.onClick.AddListener(() =>
-        {
-            HideHousingPanel();
-            if (houseButton.GetComponent<Outline>().enabled != true || instButton.GetComponent<Outline>().enabled != true)
-                housingButton.GetComponent<Outline>().enabled = false;
-
-        });
-        */
-        houseButton.onClick.AddListener(()=>
-        {
-            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
-            rotateButton.interactable = true;
-            ResetButtonColor();
-            ModifyOutline(houseButton);
-            ModifyOutline(housingButton);
-            OnPlaceBuilding?.Invoke(0);
-            HideHousingPanel();
-        });
-        farmButton.onClick.AddListener(() =>
-        {
-            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
-            rotateButton.interactable = true;
-            ResetButtonColor();
-            ModifyOutline(farmButton);
-            OnPlaceBuilding?.Invoke(1);
-            HideHousingPanel();
-        });
-        roadButton.onClick.AddListener(() =>
-        {
-            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
-            ResetButtonColor();
-            ModifyOutline(roadButton);
-            OnPlaceRoad?.Invoke();
-            HideHousingPanel();
-        });
-        instButton.onClick.AddListener(() =>
-        {
-            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
-            rotateButton.interactable = true;
-            ResetButtonColor();
-            ModifyOutline(instButton);
-            //ModifyOutline(housingButton);
-            OnPlaceBuilding?.Invoke(2);
-            HideHousingPanel();
-        });
-        schoolButton.onClick.AddListener(() =>
-        {
-            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
-            rotateButton.interactable = true;
-            ResetButtonColor();
-            ModifyOutline(schoolButton);
-            //ModifyOutline(housingButton);
-            OnPlaceBuilding?.Invoke(3);
-            HideHousingPanel();
-        });
-        churchButton.onClick.AddListener(() =>
-        {
-            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
-            rotateButton.interactable = true;
-            ResetButtonColor();
-            ModifyOutline(churchButton);
-            //ModifyOutline(housingButton);
-            OnPlaceBuilding?.Invoke(4);
-            HideHousingPanel();
-        });
+        
         deleteButton.onClick.AddListener(() =>
         {
             SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
@@ -100,30 +30,18 @@ public class UIController : MonoBehaviour
             ResetButtonColor();
             ModifyOutline(deleteButton);
             OnDelete?.Invoke();
-            HideHousingPanel();
+            //HideHousingPanel();
         });
         rotateButton.onClick.AddListener(() =>
         {
             SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             OnRotate?.Invoke();
-            HideHousingPanel();
+            //HideHousingPanel();
         });
     }
 
-    public void HideHousingPanel()
-    {
-        housingButton.gameObject.SetActive(true);
-        TooltipSystem.Hide();
-        panelHousing.SetActive(false);
-    }
 
-    private void ShowHousingPanel()
-    {
-        housingButton.gameObject.SetActive(false);
-        panelHousing.SetActive(true);
-    }
-
-    private void ModifyOutline(Button button)
+    public void ModifyOutline(Button button)
     {
         foreach(Button btn in buttons)
         {
@@ -138,7 +56,7 @@ public class UIController : MonoBehaviour
         outline.enabled = true;
     }
 
-    private void ResetButtonColor()
+    public void ResetButtonColor()
     {
         foreach (Button button in buttons)
         {
@@ -150,5 +68,28 @@ public class UIController : MonoBehaviour
     public void ExitToMainMenu()
     {
         SceneManager.LoadSceneAsync("MainMenu");
+    }
+
+    public void ToggleSidebarFold(Transform button)
+    {
+        Transform layout = button.GetChild(0);
+        //menu is unfolded
+        if (layout.gameObject.activeSelf)
+        {
+            //Disable all building options
+            layout.gameObject.SetActive(false);
+
+            //Enable the expand icon
+            button.GetChild(1).gameObject.SetActive(true);
+        }
+        //menu is folded
+        else
+        {
+            //Enable the building options
+            layout.gameObject.SetActive(true);
+
+            //Disable the expand icon
+            button.GetChild(1).gameObject.SetActive(false);
+        }
     }
 }

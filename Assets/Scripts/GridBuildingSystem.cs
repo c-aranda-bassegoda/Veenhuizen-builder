@@ -6,8 +6,8 @@ using UnityEngine.UIElements;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    [SerializeField] public List<BuildingScriptableObject> buildingSOList;
-    private BuildingScriptableObject buildingSO;
+    //[SerializeField] public List<BuildingScriptableObject> buildingSOList;
+    [SerializeField] private BuildingScriptableObject buildingSO;
     private Grid<GridObject> grid;
     [SerializeField] public BuildingScriptableObject roadSO;
 
@@ -34,7 +34,7 @@ public class GridBuildingSystem : MonoBehaviour
         PlacingRoad = false;
     }
 
-    public BuildingScriptableObject GetBuildingByIdx(int idx) {  return buildingSOList[idx]; }
+    //public BuildingScriptableObject GetBuildingByIdx(int idx) {  return buildingSOList[idx]; }
 
     private Vector3 GetRotatedObjectPositionAt(int x, int z)
     {
@@ -46,9 +46,10 @@ public class GridBuildingSystem : MonoBehaviour
         Vector2Int rotationOffset = buildingSO.GetRotationOffset(dir);
         return grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
     }
-    public BuildingScriptableObject PlaceObject(Vector3 worldPosition, int buildingIdx)
+    public BuildingScriptableObject PlaceObject(Vector3 worldPosition)
     {
-        buildingSO = buildingSOList[buildingIdx];
+        //buildingSO = buildingSOList[buildingIdx];
+        if(buildingSO == null) return null;
 
         if(!economyManager.CanAfford(buildingSO))
         {
@@ -76,7 +77,7 @@ public class GridBuildingSystem : MonoBehaviour
         }
         else if (buildingSO.module && CanSubstitute(gridPositionList))
         {
-            ReplaceModule(worldPosition, buildingIdx);
+            ReplaceModule(worldPosition);
         }
         else
         {
@@ -87,12 +88,12 @@ public class GridBuildingSystem : MonoBehaviour
         return buildingSO;
     }
 
-    private void PlaceModule(Vector3 worldPosition, int buildingIdx)
+    private void PlaceModule(Vector3 worldPosition)
     {
-        PlaceObject(worldPosition, buildingIdx); //Placeholder
+        PlaceObject(worldPosition); //Placeholder
     }
 
-    private void ReplaceModule(Vector3 worldPosition, int buildingIdx)
+    private void ReplaceModule(Vector3 worldPosition)
     {
         GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
         PlacedObject placedObject = gridObject.GetPlacedObject();
@@ -254,14 +255,16 @@ public class GridBuildingSystem : MonoBehaviour
         return canSub;
     }
 
-    internal void StartPlacementPreview(int buildingIdx)
+    internal void StartPlacementPreview(BuildingScriptableObject _buildingSO)
     {
-        buildingSO = buildingSOList[buildingIdx];
+        buildingSO = _buildingSO;
 
         previewSystem.StartPlacementPreview(buildingSO);
     }
     internal void StopPlacementPreview()
     {
+        //buildingSO = null;
+
         previewSystem.StopPlacementPreview();
     }
 

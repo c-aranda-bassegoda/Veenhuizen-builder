@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +13,7 @@ public class EconomyManager : MonoBehaviour
     }
 
     public float happy, control, money;
-    [SerializeField] private List<BuildingScriptableObject> buildings;
+    //[SerializeField] private List<BuildingScriptableObject> buildings;
     [SerializeField] private List<BuildingScriptableObject> placedBSOs;
     private List<PlacedObject> placedObjects;
     private Dictionary<string, int> maxCount;
@@ -28,12 +27,14 @@ public class EconomyManager : MonoBehaviour
         happy = 0;
         control = 0;
 
-        maxCount = new Dictionary<string, int>();
-        foreach (BuildingScriptableObject building in buildings)
-        {
-            maxCount.Add(building.name, building.maxPlacements);
-            buildingCount.Add(building.name, 0);
-        }
+        //maxCount = new Dictionary<string, int>();
+        //foreach (BuildingScriptableObject building in buildings)
+        //{
+        //    maxCount.Add(building.name, building.maxPlacements);
+        //    buildingCount.Add(building.name, 0);
+        //}
+
+        UIManager.instance.UpdateMoney(money);
     }
 
     public bool CanAfford(BuildingScriptableObject buildingSO)
@@ -46,6 +47,7 @@ public class EconomyManager : MonoBehaviour
     {
         placedBSOs.Add(newObject);
         money -= newObject.buildCost;
+        UIManager.instance.UpdateMoney(money);
     }
 
     public void HandleNewConnectedBuilding(BuildingScriptableObject newObject, PlacedObject building)
