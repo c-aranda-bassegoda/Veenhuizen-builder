@@ -70,13 +70,14 @@ public class GameManager : MonoBehaviour
     {
         BuildingScriptableObject objectSO = null;
         Debug.Log("Handling mouse click");
-        if(gridBuildingSystem.PlacingRoad)
-        {
-            objectSO = gridBuildingSystem.roadSO;
-            //if (economyManager.HandleNewBuilding(objectSO))
-            gridBuildingSystem.PlaceRoad(position);
-            uiManager.UpdateStats();
-        }
+        //if(gridBuildingSystem.PlacingRoad)
+        //{
+        //    objectSO = gridBuildingSystem.roadSO;
+        //    //if (economyManager.HandleNewBuilding(objectSO))
+        //    Debug.Log("placing road");
+        //    gridBuildingSystem.PlaceRoad(position);
+        //    uiManager.UpdateStats();
+        //}
 
         if (gridBuildingSystem.RemovingBuilding)
         {
@@ -87,6 +88,10 @@ public class GameManager : MonoBehaviour
         }
         if (gridBuildingSystem.AddingBuilding)
         {
+            //if (objectSO.name == "Road")
+            //{
+            //    gridBuildingSystem.PlaceRoad(position);
+            //}
             //objectSO = gridBuildingSystem.GetBuildingByIdx(buildingIdx);
             //if (economyManager.HandleNewBuilding(objectSO))
             gridBuildingSystem.PlaceObject(position);

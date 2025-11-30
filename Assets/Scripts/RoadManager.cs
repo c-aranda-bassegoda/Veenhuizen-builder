@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
 
 public class RoadManager : MonoBehaviour
 {
@@ -14,6 +14,7 @@ public class RoadManager : MonoBehaviour
     [SerializeField] LayerMask roadTestLayer;
     [SerializeField] GridBuildingSystem gridBuildingSystem;
     [SerializeField] EconomyManager economyManager;
+    [SerializeField] NavMeshSurface navMeshSurface;
 
     public void Update()
     {
@@ -67,6 +68,8 @@ public class RoadManager : MonoBehaviour
             string roadConfig = CheckAdjacentRoads(isRoadThere);
             UpdateRoad(roadToUpdate, roadConfig);
         }
+
+        navMeshSurface.BuildNavMesh();
     }
 
     List<bool> FindAdjacentObjects(List<Vector2Int> adjacentRoadPositions, Vector2Int pos)

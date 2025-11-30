@@ -368,6 +368,7 @@ MonoBehaviour:
     m_Bits: 256
   gridBuildingSystem: {fileID: 1434945243}
   economyManager: {fileID: 1754685237}
+  navMeshSurface: {fileID: 968303290}
 --- !u!4 &94027757
 Transform:
   m_ObjectHideFlags: 0
@@ -6073,6 +6074,70 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965514531}
   m_CullTransparentMesh: 1
+--- !u!1 &968303289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 968303291}
+  - component: {fileID: 968303290}
+  m_Layer: 0
+  m_Name: NavMeshSurface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &968303290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968303289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 0}
+  m_BuildHeightMesh: 0
+--- !u!4 &968303291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968303289}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 332.90445, y: 620.6861, z: -17.509087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &971500537
 GameObject:
   m_ObjectHideFlags: 0
@@ -10194,6 +10259,7 @@ MonoBehaviour:
   placeObjectSound: {fileID: 8300000, guid: 5938e186ed632ad4ab05ed8685db3836, type: 3}
   errorSound: {fileID: 8300000, guid: 113b6123bdc68514a8d927c0efe977ad, type: 3}
   deleteSound: {fileID: 8300000, guid: 70b158a0d7488244fb6472fa68f069d2, type: 3}
+  placedObjects: []
 --- !u!1 &1436973775
 GameObject:
   m_ObjectHideFlags: 0
@@ -16393,3 +16459,4 @@ SceneRoots:
   - {fileID: 2034656550}
   - {fileID: 1581763478}
   - {fileID: 2087319261}
+  - {fileID: 968303291}

@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC : MonoBehaviour
+public class CrowdNPC : MonoBehaviour
 {
     PlacedObject associatedBuilding;
     private Vector3 velocity;

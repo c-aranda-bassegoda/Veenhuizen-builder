@@ -27,12 +27,7 @@ public class EconomyManager : MonoBehaviour
         happy = 0;
         control = 0;
 
-        //maxCount = new Dictionary<string, int>();
-        //foreach (BuildingScriptableObject building in buildings)
-        //{
-        //    maxCount.Add(building.name, building.maxPlacements);
-        //    buildingCount.Add(building.name, 0);
-        //}
+        maxCount = new Dictionary<string, int>();
 
         UIManager.instance.UpdateMoney(money);
     }
@@ -59,6 +54,12 @@ public class EconomyManager : MonoBehaviour
         if (placedObjects.Contains(building)) return;
 
         string buildingName = newObject.name;
+
+        if(!maxCount.ContainsKey(buildingName))
+        {
+            maxCount.Add(newObject.name, newObject.maxPlacements);
+            buildingCount.Add(newObject.name, 0);
+        }
 
         if (maxCount[buildingName] <= buildingCount[buildingName])
         {

@@ -112,10 +112,10 @@ public class PlacedObject : MonoBehaviour
         return placedObject;
     }
     [Header("People")]
-    [SerializeField] NPC person;
+    [SerializeField] NavmeshNpc person;
     [SerializeField] int personAmount;
     [SerializeField] float timeBetweenSpawns;
-    [SerializeField] List<NPC> associatedPeople;
+    [SerializeField] List<NavmeshNpc> associatedPeople;
     [SerializeField] Transform buildingOrigin;
     bool spawnedPeople;
 
@@ -144,7 +144,7 @@ public class PlacedObject : MonoBehaviour
 
         for(int i = 0; i < personAmount; i++)
         {
-            NPC newNpc = Instantiate(person, buildingOrigin.position + new Vector3(0, 3, 0), transform.rotation);
+            NavmeshNpc newNpc = Instantiate(person, buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(0, 5, -0)), transform.rotation);
             associatedPeople.Add(newNpc);
             newNpc.SetOrigin(this);
             yield return new WaitForSeconds(timeBetweenSpawns);
@@ -153,25 +153,25 @@ public class PlacedObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MoveNPCs();
+        //MoveNPCs();
     }
 
-    void MoveNPCs()
-    {
-        if (associatedPeople == null) return;
+    //void MoveNPCs()
+    //{
+    //    if (associatedPeople == null) return;
 
-        Vector3 v1, v2, v3, v4;
-        foreach (NPC _npc in associatedPeople)
-        {
-            v1 = Rule1(_npc);
-            v2 = Rule2(_npc);
-            v3 = Rule3(_npc);
-            v4 = Rule4(_npc);
+    //    Vector3 v1, v2, v3, v4;
+    //    foreach (NPC _npc in associatedPeople)
+    //    {
+    //        v1 = Rule1(_npc);
+    //        v2 = Rule2(_npc);
+    //        v3 = Rule3(_npc);
+    //        v4 = Rule4(_npc);
 
-            _npc.SetVelocity(v1, v2, v3, v4);
-            _npc.MoveNpc();
-        }
-    }
+    //        _npc.SetVelocity(v1, v2, v3, v4);
+    //        _npc.MoveNpc();
+    //    }
+    //}
 
     public BuildingScriptableObject GetScriptableObject() {  return placedSctiptableObject; }
     public Vector2Int GetOrigin() { return origin; }
@@ -182,7 +182,7 @@ public class PlacedObject : MonoBehaviour
     public void Destructor()
     {
         int associatedPeopleAmt = associatedPeople.Count;
-        foreach(NPC _npc in associatedPeople)
+        foreach(NavmeshNpc _npc in associatedPeople)
         {
             Destroy(_npc.gameObject);
         }
@@ -190,6 +190,7 @@ public class PlacedObject : MonoBehaviour
 
         Destroy(gameObject);
     }
+    /*
     //Make the boids move as a group
     Vector3 Rule1(NPC npc)
     {
@@ -275,6 +276,7 @@ public class PlacedObject : MonoBehaviour
         boundsCorrection.y = 0;
         return boundsCorrection;
     }
+    */
 
     internal BuildingScriptableObject.Dir GetDir()
     {
