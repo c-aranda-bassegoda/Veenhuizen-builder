@@ -11,7 +11,7 @@ public class NavmeshNpc : MonoBehaviour
 {
     NavMeshAgent agent;
     PlacedObject originBuilding;
-    string desiredBuilding;
+    string desiredBuilding, currentTargetBuilding;
     bool movingToTarget;
 
     float startY;
@@ -112,9 +112,10 @@ public class NavmeshNpc : MonoBehaviour
                 PlacedObject closestAccessibleBuilding = accessibleBuildingsByDistance[0];
                 Debug.Log($"Found nearest building for {gameObject.name}: {closestAccessibleBuilding.name}");
 
-                if(!findBetterPath)
+                if(!findBetterPath || (currentTargetBuilding != desiredBuilding))
                 {
                     SetNavmeshTarget(closestAccessibleBuilding.transform.GetChild(0).position);
+                    currentTargetBuilding = desiredBuilding;
                     foundTarget = true;
                 }
                 else
@@ -125,6 +126,7 @@ public class NavmeshNpc : MonoBehaviour
                         if (GetPathDistance(accessibleBuildingsByDistance[0].transform.GetChild(0).position) < agent.remainingDistance)
                         {
                             SetNavmeshTarget(closestAccessibleBuilding.transform.GetChild(0).position);
+                            currentTargetBuilding = desiredBuilding;
                             foundTarget = true;
                         }
                     }
