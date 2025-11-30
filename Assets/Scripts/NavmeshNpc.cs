@@ -19,8 +19,9 @@ public class NavmeshNpc : MonoBehaviour
     [SerializeField] float yBobTarget;
     [SerializeField] float bobSpeed;
     bool goingUp;
-
-    Coroutine findBetterPathCR;
+    bool isFindingTarget;
+    bool hasTarget;
+    bool stopCoroutine;
 
     void Start()
     {
@@ -34,15 +35,18 @@ public class NavmeshNpc : MonoBehaviour
         {
             if(agent.remainingDistance != 0)
             {
-                if(findBetterPathCR == null)
+                if(!isFindingTarget)
                 {
-                    findBetterPathCR = StartCoroutine(TryFindTarget(true));
+                    StartCoroutine(TryFindTarget(true));
                 }
                 MoveAnimations();
             }
-            else
+            else if (hasTarget)
             {
-                findBetterPathCR = null;
+                Debug.Log("Found target");
+                stopCoroutine = true;
+                hasTarget = false;
+                isFindingTarget = false;
             }
         }
     }
@@ -78,12 +82,15 @@ public class NavmeshNpc : MonoBehaviour
     {
         startY = charImage.transform.position.y;
         agent.SetDestination(targetPos);
+        hasTarget = true;
     }
    
 
     IEnumerator TryFindTarget(bool findBetterPath)
     {
         bool foundTarget = false;
+        isFindingTarget = true;
+        stopCoroutine = false;
 
         while (!foundTarget)
         {
@@ -128,9 +135,12 @@ public class NavmeshNpc : MonoBehaviour
                 Debug.Log($"No accessible building found for {gameObject.name}");
             }
 
+            if (stopCoroutine) break;
+
             yield return new WaitForSeconds(1);
         }
 
+        isFindingTarget = false;
         yield return null;
     }
 
