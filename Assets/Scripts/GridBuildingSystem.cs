@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -58,14 +59,28 @@ public class GridBuildingSystem : MonoBehaviour
         if (CanPlace(gridPositionList))
         {
             PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false);
-            foreach (Vector2Int position in gridPositionList)
-                grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+            
+            if (placedObj.modules.Count > 0)
+            {
+                int i = 0;
+                foreach (Vector2Int position in gridPositionList)
+                {
+                    Debug.Log(position.x + " " + position.y + " " + i + " " + i%2);
+                    grid.GetGridObj(position.x, position.y).SetPlacedObject((i%2 == 0 ? placedObj : placedObj.modules[i/2])); // Only works for 3x3 institutions needs reworking for arbitrary sized inst (gridPositionList doesn't have info of height and width)
+                    i++;
+                }
+            } 
+            else
+            {
+                foreach (Vector2Int position in gridPositionList)
+                    grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+            }
             roadManager.UpdateRoads(gridPos, false);
             placedObj.OnPlace();
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
         }
-        else if (buildingSO.module && CanSubstitute(gridPositionList))
+        else if (CanSubstitute(gridPositionList))
         {
             ReplaceModule(worldPosition, buildingIdx);
         }
@@ -236,9 +251,9 @@ public class GridBuildingSystem : MonoBehaviour
             else
             {
                 if (!gridObject.CanPlace())
-                {
+                { 
                     if (!gridObject.GetPlacedObject().isModule)
-                    canSub = false; break;
+                        canSub = false; break;
                 }
             }
         }

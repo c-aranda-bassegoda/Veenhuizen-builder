@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class PlacedObject : MonoBehaviour
 {
@@ -21,43 +22,53 @@ public class PlacedObject : MonoBehaviour
             placedObject.dir = dir;
             placedObject.worldPosition = worldPosition;
             placedObject.name = placedObjectSO.name;
-            placedObject.isModule = placedObjectSO.module;
+            placedObject.isModule = false;
         }
         else
         {
             GameObject corePrefab = placedObjectSO.modules[0];
-            GameObject coreObj = Instantiate(
+            placedObjTransform = Instantiate(
                 corePrefab,
                 worldPosition,
                 Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0)
             );
 
-            PlacedObject corePlaced = coreObj.GetComponent<PlacedObject>();
-            corePlaced.placedSctiptableObject = placedObjectSO;
-            corePlaced.origin = origin;
-            corePlaced.dir = dir;
-            corePlaced.worldPosition = worldPosition;
-            corePlaced.name = placedObjectSO.name + "_Core";
-            corePlaced.isModule = false;
-            corePlaced.modules = new List<PlacedObject>();
+            placedObject = placedObjTransform.GetComponent<PlacedObject>();
+            placedObject.placedSctiptableObject = placedObjectSO;
+            placedObject.origin = origin;
+            placedObject.dir = dir;
+            placedObject.worldPosition = worldPosition;
+            placedObject.name = placedObjectSO.name;
+            placedObject.isModule = false;
+            placedObject.modules = new List<PlacedObject>();
 
-            Vector3[] offsets =
+            
+            List<Vector3> offsets = new List<Vector3>();
+            int cellSize = 10; 
+
+            for (int x = 0; x < placedObjectSO.width; x++)
             {
-                new Vector3(+2, 0, +2),
-                new Vector3(+2, 0, -2),
-                new Vector3(-2, 0, +2),
-                new Vector3(-2, 0, -2),
-            };
+                for (int z = 0; z < placedObjectSO.height; z++)
+                {
+                    bool isBoundary = (x == 0 || x == placedObjectSO.width - 1 || z == 0 || z == placedObjectSO.height - 1);
+                    bool isCorner = (x == 0 || x == placedObjectSO.width - 1) && (z == 0 || z == placedObjectSO.height - 1);
 
-            foreach (var offset in offsets)
+                    if (isBoundary && !isCorner)
+                    {
+                        offsets.Add(new Vector3(x * cellSize, 0, z * cellSize));
+                    }
+                }
+            }
+
+            for (int i = 0; i < placedObjectSO.modules.Count-1; i ++)
             {
                 Vector3 rotatedOffset =
-                    Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0) * offset;
+                    Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0) * offsets[i];
 
                 Vector3 modulePos = worldPosition + rotatedOffset;
 
                 GameObject modObj = Instantiate(
-                    placedObjectSO.modules[1],
+                    placedObjectSO.modules[i+1],
                     modulePos,
                     Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0)
                 );
@@ -67,10 +78,11 @@ public class PlacedObject : MonoBehaviour
                 modPlaced.origin = origin;
                 modPlaced.dir = dir;
                 modPlaced.worldPosition = modulePos;
-                modPlaced.name = placedObjectSO.name + "_Module";
+                modPlaced.name = placedObjectSO.name;
                 modPlaced.isModule = true;
+                modPlaced.parent = placedObject;
 
-                corePlaced.modules.Add(modPlaced);
+                placedObject.modules.Add(modPlaced);
             }
         }
 
@@ -86,6 +98,7 @@ public class PlacedObject : MonoBehaviour
     public List<PlacedObject> connectedObjects;
     public List<PlacedObject> modules;
     public bool isModule;
+    public PlacedObject parent;
 
     public PlacedObject Repalace(BuildingScriptableObject placedObjectSO, bool inInstitution)
     {
@@ -93,6 +106,7 @@ public class PlacedObject : MonoBehaviour
         Vector2Int orig = this.origin;
         BuildingScriptableObject.Dir direction = this.dir;
 
+        this.parent.modules.Remove(this);
         GameObject oldObject = this.gameObject;
 
         PlacedObject placedObject = null;
@@ -106,6 +120,8 @@ public class PlacedObject : MonoBehaviour
         placedObject.worldPosition = this.worldPosition;
         placedObject.name = placedObjectSO.name;
         placedObject.isModule = placedObjectSO.module;
+        placedObject.parent = this.parent;
+        this.parent.modules.Add(placedObject);
 
         Destroy(oldObject);
 
@@ -181,7 +197,17 @@ public class PlacedObject : MonoBehaviour
     }
     public void Destructor()
     {
+        if (isModule)
+        {
+            parent.Destructor();
+            return; 
+        }
+
         int associatedPeopleAmt = associatedPeople.Count;
+        foreach (PlacedObject module in modules)
+        {
+            Destroy(module.gameObject);
+        }
         foreach(NPC _npc in associatedPeople)
         {
             Destroy(_npc.gameObject);
