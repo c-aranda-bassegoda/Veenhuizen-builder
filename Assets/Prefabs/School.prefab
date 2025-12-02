@@ -158,6 +158,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exclamationMark: {fileID: 7024859386060390617}
   connectedObjects: []
+  modules: []
+  isModule: 0
+  parent: {fileID: 0}
+  person: {fileID: 0}
+  personAmount: 0
+  timeBetweenSpawns: 0
+  associatedPeople: []
+  buildingOrigin: {fileID: 0}
+  moveToCentreMultiplier: 0.01
+  moveToPlaceMultiplier: 0.01
+  matchVelocityMultiplier: 0.125
+  minimumBoidDistance: 3
+  minMoveBounds: {x: 0, y: 0, z: 0}
+  maxMoveBounds: {x: 0, y: 0, z: 0}
 --- !u!1 &7833422715444941167
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,27 +314,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6953134283232268009, guid: 94c102d7ede6f4243997ed09e7e0a975, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071067
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6953134283232268009, guid: 94c102d7ede6f4243997ed09e7e0a975, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6953134283232268009, guid: 94c102d7ede6f4243997ed09e7e0a975, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6953134283232268009, guid: 94c102d7ede6f4243997ed09e7e0a975, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6953134283232268009, guid: 94c102d7ede6f4243997ed09e7e0a975, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 6953134283232268009, guid: 94c102d7ede6f4243997ed09e7e0a975, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 6953134283232268009, guid: 94c102d7ede6f4243997ed09e7e0a975, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

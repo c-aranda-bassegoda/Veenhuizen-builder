@@ -42,42 +42,55 @@ public class PlacedObject : MonoBehaviour
             placedObject.isModule = false;
             placedObject.modules = new List<PlacedObject>();
 
-            
-            List<Vector3> offsets = new List<Vector3>();
-            int cellSize = 10; 
+            List<OffsetInfo> offsetsInfo = new List<OffsetInfo>();
+            int cellSize = 10;
+            int w = placedObjectSO.width;
+            int h = placedObjectSO.height;
 
-            for (int x = 0; x < placedObjectSO.width; x++)
+            for (int x = 0; x < w; x++)
             {
-                for (int z = 0; z < placedObjectSO.height; z++)
+                for (int z = 0; z < h; z++)
                 {
-                    bool isBoundary = (x == 0 || x == placedObjectSO.width - 1 || z == 0 || z == placedObjectSO.height - 1);
-                    bool isCorner = (x == 0 || x == placedObjectSO.width - 1) && (z == 0 || z == placedObjectSO.height - 1);
+                    bool isBoundary = (x == 0 || x == w - 1 || z == 0 || z == h - 1);
+                    bool isCorner = (x == 0 || x == w - 1) && (z == 0 || z == h - 1);
 
                     if (isBoundary && !isCorner)
                     {
-                        offsets.Add(new Vector3(x * cellSize, 0, z * cellSize));
+                        BuildingScriptableObject.Dir modDir = BuildingScriptableObject.Dir.Left;
+                        float rotY = placedObjectSO.GetRotationAngle(dir) + 0f;
+                        Vector2Int fix = new Vector2Int(0, 0); // left
+                        if (z == 0) { rotY = 270f; ; fix = new Vector2Int(cellSize, 0); modDir = BuildingScriptableObject.Dir.Down; }  // bottom
+                        else if (x == w - 1) { rotY = 180f; fix = new Vector2Int(cellSize, cellSize); modDir = BuildingScriptableObject.Dir.Right; }    // right
+                        else if (z == h - 1) { rotY = 90f; fix = new Vector2Int(0, cellSize); modDir = BuildingScriptableObject.Dir.Up; }  // top
+
+                        offsetsInfo.Add(new OffsetInfo( new Vector3(x * cellSize, 0, z * cellSize), new Vector3(fix.x, 0, fix.y), rotY, modDir));
                     }
                 }
             }
 
             for (int i = 0; i < placedObjectSO.modules.Count-1; i ++)
             {
-                Vector3 rotatedOffset =
-                    Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0) * offsets[i];
+                Quaternion R1 = Quaternion.Euler(0, offsetsInfo[i].rotationY, 0);
+                Quaternion R2 = Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0);
+                Vector3 T = R2 * offsetsInfo[i].fix + offsetsInfo[i].offset;
 
+                Vector3 rotatedOffset = T;
+
+                Quaternion moduleRot = (R2 * R1);
                 Vector3 modulePos = worldPosition + rotatedOffset;
 
                 GameObject modObj = Instantiate(
                     placedObjectSO.modules[i+1],
                     modulePos,
-                    Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0)
+                    moduleRot
                 );
 
                 PlacedObject modPlaced = modObj.GetComponent<PlacedObject>();
                 modPlaced.placedSctiptableObject = placedObjectSO;
                 modPlaced.origin = origin;
-                modPlaced.dir = dir;
+                modPlaced.dir = offsetsInfo[i].dir;
                 modPlaced.worldPosition = modulePos;
+                modPlaced.worldRotation = moduleRot;
                 modPlaced.name = placedObjectSO.name;
                 modPlaced.isModule = true;
                 modPlaced.parent = placedObject;
@@ -92,6 +105,7 @@ public class PlacedObject : MonoBehaviour
     private Vector2Int origin;
     private BuildingScriptableObject.Dir dir;
     private Vector3 worldPosition;
+    private Quaternion worldRotation;
 
 
     public GameObject exclamationMark;
@@ -111,13 +125,14 @@ public class PlacedObject : MonoBehaviour
 
         PlacedObject placedObject = null;
         GameObject prefab = (inInstitution ? placedObjectSO.modulePrefab : placedObjectSO.prefab);
-        GameObject placedObjTransform = Instantiate(prefab, this.worldPosition, Quaternion.Euler(0, placedObjectSO.GetRotationAngle(this.dir), 0));
+        GameObject placedObjTransform = Instantiate(prefab, this.worldPosition, this.worldRotation);
 
         placedObject = placedObjTransform.GetComponent<PlacedObject>();
         placedObject.placedSctiptableObject = placedObjectSO;
         placedObject.origin = this.origin;
         placedObject.dir = this.dir;
         placedObject.worldPosition = this.worldPosition;
+        placedObject.worldRotation = this.worldRotation;
         placedObject.name = placedObjectSO.name;
         placedObject.isModule = placedObjectSO.module;
         placedObject.parent = this.parent;
@@ -305,5 +320,21 @@ public class PlacedObject : MonoBehaviour
     internal BuildingScriptableObject.Dir GetDir()
     {
         return dir;
+    }
+}
+
+public struct OffsetInfo
+{
+    public Vector3 offset;
+    public Vector3 fix;
+    public float rotationY;
+    public BuildingScriptableObject.Dir dir;
+
+    public OffsetInfo(Vector3 offset, Vector3 fix, float rotationY, BuildingScriptableObject.Dir dir)
+    {
+        this.offset = offset;
+        this.fix = fix;
+        this.rotationY = rotationY;
+        this.dir = dir;
     }
 }
