@@ -162,16 +162,16 @@ public class PlacedObject : MonoBehaviour
     [SerializeField] private float matchVelocityMultiplier = 0.125f;
     [SerializeField] private float minimumBoidDistance = 3f;
 
-    [SerializeField] private Vector3 minMoveBounds;
-    [SerializeField] private Vector3 maxMoveBounds;
+    //[SerializeField] private Vector3 minMoveBounds;
+    //[SerializeField] private Vector3 maxMoveBounds;
 
     public void OnPlace()
     {
         Debug.Log("building start");
         buildingOrigin = transform.GetChild(0);
 
-        minMoveBounds = buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(+10, 0, -10));
-        maxMoveBounds = buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(-10, 0, +10));
+        //minMoveBounds = buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(+10, 0, -10));
+        //maxMoveBounds = buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(-10, 0, +10));
 
         StartCoroutine(SpawnPeople());
     }
