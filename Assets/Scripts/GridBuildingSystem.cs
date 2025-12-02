@@ -52,6 +52,7 @@ public class GridBuildingSystem : MonoBehaviour
 
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         Vector2Int gridPos = new Vector2Int(x, z);
+        lastPosition = new Vector2Int(x, z+1); //workaround so it updates after placing
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(gridPos, buildingSO.Direction);
         Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
@@ -121,6 +122,7 @@ public class GridBuildingSystem : MonoBehaviour
     public BuildingScriptableObject PlaceRoad(Vector3 worldPosition)
     {
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
+        lastPosition = new Vector2Int(x, z + 1); //workaround so it updates after placing
         List<Vector2Int> gridPositionList = roadSO.GetGridPositionList(new Vector2Int(x, z), roadSO.Direction);
         Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
@@ -198,7 +200,7 @@ public class GridBuildingSystem : MonoBehaviour
             List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
             Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
-            previewSystem.UpdatePreview(rotatedObjWorldPosition, CanPlace(gridPositionList));
+            previewSystem.UpdatePreview(rotatedObjWorldPosition, CanPlace(gridPositionList), CanSubstitute(gridPositionList));
         }
 
 
