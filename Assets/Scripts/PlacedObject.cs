@@ -22,7 +22,8 @@ public class PlacedObject : MonoBehaviour
             placedObject.dir = dir;
             placedObject.worldPosition = worldPosition;
             placedObject.name = placedObjectSO.name;
-            placedObject.isModule = false;
+            placedObject.isModule = placedObjectSO.module;
+            placedObject.inInstitution = false;
         }
         else
         {
@@ -41,6 +42,7 @@ public class PlacedObject : MonoBehaviour
             placedObject.name = placedObjectSO.name;
             placedObject.isModule = false;
             placedObject.modules = new List<PlacedObject>();
+            placedObject.inInstitution = false ;
 
             List<OffsetInfo> offsetsInfo = new List<OffsetInfo>();
             int cellSize = 10;
@@ -94,6 +96,7 @@ public class PlacedObject : MonoBehaviour
                 modPlaced.name = placedObjectSO.name + "_module";
                 modPlaced.isModule = true;
                 modPlaced.parent = placedObject;
+                modPlaced.inInstitution = true;
 
                 placedObject.modules.Add(modPlaced);
             }
@@ -113,14 +116,16 @@ public class PlacedObject : MonoBehaviour
     public List<PlacedObject> modules;
     public bool isModule;
     public PlacedObject parent;
+    public bool inInstitution;
 
-    public PlacedObject Repalace(BuildingScriptableObject placedObjectSO, bool inInstitution)
+    public PlacedObject Repalace(BuildingScriptableObject placedObjectSO)
     {
         Vector3 pos = this.worldPosition;
         Vector2Int orig = this.origin;
         BuildingScriptableObject.Dir direction = this.dir;
 
-        this.parent.modules.Remove(this);
+        if(this.parent != null) 
+            this.parent.modules.Remove(this);
         GameObject oldObject = this.gameObject;
 
         PlacedObject placedObject = null;
@@ -136,7 +141,10 @@ public class PlacedObject : MonoBehaviour
         placedObject.name = placedObjectSO.name + "_module";
         placedObject.isModule = placedObjectSO.module;
         placedObject.parent = this.parent;
-        this.parent.modules.Add(placedObject);
+        placedObject.inInstitution = this.inInstitution;
+
+        if (this.parent != null)
+            this.parent.modules.Add(placedObject);
 
         Destroy(oldObject);
 

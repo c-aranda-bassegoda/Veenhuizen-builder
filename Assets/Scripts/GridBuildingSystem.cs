@@ -80,7 +80,7 @@ public class GridBuildingSystem : MonoBehaviour
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
         }
-        else if (CanSubstitute(gridPositionList))
+        else if (buildingSO.module && CanSubstitute(gridPositionList))
         {
             ReplaceModule(worldPosition, buildingIdx);
         }
@@ -107,7 +107,7 @@ public class GridBuildingSystem : MonoBehaviour
         Vector2Int gridPos = new Vector2Int(x, z);
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(gridPos, placedObject.GetDir());
 
-        PlacedObject placedObj = placedObject.Repalace(buildingSO, false);
+        PlacedObject placedObj = placedObject.Repalace(buildingSO);
         foreach (Vector2Int position in gridPositionList)
             grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
         roadManager.UpdateRoads(gridPos, false);
