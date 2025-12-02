@@ -10,12 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
-  m_Name: Road
+  m_Name: Badhuis
   m_EditorClassIdentifier: 
-  name: Road
-  prefab: {fileID: 6600959261270428487, guid: d8be45d8e8347e54186826e1797a6daf, type: 3}
-  width: 1
+  name: Church
+  prefab: {fileID: 6600959261270428487, guid: 80d3ebaa941b85545868173bb448ad3c, type: 3}
+  modulePrefab: {fileID: 0}
+  modules: []
+  width: 2
   height: 1
-  hapiness: 0
-  control: 0
-  maxPlacements: 20
+  hapiness: 10
+  control: 10
+  buildCost: 200
+  yearlyCost: 96
+  yearlyEarnings: 0
+  maxPlacements: 10
+  module: 0
+  modular: 0

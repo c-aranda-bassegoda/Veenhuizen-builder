@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,27 +12,40 @@ public class EconomyManager : MonoBehaviour
         else { Debug.LogError("No building " + name); return -1; } 
     }
 
-    public float happy, control;
-    [SerializeField] private List<BuildingScriptableObject> buildings;
+    public float happy, control, money;
+    //[SerializeField] private List<BuildingScriptableObject> buildings;
+    [SerializeField] private List<BuildingScriptableObject> placedBSOs;
     private List<PlacedObject> placedObjects;
     private Dictionary<string, int> maxCount;
 
     private void Start()
     {
         placedObjects = new();
+        placedBSOs = new();
+
         buildingCount = new Dictionary<string, int>();
         happy = 0;
         control = 0;
 
         maxCount = new Dictionary<string, int>();
-        foreach (BuildingScriptableObject building in buildings)
-        {
-            maxCount.Add(building.name, building.maxPlacements);
-            buildingCount.Add(building.name, 0);
-        }
+
+        UIManager.instance.UpdateMoney(money);
     }
 
-    public void HandleNewBuilding(BuildingScriptableObject newObject, PlacedObject building)
+    public bool CanAfford(BuildingScriptableObject buildingSO)
+    {
+        if (buildingSO.buildCost <= money) return true;
+        else return false;
+    }
+
+    public void HandleNewPlacedBuilding(BuildingScriptableObject newObject, PlacedObject building)
+    {
+        placedBSOs.Add(newObject);
+        money -= newObject.buildCost;
+        UIManager.instance.UpdateMoney(money);
+    }
+
+    public void HandleNewConnectedBuilding(BuildingScriptableObject newObject, PlacedObject building)
     {
 
         if (newObject == null)
@@ -42,6 +54,12 @@ public class EconomyManager : MonoBehaviour
         if (placedObjects.Contains(building)) return;
 
         string buildingName = newObject.name;
+
+        if(!maxCount.ContainsKey(buildingName))
+        {
+            maxCount.Add(newObject.name, newObject.maxPlacements);
+            buildingCount.Add(newObject.name, 0);
+        }
 
         if (maxCount[buildingName] <= buildingCount[buildingName])
         {

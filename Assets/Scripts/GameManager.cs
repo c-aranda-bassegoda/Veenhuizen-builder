@@ -37,14 +37,13 @@ public class GameManager : MonoBehaviour
         gridBuildingSystem.RotateObject();
     }
 
-    private void BuildingPlacementHandler(int idx)
+    private void BuildingPlacementHandler(BuildingScriptableObject buildingSO)
     {
         gridBuildingSystem.RemovingBuilding = false;
         gridBuildingSystem.AddingBuilding = true;
         gridBuildingSystem.PlacingRoad = false;
         gridBuildingSystem.StopPlacementPreview();
-        buildingIdx = idx;
-        gridBuildingSystem.StartPlacementPreview(buildingIdx);
+        gridBuildingSystem.StartPlacementPreview(buildingSO);
 
         //HandleStats(buildingIdx);
 
@@ -71,19 +70,15 @@ public class GameManager : MonoBehaviour
     {
         BuildingScriptableObject objectSO = null;
         Debug.Log("Handling mouse click");
-        if(gridBuildingSystem.PlacingRoad)
-        {
-            objectSO = gridBuildingSystem.roadSO;
-            //if (economyManager.HandleNewBuilding(objectSO))
-            gridBuildingSystem.PlaceRoad(position);
-            uiManager.UpdateStats();
-        }
+        //if(gridBuildingSystem.PlacingRoad)
+        //{
+        //    objectSO = gridBuildingSystem.roadSO;
+        //    //if (economyManager.HandleNewBuilding(objectSO))
+        //    Debug.Log("placing road");
+        //    gridBuildingSystem.PlaceRoad(position);
+        //    uiManager.UpdateStats();
+        //}
 
-        if (buildingIdx < 0)
-        {
-            Debug.LogWarning("No building selected!");
-            return;
-        }
         if (gridBuildingSystem.RemovingBuilding)
         {
             PlacedObject objToRemove = gridBuildingSystem.RemoveObject(position);
@@ -93,12 +88,16 @@ public class GameManager : MonoBehaviour
         }
         if (gridBuildingSystem.AddingBuilding)
         {
-            objectSO = gridBuildingSystem.GetBuildingByIdx(buildingIdx);
+            //if (objectSO.name == "Road")
+            //{
+            //    gridBuildingSystem.PlaceRoad(position);
+            //}
+            //objectSO = gridBuildingSystem.GetBuildingByIdx(buildingIdx);
             //if (economyManager.HandleNewBuilding(objectSO))
-            gridBuildingSystem.PlaceObject(position, buildingIdx);
+            gridBuildingSystem.PlaceObject(position);
             uiManager.UpdateStats();
         }
-        controller.HideHousingPanel();
+        //controller.HideHousingPanel();
     }
 
     private void OnDestroy()

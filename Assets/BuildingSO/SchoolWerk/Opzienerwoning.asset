@@ -10,16 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
-  m_Name: House
+  m_Name: Opzienerwoning
   m_EditorClassIdentifier: 
-  name: House
-  prefab: {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  name: School
+  prefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
+  modulePrefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
   modules: []
   width: 1
   height: 1
   hapiness: 15
-  control: -5
-  maxPlacements: 10
+  control: 10
+  buildCost: 180
+  yearlyCost: 60
+  yearlyEarnings: 0
+  maxPlacements: 20
   module: 1
   modular: 0

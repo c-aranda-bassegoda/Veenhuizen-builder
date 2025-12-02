@@ -7,17 +7,22 @@ using UnityEngine.UIElements;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    [SerializeField] public List<BuildingScriptableObject> buildingSOList;
-    private BuildingScriptableObject buildingSO;
+    //[SerializeField] public List<BuildingScriptableObject> buildingSOList;
+    [SerializeField] private BuildingScriptableObject buildingSO;
     private Grid<GridObject> grid;
     [SerializeField] public BuildingScriptableObject roadSO;
 
     [SerializeField] private PreviewSystem previewSystem;
     [SerializeField] private RoadManager roadManager;
+    [SerializeField] private EconomyManager economyManager;
 
     [SerializeField] private AudioClip placeObjectSound;
     [SerializeField] private AudioClip errorSound;
     [SerializeField] private AudioClip deleteSound;
+
+    [SerializeField] private List<PlacedObject> placedObjects;
+
+    public static GridBuildingSystem instance;
     public bool AddingBuilding { get; set; }
     public bool RemovingBuilding { get; set; }
     public bool PlacingRoad { get; set; }
@@ -25,6 +30,7 @@ public class GridBuildingSystem : MonoBehaviour
     private Vector2Int lastPosition; 
     private void Awake()
     {
+        instance = this;
         int gridWidth = 10;
         int gridHeight = 10;
         float cellSize = 10f;
@@ -34,7 +40,7 @@ public class GridBuildingSystem : MonoBehaviour
         PlacingRoad = false;
     }
 
-    public BuildingScriptableObject GetBuildingByIdx(int idx) {  return buildingSOList[idx]; }
+    //public BuildingScriptableObject GetBuildingByIdx(int idx) {  return buildingSOList[idx]; }
 
     private Vector3 GetRotatedObjectPositionAt(int x, int z)
     {
@@ -46,9 +52,17 @@ public class GridBuildingSystem : MonoBehaviour
         Vector2Int rotationOffset = buildingSO.GetRotationOffset(dir);
         return grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
     }
-    public BuildingScriptableObject PlaceObject(Vector3 worldPosition, int buildingIdx)
+    public BuildingScriptableObject PlaceObject(Vector3 worldPosition)
     {
-        buildingSO = buildingSOList[buildingIdx];
+        //buildingSO = buildingSOList[buildingIdx];
+        if(buildingSO == null) return null;
+
+        if(!economyManager.CanAfford(buildingSO))
+        {
+            Debug.Log("Can't afford building");
+            //show some UI message
+            return buildingSO;
+        }
 
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         Vector2Int gridPos = new Vector2Int(x, z);
@@ -75,14 +89,22 @@ public class GridBuildingSystem : MonoBehaviour
                 foreach (Vector2Int position in gridPositionList)
                     grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
             }
+            foreach (Vector2Int position in gridPositionList)
+                grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+            if(buildingSO.name == "Road")
+            {
+                roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).GetComponent<MeshFilter>());
+            }
+            placedObjects.Add(placedObj);
             roadManager.UpdateRoads(gridPos, false);
+            economyManager.HandleNewPlacedBuilding(buildingSO, placedObj);
             placedObj.OnPlace();
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
         }
         else if (buildingSO.module && CanSubstitute(gridPositionList))
         {
-            ReplaceModule(worldPosition, buildingIdx);
+            ReplaceModule(worldPosition);
         }
         else
         {
@@ -93,12 +115,12 @@ public class GridBuildingSystem : MonoBehaviour
         return buildingSO;
     }
 
-    private void PlaceModule(Vector3 worldPosition, int buildingIdx)
+    private void PlaceModule(Vector3 worldPosition)
     {
-        PlaceObject(worldPosition, buildingIdx); //Placeholder
+        PlaceObject(worldPosition); //Placeholder
     }
 
-    private void ReplaceModule(Vector3 worldPosition, int buildingIdx)
+    private void ReplaceModule(Vector3 worldPosition)
     {
         GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
         PlacedObject placedObject = gridObject.GetPlacedObject();
@@ -119,33 +141,32 @@ public class GridBuildingSystem : MonoBehaviour
         RemoveObject(worldPosition); //Placeholder
     }
 
-    public BuildingScriptableObject PlaceRoad(Vector3 worldPosition)
-    {
-        grid.GetXYZ(worldPosition, out int x, out int y, out int z);
-        lastPosition = new Vector2Int(x, z + 1); //workaround so it updates after placing
-        List<Vector2Int> gridPositionList = roadSO.GetGridPositionList(new Vector2Int(x, z), roadSO.Direction);
-        Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
+    //public BuildingScriptableObject PlaceRoad(Vector3 worldPosition)
+    //{
+    //    grid.GetXYZ(worldPosition, out int x, out int y, out int z);
+    //    List<Vector2Int> gridPositionList = roadSO.GetGridPositionList(new Vector2Int(x, z), roadSO.Direction);
+    //    Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
 
-        if (CanPlace(gridPositionList))
-        {
-            Debug.Log($"Placing road at {new Vector2Int(x, z)}");
-            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), roadSO.Direction, roadSO, false);
-            foreach (Vector2Int position in gridPositionList)
-                grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+    //    if (CanPlace(gridPositionList))
+    //    {
+    //        Debug.Log($"Placing road at {new Vector2Int(x, z)}");
+    //        PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), roadSO.Direction, roadSO, false);
+    //        foreach (Vector2Int position in gridPositionList)
+    //            grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
 
-            roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).GetComponent<MeshFilter>());
+    //        roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).GetComponent<MeshFilter>());
 
-            SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
-        }
-        else
-        {
-            //TODO: "can't place" pop up message for player
-            Debug.Log("Can't build");
-            SoundFXManager.Instance.PlaySoundFXClip(errorSound, transform, 1f);
-        }
-        return roadSO;
-    }
+    //        SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
+    //    }
+    //    else
+    //    {
+    //        //TODO: "can't place" pop up message for player
+    //        Debug.Log("Can't build");
+    //        SoundFXManager.Instance.PlaySoundFXClip(errorSound, transform, 1f);
+    //    }
+    //    return roadSO;
+    //}
 
     public PlacedObject RemoveObject(Vector3 worldPosition)
     {
@@ -157,6 +178,7 @@ public class GridBuildingSystem : MonoBehaviour
         if (placedObject != null)
         {
             placedObject.Destructor();
+            placedObjects.Remove(placedObject);
 
             //If object is a road, make sure to remove it from road list
             if (placedObject.CompareTag("Road"))
@@ -218,6 +240,18 @@ public class GridBuildingSystem : MonoBehaviour
 
     }
 
+    public List<PlacedObject> GetBuildingsOfType(string buildingType)
+    {
+        List<PlacedObject> buildingsOfType = new();
+
+        foreach(PlacedObject obj in placedObjects)
+        {
+            if(obj.GetScriptableObject().name == buildingType) buildingsOfType.Add(obj);
+        }
+
+        return buildingsOfType;
+    }
+
     public bool CanPlace(List<Vector2Int> gridPositionList)
     {
         bool canPlace = true;
@@ -261,14 +295,16 @@ public class GridBuildingSystem : MonoBehaviour
         return canSub;
     }
 
-    internal void StartPlacementPreview(int buildingIdx)
+    internal void StartPlacementPreview(BuildingScriptableObject _buildingSO)
     {
-        buildingSO = buildingSOList[buildingIdx];
+        buildingSO = _buildingSO;
 
         previewSystem.StartPlacementPreview(buildingSO);
     }
     internal void StopPlacementPreview()
     {
+        //buildingSO = null;
+
         previewSystem.StopPlacementPreview();
     }
 
