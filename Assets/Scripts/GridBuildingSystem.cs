@@ -200,7 +200,7 @@ public class GridBuildingSystem : MonoBehaviour
             List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
             Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
-            previewSystem.UpdatePreview(rotatedObjWorldPosition, CanPlace(gridPositionList), CanSubstitute(gridPositionList));
+            previewSystem.UpdatePreview(rotatedObjWorldPosition, CanPlace(gridPositionList), CanSubstitute(gridPositionList) && buildingSO.module);
         }
 
 
