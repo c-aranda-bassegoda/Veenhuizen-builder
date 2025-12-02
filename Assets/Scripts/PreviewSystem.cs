@@ -51,15 +51,15 @@ public class PreviewSystem : MonoBehaviour
         Destroy(buildingPreview);
     }
 
-    public void UpdatePreview(Vector3 worldPosition, bool validity)
+    public void UpdatePreview(Vector3 worldPosition, bool validity, bool replaceability)
     {
         MovePreview(worldPosition);
-        ApplyFeedback(validity);
+        ApplyFeedback(validity, replaceability);
     }
 
-    private void ApplyFeedback(bool validity)
+    private void ApplyFeedback(bool validity, bool replaceability)
     {
-        Color c = validity ? Color.blue : Color.red;
+        Color c = validity ? Color.blue : (replaceability ? Color.green : Color.red);
         c.a = 0.5f;
         previewMaterial.color = c;
         roadPreviewMaterial.color = c;

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 [CreateAssetMenu(fileName = "BuildingScriptableObject", menuName = "Scriptable Objects/BuildingScriptableObject")]
 public class BuildingScriptableObject : ScriptableObject
@@ -38,7 +40,7 @@ public class BuildingScriptableObject : ScriptableObject
     public float yearlyCost;
     public float yearlyEarnings;
     public int maxPlacements;
-    public bool module;
+    [DoNotSerialize] public bool module;
     public bool modular;
     public float GetControl() { return control; }
     public float GetHapiness() { return hapiness; }
