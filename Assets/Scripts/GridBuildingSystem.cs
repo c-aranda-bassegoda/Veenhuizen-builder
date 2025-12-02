@@ -65,7 +65,6 @@ public class GridBuildingSystem : MonoBehaviour
                 int i = 0;
                 foreach (Vector2Int position in gridPositionList)
                 {
-                    Debug.Log(position.x + " " + position.y + " " + i + " " + i%2);
                     grid.GetGridObj(position.x, position.y).SetPlacedObject((i%2 == 0 ? placedObj : placedObj.modules[i/2])); // Only works for 3x3 institutions needs reworking for arbitrary sized inst (gridPositionList doesn't have info of height and width)
                     i++;
                 }

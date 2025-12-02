@@ -91,7 +91,7 @@ public class PlacedObject : MonoBehaviour
                 modPlaced.dir = offsetsInfo[i].dir;
                 modPlaced.worldPosition = modulePos;
                 modPlaced.worldRotation = moduleRot;
-                modPlaced.name = placedObjectSO.name;
+                modPlaced.name = placedObjectSO.name + "_module";
                 modPlaced.isModule = true;
                 modPlaced.parent = placedObject;
 
@@ -133,7 +133,7 @@ public class PlacedObject : MonoBehaviour
         placedObject.dir = this.dir;
         placedObject.worldPosition = this.worldPosition;
         placedObject.worldRotation = this.worldRotation;
-        placedObject.name = placedObjectSO.name;
+        placedObject.name = placedObjectSO.name + "_module";
         placedObject.isModule = placedObjectSO.module;
         placedObject.parent = this.parent;
         this.parent.modules.Add(placedObject);
