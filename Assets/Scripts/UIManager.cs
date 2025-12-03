@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateMoney(float newAmount)
     {
-        moneyAmountText.text = "€" + newAmount.ToString();
+        moneyAmountText.text = newAmount.ToString();
     }
 
 }

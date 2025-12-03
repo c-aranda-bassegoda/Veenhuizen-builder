@@ -25,4 +25,4 @@ MonoBehaviour:
   yearlyEarnings: 2700
   maxPlacements: 10
   module: 0
-  modular: 0
+  modular: 1
