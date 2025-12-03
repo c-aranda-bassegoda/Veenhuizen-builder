@@ -103,6 +103,7 @@ public class GridBuildingSystem : MonoBehaviour
         }
         else if (buildingSO.module && CanSubstitute(gridPositionList))
         {
+            Debug.Log("Substitutable");
             ReplaceModule(worldPosition);
         }
         else
@@ -280,6 +281,7 @@ public class GridBuildingSystem : MonoBehaviour
             GridObject gridObject = grid.GetGridObj(position.x, position.y);
             if (gridObject == null)
             {
+                Debug.Log("GridObject is null");
                 canSub = false; break;
             }
             else
@@ -287,10 +289,15 @@ public class GridBuildingSystem : MonoBehaviour
                 if (!gridObject.CanPlace())
                 { 
                     if (!gridObject.GetPlacedObject().isModule)
-                        canSub = false; break;
+                    {
+                        Debug.Log($"GridObject {gridObject.GetPlacedObject().name} is not a module");
+                        canSub = false;
+                        break;
+                    }
                 }
             }
         }
+        Debug.Log($"Can Subsitute: {canSub}");
         return canSub;
     }
 

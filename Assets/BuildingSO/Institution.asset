@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
+  m_Name: Institution
+  m_EditorClassIdentifier: 
+  name: Institution
+  prefab: {fileID: 3202509837292703422, guid: 6712742dd9dc1d844b77cd59231b08d0, type: 3}
+  modulePrefab: {fileID: 0}
+  modules:
+  - {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}
+  - {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  - {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  - {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  - {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  width: 3
+  height: 3
+  hapiness: 10
+  control: 15
+  maxPlacements: 3
+  module: 0
+  modular: 1

@@ -4181,7 +4181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
-  buildingSO: {fileID: 11400000, guid: ca34e4c73ba11b542a26b11206625995, type: 2}
+  buildingSO: {fileID: 11400000, guid: 74306f3267d52e846be24bf616f3e731, type: 2}
 --- !u!1 &648340502
 GameObject:
   m_ObjectHideFlags: 0
@@ -6937,7 +6937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
-  buildingSO: {fileID: 0}
+  buildingSO: {fileID: 11400000, guid: ca34e4c73ba11b542a26b11206625995, type: 2}
 --- !u!1001 &1032111328
 PrefabInstance:
   m_ObjectHideFlags: 0

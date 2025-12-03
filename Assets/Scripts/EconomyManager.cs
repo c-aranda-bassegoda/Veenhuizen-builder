@@ -9,7 +9,7 @@ public class EconomyManager : MonoBehaviour
     public int GetBuildingCount(string name) 
     { 
         if (buildingCount.ContainsKey(name)) return buildingCount[name]; 
-        else { Debug.LogError("No building " + name); return -1; } 
+        else { Debug.Log("No building " + name); return -1; } 
     }
 
     public float happy, control, money;
