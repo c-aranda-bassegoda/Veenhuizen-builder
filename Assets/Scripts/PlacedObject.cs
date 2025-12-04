@@ -219,7 +219,7 @@ public class PlacedObject : MonoBehaviour
     }
     public void Destructor()
     {
-        if (isModule)
+        if (isModule && parent != null)
         {
             parent.Destructor();
             return; 
