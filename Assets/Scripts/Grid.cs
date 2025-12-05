@@ -19,7 +19,7 @@ public class Grid<TGridObject>
     private TextMesh[,] textMesh;
     public Grid(int width, int height, float cellSize, Func<Grid<TGridObject>, int, int, TGridObject> createGridObj)
     {
-        bool debugging = false;
+        bool debugging = true;
 
         this.width = width;
         this.height = height;

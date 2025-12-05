@@ -168,7 +168,7 @@ public class RoadManager : MonoBehaviour
 
             foreach (Vector2Int uncheckedPos in uncheckedPositions)
             {
-                Debug.Log($"Checking New Position: {uncheckedPos}");
+                //Debug.Log($"Checking New Position: {uncheckedPos}");
                 oldPositionsTempList.Add(uncheckedPos);
                 checkedPositions.Add(uncheckedPos);
 

@@ -13,7 +13,7 @@ public class PlacedObject : MonoBehaviour
         if (!placedObjectSO.modular)
         {
             GameObject prefab = (inInstitution ? placedObjectSO.modulePrefab : placedObjectSO.prefab);
-            placedObjTransform = Instantiate(prefab, worldPosition, Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0));
+            placedObjTransform = Instantiate(prefab, worldPosition, Quaternion.identity);
 
             placedObject = placedObjTransform.GetComponent<PlacedObject>();
             placedObject.placedSctiptableObject = placedObjectSO;
@@ -167,6 +167,7 @@ public class PlacedObject : MonoBehaviour
 
     public void OnPlace()
     {
+        if(exclamationMark != null) exclamationMark.transform.rotation = Quaternion.identity;
         Debug.Log("building start");
         buildingOrigin = transform.GetChild(0);
 

@@ -28,7 +28,8 @@ public class PreviewSystem : MonoBehaviour
 
     public void StartPlacementPreview(BuildingScriptableObject buildingSO)
     {
-        buildingPreview = Instantiate(buildingSO.prefab, new Vector3(0,0,0), Quaternion.Euler(0, buildingSO.GetRotationAngle(buildingSO.Direction), 0));
+        buildingPreview = Instantiate(buildingSO.prefab, new Vector3(0,0,0), Quaternion.identity);
+        buildingPreview.transform.GetChild(0).rotation = Quaternion.Euler(0, buildingSO.GetRotationAngle(buildingSO.Direction), 0);
         PreparePreview(buildingPreview);
     }
 

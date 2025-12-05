@@ -71,6 +71,7 @@ public class BuildingScriptableObject : ScriptableObject
     }
     public List<Vector2Int> GetGridPositionList(Vector2Int offset, Dir dir)
     {
+        Debug.Log($"Offset is: {offset}");
         List<Vector2Int> gridPositionList = new List<Vector2Int>();
         int helpWidth = 0, helpHeight = 0;
         switch (dir)

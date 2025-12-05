@@ -44,7 +44,7 @@ public class GridBuildingSystem : MonoBehaviour
     private Vector3 GetRotatedObjectPositionAt(int x, int z)
     {
         Vector2Int rotationOffset = buildingSO.GetRotationOffset(buildingSO.Direction);
-        return grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
+        return grid.GetWorldPosition(x, z);
     }
     private Vector3 GetRotatedObjectPositionAt(int x, int z, BuildingScriptableObject.Dir dir)
     {
@@ -68,12 +68,15 @@ public class GridBuildingSystem : MonoBehaviour
         lastPosition = new Vector2Int(x, z+1); //workaround so it updates after placing
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(gridPos, buildingSO.Direction);
         Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
+        Debug.Log($"Trying to place object at {x}, {z}");
 
 
         if (CanPlace(gridPositionList))
         {
             PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false);
-            
+            placedObj.transform.GetChild(0).Rotate(new Vector3(0, buildingSO.GetRotationAngle(buildingSO.Direction)));
+
+
             if (placedObj.modules.Count > 0)
             {
                 int i = 0;
@@ -222,6 +225,8 @@ public class GridBuildingSystem : MonoBehaviour
             List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
             Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
+            Debug.Log($"Moving preview to {x}, {z}");
+
             previewSystem.UpdatePreview(rotatedObjWorldPosition, CanPlace(gridPositionList), CanSubstitute(gridPositionList) && buildingSO.module);
         }
 
@@ -258,6 +263,7 @@ public class GridBuildingSystem : MonoBehaviour
         foreach (Vector2Int position in gridPositionList)
         {
             GridObject gridObject = grid.GetGridObj(position.x, position.y);
+            Debug.Log($"Found object at {position.x}, {position.y}");
             if (gridObject == null)
             {
                 canPlace = false; break;
