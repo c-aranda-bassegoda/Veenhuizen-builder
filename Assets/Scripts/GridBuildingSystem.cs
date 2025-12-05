@@ -68,11 +68,11 @@ public class GridBuildingSystem : MonoBehaviour
         lastPosition = new Vector2Int(x, z+1); //workaround so it updates after placing
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(gridPos, buildingSO.Direction);
         Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
-        Debug.Log($"Trying to place object at {x}, {z}");
 
 
         if (CanPlace(gridPositionList))
         {
+            Debug.Log($"Placed Object Rotation: {buildingSO.Direction}");
             PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false);
             placedObj.transform.GetChild(0).Rotate(new Vector3(0, buildingSO.GetRotationAngle(buildingSO.Direction)));
 
@@ -210,7 +210,7 @@ public class GridBuildingSystem : MonoBehaviour
     {
         previewSystem.StopPlacementPreview();
         buildingSO.Direction = BuildingScriptableObject.GetNextDir(buildingSO.Direction);
-        Debug.Log("Direction updated: " + buildingSO.Direction);
+        Debug.Log("Rotation updated: " + buildingSO.Direction);
         previewSystem.StartPlacementPreview(buildingSO);
     }
 
