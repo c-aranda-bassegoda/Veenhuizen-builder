@@ -15,8 +15,10 @@ MonoBehaviour:
   name: Farm
   prefab: {fileID: 6600959261270428487, guid: c818ad8b62927c543b17f512eae963bd, type: 3}
   modulePrefab: {fileID: 0}
-  modules: []
-  width: 2
+  moduleCore: {fileID: 0}
+  moduleBSOs: []
+  modulePositions: []
+  width: 1
   height: 1
   hapiness: 10
   control: 10
