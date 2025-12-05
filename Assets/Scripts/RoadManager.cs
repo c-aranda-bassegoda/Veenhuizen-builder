@@ -111,8 +111,8 @@ public class RoadManager : MonoBehaviour
                     connectedObject.connectedObjects.Add(addingConnectedObject);
                 }
             }
-            if(!connectedObject.isModule)
-                UpdateObjectNotConnectedWarning(connectedObject);
+
+            UpdateObjectNotConnectedWarning(connectedObject);
         }
     }
 
@@ -145,8 +145,8 @@ public class RoadManager : MonoBehaviour
                     Debug.Log($"Adding: {_obj.name} to {obj.Value.name} at {obj.Key}");
                 }
             }
-            if (!obj.Value.isModule)
-                UpdateObjectNotConnectedWarning(obj.Value);
+
+            UpdateObjectNotConnectedWarning(obj.Value);
         }
     }
 

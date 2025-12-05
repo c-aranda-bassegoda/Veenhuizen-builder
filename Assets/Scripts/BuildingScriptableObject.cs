@@ -31,7 +31,9 @@ public class BuildingScriptableObject : ScriptableObject
     // id?
     public GameObject prefab;
     public GameObject modulePrefab;
-    public List<GameObject> modules;
+    public GameObject moduleCore;
+    public List<BuildingScriptableObject> moduleBSOs;
+    public List<Vector2Int> modulePositions;
     public int width;
     public int height;
     public float hapiness;

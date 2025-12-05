@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 
 public class PlacedObject : MonoBehaviour
 {
-    public static PlacedObject Create(Vector3 worldPosition, Vector2Int origin, BuildingScriptableObject.Dir dir, BuildingScriptableObject placedObjectSO, bool inInstitution)
+    public static PlacedObject Create(Vector3 worldPosition, Vector2Int origin, BuildingScriptableObject.Dir dir, BuildingScriptableObject placedObjectSO, bool inInstitution, Grid<GridObject> gridObject = null)
     {
         GameObject placedObjTransform;
         PlacedObject placedObject = null;
@@ -27,11 +27,11 @@ public class PlacedObject : MonoBehaviour
         }
         else
         {
-            GameObject corePrefab = placedObjectSO.modules[0];
+            GameObject corePrefab = placedObjectSO.moduleCore;
             placedObjTransform = Instantiate(
                 corePrefab,
                 worldPosition,
-                Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0)
+                Quaternion.identity
             );
 
             placedObject = placedObjTransform.GetComponent<PlacedObject>();
@@ -41,7 +41,7 @@ public class PlacedObject : MonoBehaviour
             placedObject.worldPosition = worldPosition;
             placedObject.name = placedObjectSO.name;
             placedObject.isModule = false;
-            placedObject.modules = new List<PlacedObject>();
+            placedObject.placedModules = new List<PlacedObject>();
             placedObject.inInstitution = false ;
 
             List<OffsetInfo> offsetsInfo = new List<OffsetInfo>();
@@ -70,7 +70,9 @@ public class PlacedObject : MonoBehaviour
                 }
             }
 
-            for (int i = 0; i < placedObjectSO.modules.Count-1; i ++)
+            Vector2Int institutionGridPos = new Vector2Int(placedObject.GetGridPositionList()[0].x, placedObject.GetGridPositionList()[0].y);
+
+            for (int i = 0; i < placedObjectSO.moduleBSOs.Count; i ++)
             {
                 Quaternion R1 = Quaternion.Euler(0, offsetsInfo[i].rotationY, 0);
                 Quaternion R2 = Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0);
@@ -81,24 +83,33 @@ public class PlacedObject : MonoBehaviour
                 Quaternion moduleRot = (R2 * R1);
                 Vector3 modulePos = worldPosition + rotatedOffset;
 
-                GameObject modObj = Instantiate(
-                    placedObjectSO.modules[i+1],
-                    modulePos,
-                    moduleRot
-                );
+                gridObject.GetXYZ(modulePos, out int x, out int y, out int z);
+                Debug.Log($"module pos = {x}, {z}");
 
-                PlacedObject modPlaced = modObj.GetComponent<PlacedObject>();
-                modPlaced.placedSctiptableObject = placedObjectSO;
-                modPlaced.origin = origin;
-                modPlaced.dir = offsetsInfo[i].dir;
-                modPlaced.worldPosition = modulePos;
-                modPlaced.worldRotation = moduleRot;
-                modPlaced.name = placedObjectSO.name + "_module";
-                modPlaced.isModule = true;
-                modPlaced.parent = placedObject;
-                modPlaced.inInstitution = true;
+                //GameObject modObj = Instantiate(
+                //    placedObjectSO.modules[i+1],
+                //    modulePos,
+                //    moduleRot
+                //);
 
-                placedObject.modules.Add(modPlaced);
+                Vector2Int modGridPos = institutionGridPos + new Vector2Int(placedObjectSO.modulePositions[i].x, placedObjectSO.modulePositions[i].y);
+
+                Debug.Log($"Module grid pos: {modGridPos}");
+
+                PlacedObject modPlaced = PlacedObject.Create(gridObject.GetWorldPosition(modGridPos.x, modGridPos.y), modGridPos, placedObjectSO.moduleBSOs[i].Direction, placedObjectSO.moduleBSOs[i], true);
+
+                //PlacedObject modPlaced = modObj.GetComponent<PlacedObject>();
+                //modPlaced.placedSctiptableObject = placedObjectSO;
+                //modPlaced.origin = origin;
+                //modPlaced.dir = offsetsInfo[i].dir;
+                //modPlaced.worldPosition = modulePos;
+                //modPlaced.worldRotation = moduleRot;
+                //modPlaced.name = placedObjectSO.name + "_module";
+                //modPlaced.isModule = true;
+                //modPlaced.parent = placedObject;
+                //modPlaced.inInstitution = true;
+
+                placedObject.placedModules.Add(modPlaced);
             }
         }
 
@@ -110,10 +121,9 @@ public class PlacedObject : MonoBehaviour
     private Vector3 worldPosition;
     private Quaternion worldRotation;
 
-
     public GameObject exclamationMark;
     public List<PlacedObject> connectedObjects;
-    public List<PlacedObject> modules;
+    public List<PlacedObject> placedModules;
     public bool isModule;
     public PlacedObject parent;
     public bool inInstitution;
@@ -125,7 +135,7 @@ public class PlacedObject : MonoBehaviour
         BuildingScriptableObject.Dir direction = this.dir;
 
         if(this.parent != null) 
-            this.parent.modules.Remove(this);
+            this.parent.placedModules.Remove(this);
         GameObject oldObject = this.gameObject;
 
         PlacedObject placedObject = null;
@@ -144,7 +154,7 @@ public class PlacedObject : MonoBehaviour
         placedObject.inInstitution = this.inInstitution;
 
         if (this.parent != null)
-            this.parent.modules.Add(placedObject);
+            this.parent.placedModules.Add(placedObject);
 
         Destroy(oldObject);
 
@@ -176,8 +186,17 @@ public class PlacedObject : MonoBehaviour
         //minMoveBounds = buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(+10, 0, -10));
         //maxMoveBounds = buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(-10, 0, +10));
 
+        //foreach(PlacedObject mod in modules)
+        //{
+        //    List<Vector2Int> gridPositonList = mod.GetGridPositionList();
+        //    foreach(Vector2Int gridPos in gridPositonList)
+        //    {
+        //        Debug.Log($"Module Position: {gridPos.x} , {gridPos.y}");
+        //    }
+        //}
+
         StartCoroutine(SpawnPeople());
-    }
+    } 
 
     IEnumerator SpawnPeople()
     {
@@ -227,9 +246,10 @@ public class PlacedObject : MonoBehaviour
             parent.Destructor();
             return; 
         }
+        int associatedPeopleAmt = 0;
+        if (associatedPeople != null) associatedPeopleAmt = associatedPeople.Count;
 
-        int associatedPeopleAmt = associatedPeople.Count;
-        foreach (PlacedObject module in modules)
+        foreach (PlacedObject module in placedModules)
         {
             Destroy(module.gameObject);
         }

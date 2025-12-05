@@ -12693,7 +12693,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   happy: 0
   control: 0
-  money: 20000
+  money: 200000
   placedBSOs: []
 --- !u!1 &1814985201
 GameObject:

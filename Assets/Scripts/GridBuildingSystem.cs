@@ -72,19 +72,19 @@ public class GridBuildingSystem : MonoBehaviour
 
         if (CanPlace(gridPositionList))
         {
-            Debug.Log($"Placed Object Rotation: {buildingSO.Direction}");
-            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false);
+            Debug.Log($"Placed Object grid pos: {buildingSO.Direction}");
+            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false, grid);
             placedObj.transform.GetChild(0).Rotate(new Vector3(0, buildingSO.GetRotationAngle(buildingSO.Direction)));
 
 
-            if (placedObj.modules.Count > 0)
+            if (placedObj.placedModules.Count > 0)
             {
-                int i = 0;
-                foreach (Vector2Int position in gridPositionList)
-                {
-                    grid.GetGridObj(position.x, position.y).SetPlacedObject((i%2 == 0 ? placedObj : placedObj.modules[i/2])); // Only works for 3x3 institutions needs reworking for arbitrary sized inst (gridPositionList doesn't have info of height and width)
-                    i++;
-                }
+                //int i = 0;
+                //foreach (Vector2Int position in gridPositionList)
+                //{
+                //    grid.GetGridObj(position.x, position.y).SetPlacedObject((i%2 == 0 ? placedObj : placedObj.placedModules[i/2])); // Only works for 3x3 institutions needs reworking for arbitrary sized inst (gridPositionList doesn't have info of height and width)
+                //    i++;
+                //}
             } 
             else
             {
@@ -294,11 +294,24 @@ public class GridBuildingSystem : MonoBehaviour
             {
                 if (!gridObject.CanPlace())
                 { 
-                    if (!gridObject.GetPlacedObject().isModule)
+                    if (gridObject.GetPlacedObject().GetScriptableObject().modular)
                     {
-                        Debug.Log($"GridObject {gridObject.GetPlacedObject().name} is not a module");
-                        canSub = false;
-                        break;
+                        //Checks all the module positions, so always returns false. only needs to check the ones that matter (usually 1)
+                        foreach(PlacedObject mod in gridObject.GetPlacedObject().placedModules)
+                        {
+                            Vector2Int modGridPos = new Vector2Int(mod.GetGridPositionList()[0].x, mod.GetGridPositionList()[0].y);
+                            Debug.Log($"Sub check: modPos({modGridPos}), newPos({position})");
+                            if(position == modGridPos)
+                            {
+                                foreach (Vector2Int _position in gridPositionList)
+                                {
+                                    if(_position != modGridPos)
+                                    {
+                                        canSub = false; break;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
