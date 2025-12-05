@@ -225,7 +225,7 @@ public class GridBuildingSystem : MonoBehaviour
             List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
             Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
-            Debug.Log($"Moving preview to {x}, {z}");
+            Debug.Log($"Preview: Location = {x}, {z}, CanPlace = {CanPlace(gridPositionList)}, CanSub = {CanSubstitute(gridPositionList) && buildingSO.module}");
 
             previewSystem.UpdatePreview(rotatedObjWorldPosition, CanPlace(gridPositionList), CanSubstitute(gridPositionList) && buildingSO.module);
         }
@@ -281,7 +281,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     private bool CanSubstitute(List<Vector2Int> gridPositionList)
     {
-        bool canSub = true;
+        bool canSub = false;
         foreach (Vector2Int position in gridPositionList)
         {
             GridObject gridObject = grid.GetGridObj(position.x, position.y);
@@ -303,6 +303,7 @@ public class GridBuildingSystem : MonoBehaviour
                             Debug.Log($"Sub check: modPos({modGridPos}), newPos({position})");
                             if(position == modGridPos)
                             {
+                                canSub = true;
                                 foreach (Vector2Int _position in gridPositionList)
                                 {
                                     if(_position != modGridPos)

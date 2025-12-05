@@ -101,6 +101,7 @@ public class PlacedObject : MonoBehaviour
                 Debug.Log($"Module grid pos: {modGridPos}");
 
                 PlacedObject modPlaced = PlacedObject.Create(_gridObject.GetWorldPosition(modGridPos.x, modGridPos.y), modGridPos, placedObjectSO.moduleBSOs[i].Direction, placedObjectSO.moduleBSOs[i], true);
+                modPlaced.OnPlace();
 
                 //PlacedObject modPlaced = modObj.GetComponent<PlacedObject>();
                 //modPlaced.placedSctiptableObject = placedObjectSO;
@@ -181,9 +182,11 @@ public class PlacedObject : MonoBehaviour
             BuildingScriptableObject.Dir oldDirection = placedModules[i].GetScriptableObject().Direction;
 
             placedModules.Remove(oldObject);
+            oldObject.Destructor();
             Destroy(oldObject.gameObject);
             Debug.Log($"New module grid pos: {gridPos}");
             PlacedObject newModule = PlacedObject.Create(gridObject.GetWorldPosition(gridPos.x, gridPos.y), gridPos, oldDirection, placedObjectSO, true);
+            newModule.OnPlace();
             placedModules.Add(newModule);
             return newModule;
         }
