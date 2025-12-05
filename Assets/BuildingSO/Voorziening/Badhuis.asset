@@ -15,8 +15,10 @@ MonoBehaviour:
   name: Church
   prefab: {fileID: 6600959261270428487, guid: 80d3ebaa941b85545868173bb448ad3c, type: 3}
   modulePrefab: {fileID: 0}
-  modules: []
-  width: 2
+  moduleCore: {fileID: 0}
+  moduleBSOs: []
+  modulePositions: []
+  width: 1
   height: 1
   hapiness: 10
   control: 10
