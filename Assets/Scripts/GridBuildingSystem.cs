@@ -88,8 +88,6 @@ public class GridBuildingSystem : MonoBehaviour
                 foreach (Vector2Int position in gridPositionList)
                     grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
             }
-            foreach (Vector2Int position in gridPositionList)
-                grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
             if(buildingSO.name == "Road")
             {
                 roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).GetComponent<MeshFilter>());
