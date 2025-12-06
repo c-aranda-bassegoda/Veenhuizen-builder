@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: School
   prefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
+  modulePrefab: {fileID: 1568749062442017383, guid: cb83ce943c8b56d49b4eed9c03264534, type: 3}
   modules: []
   width: 1
   height: 1
