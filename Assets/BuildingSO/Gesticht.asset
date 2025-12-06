@@ -13,16 +13,21 @@ MonoBehaviour:
   m_Name: Gesticht
   m_EditorClassIdentifier: 
   name: House
-  prefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
+  prefab: {fileID: 3202509837292703422, guid: 6712742dd9dc1d844b77cd59231b08d0, type: 3}
   modulePrefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
-  modules: []
-  width: 1
-  height: 1
+  modules:
+  - {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}
+  - {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  - {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  - {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  - {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  width: 3
+  height: 3
   hapiness: 15
   control: -5
   buildCost: 4000
   yearlyCost: 1440
   yearlyEarnings: 2700
   maxPlacements: 10
-  module: 1
-  modular: 0
+  module: 0
+  modular: 1
