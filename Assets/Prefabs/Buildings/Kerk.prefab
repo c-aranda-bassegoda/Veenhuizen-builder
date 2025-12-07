@@ -442,9 +442,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09104d2bdc4471f4d85ac8384be20e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  origin: {x: 0, y: 0}
   exclamationMark: {fileID: 4742555538503570745}
   connectedObjects: []
-  modules: []
+  placedModules: []
   isModule: 0
   parent: {fileID: 0}
   inInstitution: 0
@@ -640,6 +641,14 @@ PrefabInstance:
     - target: {fileID: 4887080158005321020, guid: 87ee2db4233f2634c85f7b67fe2af7e2, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204211638242337782, guid: 87ee2db4233f2634c85f7b67fe2af7e2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6632478560712788080, guid: 87ee2db4233f2634c85f7b67fe2af7e2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

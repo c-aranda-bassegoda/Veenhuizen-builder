@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,9 @@ public class EconomyManager : MonoBehaviour
     private List<PlacedObject> placedObjects;
     private Dictionary<string, int> maxCount;
     public static EconomyManager instance;
+    [SerializeField] float secondsPerDay;
+    int dayNumber;
+    int yearNumber;
 
     private void Awake()
     {
@@ -35,6 +39,36 @@ public class EconomyManager : MonoBehaviour
         maxCount = new Dictionary<string, int>();
 
         UIManager.instance.UpdateMoney(money);
+
+        StartCoroutine(Economy());
+    }
+
+    IEnumerator Economy()
+    {
+        yearNumber = 1;
+
+        while(true)
+        {
+            dayNumber++;
+            if(dayNumber >= 125)
+            {
+                dayNumber = 1;
+                yearNumber++;
+            }
+            UIManager.instance.UpdateCalendar(dayNumber, yearNumber);
+            HandleDayEcon();
+            yield return new WaitForSeconds(secondsPerDay);
+        }
+    }
+
+    void HandleDayEcon()
+    {
+        foreach (BuildingScriptableObject bso in placedBSOs)
+        {
+            money -= (bso.yearlyCost / 124);
+            money += (bso.yearlyEarnings / 124);
+        }
+        UIManager.instance.UpdateMoney(money);
     }
 
     public bool CanAfford(BuildingScriptableObject buildingSO)
@@ -43,7 +77,7 @@ public class EconomyManager : MonoBehaviour
         else return false;
     }
 
-    public void HandleNewPlacedBuilding(BuildingScriptableObject newObject, PlacedObject building)
+    public void HandleNewPlacedBuilding(BuildingScriptableObject newObject)
     {
         placedBSOs.Add(newObject);
         money -= newObject.buildCost;

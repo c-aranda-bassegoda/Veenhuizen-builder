@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
-  m_Name: Slaapzaal
+  m_Name: EmptyModule
   m_EditorClassIdentifier: 
-  name: Church
-  prefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
+  name: Road
+  prefab: {fileID: 21325827612585982, guid: 24983b35043da82489c81ff5752abb97, type: 3}
+  modulePrefab: {fileID: 21325827612585982, guid: 24983b35043da82489c81ff5752abb97, type: 3}
   moduleCore: {fileID: 0}
   moduleBSOs: []
   modulePositions: []
   width: 1
   height: 1
-  hapiness: 10
-  control: 10
-  buildCost: 500
-  yearlyCost: 240
+  hapiness: 0
+  control: 0
+  buildCost: 0
+  yearlyCost: 0
   yearlyEarnings: 0
-  maxPlacements: 10
+  maxPlacements: 100000
   module: 1
   modular: 0

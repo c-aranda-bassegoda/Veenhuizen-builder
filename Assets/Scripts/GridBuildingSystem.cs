@@ -99,7 +99,7 @@ public class GridBuildingSystem : MonoBehaviour
             }
             placedObjects.Add(placedObj);
             roadManager.UpdateRoads(gridPos, false);
-            economyManager.HandleNewPlacedBuilding(buildingSO, placedObj);
+            economyManager.HandleNewPlacedBuilding(buildingSO);
             placedObj.OnPlace();
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);

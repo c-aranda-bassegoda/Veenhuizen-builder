@@ -100,20 +100,14 @@ public class PlacedObject : MonoBehaviour
 
                 Debug.Log($"Module grid pos: {modGridPos}");
 
+                if (!EconomyManager.instance.CanAfford(placedObjectSO))
+                {
+                    break;
+                }
+
                 PlacedObject modPlaced = PlacedObject.Create(_gridObject.GetWorldPosition(modGridPos.x, modGridPos.y), modGridPos, placedObjectSO.moduleBSOs[i].Direction, placedObjectSO.moduleBSOs[i], true);
+                EconomyManager.instance.HandleNewPlacedBuilding(placedObjectSO);
                 modPlaced.OnPlace();
-
-                //PlacedObject modPlaced = modObj.GetComponent<PlacedObject>();
-                //modPlaced.placedSctiptableObject = placedObjectSO;
-                //modPlaced.origin = origin;
-                //modPlaced.dir = offsetsInfo[i].dir;
-                //modPlaced.worldPosition = modulePos;
-                //modPlaced.worldRotation = moduleRot;
-                //modPlaced.name = placedObjectSO.name + "_module";
-                //modPlaced.isModule = true;
-                //modPlaced.parent = placedObject;
-                //modPlaced.inInstitution = true;
-
                 placedObject.placedModules.Add(modPlaced);
             }
         }
@@ -137,33 +131,6 @@ public class PlacedObject : MonoBehaviour
 
     public PlacedObject Replace(Vector2Int gridPos, BuildingScriptableObject placedObjectSO)
     {
-        //Vector3 pos = this.worldPosition;
-        //Vector2Int orig = this.origin;
-        //BuildingScriptableObject.Dir direction = this.dir;
-
-        //if(this.parent != null) 
-        //    this.parent.placedModules.Remove(this);
-        //GameObject oldObject = this.gameObject;
-
-        //PlacedObject placedObject = null;
-        //GameObject prefab = (inInstitution ? placedObjectSO.modulePrefab : placedObjectSO.prefab);
-        //GameObject placedObjTransform = Instantiate(prefab, this.worldPosition, this.worldRotation);
-
-        //placedObject = placedObjTransform.GetComponent<PlacedObject>();
-        //placedObject.placedSctiptableObject = placedObjectSO;
-        //placedObject.origin = this.origin;
-        //placedObject.dir = this.dir;
-        //placedObject.worldPosition = this.worldPosition;
-        //placedObject.worldRotation = this.worldRotation;
-        //placedObject.name = placedObjectSO.name + "_module";
-        //placedObject.isModule = placedObjectSO.module;
-        //placedObject.parent = this.parent;
-        //placedObject.inInstitution = this.inInstitution;
-
-        //if (this.parent != null)
-        //    this.parent.placedModules.Add(placedObject);
-
-
         //return placedObject;
         PlacedObject oldObject = null;
         if(!EconomyManager.instance.CanAfford(placedObjectSO))
@@ -189,6 +156,7 @@ public class PlacedObject : MonoBehaviour
             Destroy(oldObject.gameObject);
             Debug.Log($"New module grid pos: {gridPos}");
             PlacedObject newModule = PlacedObject.Create(gridObject.GetWorldPosition(gridPos.x, gridPos.y), gridPos, oldDirection, placedObjectSO, true);
+            EconomyManager.instance.HandleNewPlacedBuilding(placedObjectSO);
             newModule.OnPlace();
             placedModules.Add(newModule);
             return newModule;

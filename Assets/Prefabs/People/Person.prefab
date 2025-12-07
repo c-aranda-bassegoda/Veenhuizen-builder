@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 208147030382090898}
   - component: {fileID: 1761173445705503047}
   - component: {fileID: 7655569852120085863}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 2773218102800663022}
   - component: {fileID: 6489274514697750217}
   - component: {fileID: 6858643138090394402}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,8 +189,7 @@ GameObject:
   - component: {fileID: 2363138628834879636}
   - component: {fileID: -6640963970777890239}
   - component: {fileID: 5173809219066261808}
-  - component: {fileID: 6039801300823593360}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Person
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +221,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8048819763237961149}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.05
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -277,24 +276,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &6039801300823593360
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8048819763237961149}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.2056094, y: 0.37363887, z: 0.07308411}
-  m_Center: {x: 0.0044198358, y: 0.012796021, z: -0.007460988}

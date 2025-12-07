@@ -334,9 +334,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09104d2bdc4471f4d85ac8384be20e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  origin: {x: 0, y: 0}
   exclamationMark: {fileID: 3833170442234473740}
   connectedObjects: []
-  modules: []
+  placedModules: []
   isModule: 0
   parent: {fileID: 0}
   inInstitution: 0
@@ -625,6 +626,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -311325714984860931, guid: b123a489cc7a33a4aa982108238b14d8, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b123a489cc7a33a4aa982108238b14d8, type: 3}
       propertyPath: m_Name
       value: School_Textured
@@ -632,6 +637,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b123a489cc7a33a4aa982108238b14d8, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5226584920484755474, guid: b123a489cc7a33a4aa982108238b14d8, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6541464794398109750, guid: b123a489cc7a33a4aa982108238b14d8, type: 3}
       propertyPath: m_Layer

@@ -15,7 +15,9 @@ MonoBehaviour:
   name: Road
   prefab: {fileID: 6600959261270428487, guid: d8be45d8e8347e54186826e1797a6daf, type: 3}
   modulePrefab: {fileID: 0}
-  modules: []
+  moduleCore: {fileID: 0}
+  moduleBSOs: []
+  modulePositions: []
   width: 1
   height: 1
   hapiness: 0
@@ -23,6 +25,6 @@ MonoBehaviour:
   buildCost: 0.4
   yearlyCost: 0.05
   yearlyEarnings: 0
-  maxPlacements: 20
+  maxPlacements: 100
   module: 0
   modular: 0

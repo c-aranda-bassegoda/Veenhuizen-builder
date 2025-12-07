@@ -33,7 +33,7 @@ public class NavmeshNpc : MonoBehaviour
     {
         if (!agent.pathPending) // Make sure the agent has a path
         {
-            if(agent.remainingDistance != 0)
+            if(agent.remainingDistance > 2)
             {
                 if(!isFindingTarget)
                 {
