@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: Slaapzaal
   m_EditorClassIdentifier: 
   name: Church
-  prefab: {fileID: 6600959261270428487, guid: 80d3ebaa941b85545868173bb448ad3c, type: 3}
-  modulePrefab: {fileID: 0}
-  moduleCore: {fileID: 0}
-  moduleBSOs: []
-  modulePositions: []
+  prefab: {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  modulePrefab: {fileID: 6600959261270428487, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+  modules: []
   width: 1
   height: 1
   hapiness: 10
@@ -26,5 +24,5 @@ MonoBehaviour:
   yearlyCost: 140
   yearlyEarnings: 0
   maxPlacements: 10
-  module: 0
+  module: 1
   modular: 0
