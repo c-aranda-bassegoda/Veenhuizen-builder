@@ -17,10 +17,10 @@ MonoBehaviour:
   modulePrefab: {fileID: 0}
   moduleCore: {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}
   moduleBSOs:
-  - {fileID: 11400000, guid: ca34e4c73ba11b542a26b11206625995, type: 2}
-  - {fileID: 11400000, guid: ca34e4c73ba11b542a26b11206625995, type: 2}
-  - {fileID: 11400000, guid: ca34e4c73ba11b542a26b11206625995, type: 2}
-  - {fileID: 11400000, guid: ca34e4c73ba11b542a26b11206625995, type: 2}
+  - {fileID: 11400000, guid: 291270e82a7a3524496f145854ad1df0, type: 2}
+  - {fileID: 11400000, guid: 291270e82a7a3524496f145854ad1df0, type: 2}
+  - {fileID: 11400000, guid: 291270e82a7a3524496f145854ad1df0, type: 2}
+  - {fileID: 11400000, guid: 291270e82a7a3524496f145854ad1df0, type: 2}
   modulePositions:
   - {x: 1, y: 0}
   - {x: 0, y: 1}

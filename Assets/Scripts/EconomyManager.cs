@@ -17,7 +17,12 @@ public class EconomyManager : MonoBehaviour
     [SerializeField] private List<BuildingScriptableObject> placedBSOs;
     private List<PlacedObject> placedObjects;
     private Dictionary<string, int> maxCount;
+    public static EconomyManager instance;
 
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         placedObjects = new();

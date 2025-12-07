@@ -165,8 +165,11 @@ public class PlacedObject : MonoBehaviour
 
 
         //return placedObject;
-
         PlacedObject oldObject = null;
+        if(!EconomyManager.instance.CanAfford(placedObjectSO))
+        {
+            return oldObject;
+        }
         Debug.Log($"Placed Modules ({gameObject.name}): {placedModules.Count}");
         foreach(PlacedObject obj in placedModules)
         {

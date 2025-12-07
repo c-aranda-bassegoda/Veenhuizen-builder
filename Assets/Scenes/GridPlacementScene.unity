@@ -4047,7 +4047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3880acc483aa700418abc7b6e2f66b76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingSO: {fileID: 11400000, guid: ca34e4c73ba11b542a26b11206625995, type: 2}
+  buildingSO: {fileID: 11400000, guid: 74306f3267d52e846be24bf616f3e731, type: 2}
   economyManager: {fileID: 1754685237}
 --- !u!114 &630482387
 MonoBehaviour:
