@@ -242,13 +242,14 @@ public class PlacedObject : MonoBehaviour
         }
         int associatedPeopleAmt = 0;
         if (associatedPeople != null) associatedPeopleAmt = associatedPeople.Count;
-
-        //foreach (PlacedObject module in placedModules)
-        //{
-        //    module.Destructor();
-        //    Destroy(module.gameObject);
-        //}
-        foreach(NavmeshNpc _npc in associatedPeople)
+        if (modules != null)
+        {
+            foreach (PlacedObject module in modules)
+            {
+                Destroy(module.gameObject);
+            }
+        }
+        foreach (NavmeshNpc _npc in associatedPeople)
         {
             Destroy(_npc.gameObject);
         }
