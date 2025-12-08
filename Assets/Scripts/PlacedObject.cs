@@ -258,6 +258,7 @@ public class PlacedObject : MonoBehaviour
 
         foreach (PlacedObject module in placedModules)
         {
+            module.Destructor();
             Destroy(module.gameObject);
         }
         foreach(NavmeshNpc _npc in associatedPeople)
