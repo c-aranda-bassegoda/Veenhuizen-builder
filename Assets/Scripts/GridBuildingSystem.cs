@@ -44,6 +44,7 @@ public class GridBuildingSystem : MonoBehaviour
     private Vector3 GetRotatedObjectPositionAt(int x, int z)
     {
         Vector2Int rotationOffset = buildingSO.GetRotationOffset(buildingSO.Direction);
+        Debug.Log($"Object world position: {x} , {z}");
         return grid.GetWorldPosition(x, z);
     }
     private Vector3 GetRotatedObjectPositionAt(int x, int z, BuildingScriptableObject.Dir dir)
