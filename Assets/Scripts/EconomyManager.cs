@@ -13,7 +13,7 @@ public class EconomyManager : MonoBehaviour
         else { Debug.Log("No building " + name); return -1; } 
     }
 
-    public float happy, control, money;
+    public float happy, control, money, food;
     //[SerializeField] private List<BuildingScriptableObject> buildings;
     [SerializeField] private List<BuildingScriptableObject> placedBSOs;
     private List<PlacedObject> placedObjects;
@@ -67,6 +67,9 @@ public class EconomyManager : MonoBehaviour
         {
             money -= (bso.yearlyCost / 124);
             money += (bso.yearlyEarnings / 124);
+
+            food -= (bso.yearlyFoodCost / 124);
+            food += (bso.yearlyFoodEarnings / 124);
         }
         UIManager.instance.UpdateMoney(money);
     }
@@ -81,6 +84,7 @@ public class EconomyManager : MonoBehaviour
     {
         placedBSOs.Add(newObject);
         money -= newObject.buildCost;
+        control += newObject.control;
         UIManager.instance.UpdateMoney(money);
     }
 
@@ -116,7 +120,6 @@ public class EconomyManager : MonoBehaviour
         }
         placedObjects.Add(building);
         happy += newObject.hapiness;
-        control += newObject.control;
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString());
     }
 

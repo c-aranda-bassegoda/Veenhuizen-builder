@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
         controller.OnRotate += BuildingRotateHandler;
         controller.OnDelete += BuildingDeletionHandler;
         controller.OnPlaceRoad += RoadPlacingHandler;
+        inputManager.OnClicked += HandleMouseClick;
     }
 
     private void BuildingDeletionHandler()
@@ -28,8 +29,8 @@ public class GameManager : MonoBehaviour
         gridBuildingSystem.PlacingRoad = false;
         gridBuildingSystem.StopPlacementPreview();
 
-        inputManager.OnClicked -= HandleMouseClick;
-        inputManager.OnClicked += HandleMouseClick;
+        //inputManager.OnClicked -= HandleMouseClick;
+        //inputManager.OnClicked += HandleMouseClick;
     }
 
     private void BuildingRotateHandler()
@@ -47,8 +48,10 @@ public class GameManager : MonoBehaviour
 
         //HandleStats(buildingIdx);
 
-        inputManager.OnClicked -= HandleMouseClick; 
-        inputManager.OnClicked += HandleMouseClick;
+        //inputManager.OnClicked -= HandleMouseClick; 
+        //inputManager.OnClicked += HandleMouseClick;
+
+        //Debug.Log($"Building placement handler: {gridBuildingSystem.AddingBuilding}");
     }
 
     private void RoadPlacingHandler()
@@ -61,8 +64,8 @@ public class GameManager : MonoBehaviour
 
         //HandleStats();
 
-        inputManager.OnClicked -= HandleMouseClick;
-        inputManager.OnClicked += HandleMouseClick;
+        //inputManager.OnClicked -= HandleMouseClick;
+        //inputManager.OnClicked += HandleMouseClick;
         //gridBuildingSystem.PlaceRoad();
     }
 
@@ -70,6 +73,7 @@ public class GameManager : MonoBehaviour
     {
         BuildingScriptableObject objectSO = null;
         Debug.Log("Handling mouse click");
+        Debug.Log($"Adding building: {gridBuildingSystem.AddingBuilding}");
         //if(gridBuildingSystem.PlacingRoad)
         //{
         //    objectSO = gridBuildingSystem.roadSO;
@@ -94,6 +98,7 @@ public class GameManager : MonoBehaviour
             //}
             //objectSO = gridBuildingSystem.GetBuildingByIdx(buildingIdx);
             //if (economyManager.HandleNewBuilding(objectSO))
+            Debug.Log("Adding building");
             gridBuildingSystem.PlaceObject(position);
             uiManager.UpdateStats();
         }

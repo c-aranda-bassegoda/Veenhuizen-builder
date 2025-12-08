@@ -130,17 +130,15 @@ public class PlacedObject : MonoBehaviour
     private Grid<GridObject> gridObject;
 
     public PlacedObject Replace(Vector2Int gridPos, BuildingScriptableObject placedObjectSO)
-    {
+    {;
         //return placedObject;
         PlacedObject oldObject = null;
         if(!EconomyManager.instance.CanAfford(placedObjectSO))
         {
             return oldObject;
         }
-        Debug.Log($"Placed Modules ({gameObject.name}): {placedModules.Count}");
         foreach(PlacedObject obj in placedModules)
         {
-            Debug.Log($"GridPos: {gridPos}, Module Pos: {obj.GetOrigin()}");
             if(gridPos == obj.GetOrigin())
             {
                 oldObject = obj;

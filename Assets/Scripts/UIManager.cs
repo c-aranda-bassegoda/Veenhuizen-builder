@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     public GameObject happyOut, controlOut;
     [SerializeField] public EconomyManager manager;
     [SerializeField] TextMeshProUGUI moneyAmountText;
+    [SerializeField] TextMeshProUGUI foodAmountText;
 
     [Header("Calendar")]
     [SerializeField] TextMeshProUGUI dayNumberText;
@@ -54,4 +55,8 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void UpdateFood(int foodAmount)
+    {
+        foodAmountText.text = foodAmount.ToString();
+    }
 }

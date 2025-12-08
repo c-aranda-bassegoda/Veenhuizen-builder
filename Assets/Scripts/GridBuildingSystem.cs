@@ -53,6 +53,7 @@ public class GridBuildingSystem : MonoBehaviour
     }
     public BuildingScriptableObject PlaceObject(Vector3 worldPosition)
     {
+        Debug.Log("Replacing");
         //buildingSO = buildingSOList[buildingIdx];
         if(buildingSO == null) return null;
 
@@ -72,7 +73,6 @@ public class GridBuildingSystem : MonoBehaviour
 
         if (CanPlace(gridPositionList))
         {
-            Debug.Log($"Placed Object grid pos: {buildingSO.Direction}");
             PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false, grid);
             placedObj.transform.GetChild(0).Rotate(new Vector3(0, buildingSO.GetRotationAngle(buildingSO.Direction)));
 

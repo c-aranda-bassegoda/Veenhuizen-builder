@@ -41,6 +41,8 @@ public class BuildingScriptableObject : ScriptableObject
     public float buildCost;
     public float yearlyCost;
     public float yearlyEarnings;
+    public float yearlyFoodCost;
+    public float yearlyFoodEarnings;
     public int maxPlacements;
     [DoNotSerialize] public bool module;
     public bool modular;
