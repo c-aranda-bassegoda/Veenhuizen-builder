@@ -13632,10 +13632,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   happy: 0
   control: 0
-  money: 200000
+  money: 400000
   food: 0
   placedBSOs: []
-  secondsPerDay: 0.1
+  secondsPerDay: 1
 --- !u!1 &1814985201
 GameObject:
   m_ObjectHideFlags: 0

@@ -68,7 +68,8 @@ public class NavmeshNpc : MonoBehaviour
     public void SetOrigin(PlacedObject _building)
     {
         originBuilding = _building;
-        SetDesiredBuilding("Farm");
+        SetDesiredBuilding("Boerderij");
+        //Debug.Log($"Set {gameObject.name} target to Farm");
         StartCoroutine(TryFindTarget(false));
     }
 
