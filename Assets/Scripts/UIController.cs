@@ -80,7 +80,7 @@ public class UIController : MonoBehaviour
             layout.gameObject.SetActive(false);
 
             //Enable the expand icon
-            button.GetChild(1).gameObject.SetActive(true);
+            button.GetChild(1).gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         }
         //menu is folded
         else
@@ -89,7 +89,7 @@ public class UIController : MonoBehaviour
             layout.gameObject.SetActive(true);
 
             //Disable the expand icon
-            button.GetChild(1).gameObject.SetActive(false);
+            button.GetChild(1).gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
         }
     }
 }

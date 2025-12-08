@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Zandweg
   m_EditorClassIdentifier: 
-  name: Road
+  name: Zandweg
   prefab: {fileID: 6600959261270428487, guid: d8be45d8e8347e54186826e1797a6daf, type: 3}
   modulePrefab: {fileID: 0}
   moduleCore: {fileID: 0}

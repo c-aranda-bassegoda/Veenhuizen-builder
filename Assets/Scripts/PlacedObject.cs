@@ -188,7 +188,8 @@ public class PlacedObject : MonoBehaviour
         if(exclamationMark != null) exclamationMark.transform.rotation = Quaternion.identity;
         Debug.Log("building start");
         buildingOrigin = transform.GetChild(0);
-        if(gameObject.tag != "Road") transform.GetChild(0).rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
+        if(gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
+        else if (gameObject.tag != "Road") buildingOrigin.rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
 
         //minMoveBounds = buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(+10, 0, -10));
         //maxMoveBounds = buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(-10, 0, +10));

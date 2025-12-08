@@ -525,6 +525,10 @@ PrefabInstance:
       propertyPath: exclamationMark
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4363361439254507159, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4850260002034926021, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
       propertyPath: m_CastShadows
       value: 0
@@ -629,6 +633,10 @@ PrefabInstance:
     - target: {fileID: 4341317459739444264, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
       propertyPath: exclamationMark
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4363361439254507159, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4850260002034926021, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
       propertyPath: m_CastShadows
@@ -805,6 +813,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4363361439254507159, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4850260002034926021, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
       propertyPath: m_CastShadows
       value: 0
@@ -909,6 +921,10 @@ PrefabInstance:
     - target: {fileID: 4341317459739444264, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
       propertyPath: exclamationMark
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4363361439254507159, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4850260002034926021, guid: f73866e047749934aaac94d498cc8c0a, type: 3}
       propertyPath: m_CastShadows

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Akker
   m_EditorClassIdentifier: 
-  name: Farm
-  prefab: {fileID: 6600959261270428487, guid: c818ad8b62927c543b17f512eae963bd, type: 3}
+  name: Akker
+  prefab: {fileID: 6600959261270428487, guid: f1a2f95dec199354dba9b2cc6cfc06dd, type: 3}
   modulePrefab: {fileID: 0}
   moduleCore: {fileID: 0}
   moduleBSOs: []

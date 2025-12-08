@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Gesticht
   m_EditorClassIdentifier: 
-  name: Institution
+  name: Gesticht
   prefab: {fileID: 3202509837292703422, guid: 6712742dd9dc1d844b77cd59231b08d0, type: 3}
   modulePrefab: {fileID: 0}
   moduleCore: {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}

@@ -66,6 +66,7 @@ public class RoadManager : MonoBehaviour
             List<bool> isRoadThere = FindAdjacentObjects(adjacentRoadPositions, pos);
 
             string roadConfig = CheckAdjacentRoads(isRoadThere);
+            Debug.Log($"New roadconfig for pos {pos} = {roadConfig}");
             UpdateRoad(roadToUpdate, roadConfig);
         }
 
@@ -184,7 +185,7 @@ public class RoadManager : MonoBehaviour
 
                 if (!skipFirstObjectCheck)
                 {
-                    if (placedObject.name != "Road" && !connectedObjects.Contains(placedObject))
+                    if (placedObject.gameObject.tag != "Road" && !connectedObjects.Contains(placedObject))
                     {
                         //Debug.Log($"Adding New Position Object: {uncheckedPos} , {placedObject.name}");
                         connectedObjects.Add(placedObject);
@@ -222,13 +223,13 @@ public class RoadManager : MonoBehaviour
         BuildingScriptableObject buildingSO = obj.GetScriptableObject();
         if(obj.connectedObjects.Count > 0)
         {
-            obj.exclamationMark.SetActive(false);
+            if(obj.exclamationMark != null) obj.exclamationMark.SetActive(false);
             Debug.Log($"Connected: {obj.name}");
             if (buildingSO != null) economyManager.HandleNewConnectedBuilding(buildingSO, obj);
         }
         else
         {
-            obj.exclamationMark.SetActive(true);
+            if (obj.exclamationMark != null) obj.exclamationMark.SetActive(true);
             if(buildingSO != null) economyManager.HandleRemovedBuilding(buildingSO, obj);
         }
     }
