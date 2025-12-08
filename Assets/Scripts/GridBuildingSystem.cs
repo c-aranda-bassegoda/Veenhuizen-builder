@@ -76,21 +76,6 @@ public class GridBuildingSystem : MonoBehaviour
             PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false, grid);
             placedObj.transform.GetChild(0).Rotate(new Vector3(0, buildingSO.GetRotationAngle(buildingSO.Direction)));
 
-
-            if (placedObj.placedModules.Count > 0)
-            {
-                //int i = 0;
-                //foreach (Vector2Int position in gridPositionList)
-                //{
-                //    grid.GetGridObj(position.x, position.y).SetPlacedObject((i%2 == 0 ? placedObj : placedObj.placedModules[i/2])); // Only works for 3x3 institutions needs reworking for arbitrary sized inst (gridPositionList doesn't have info of height and width)
-                //    i++;
-                //}
-            } 
-            else
-            {
-                foreach (Vector2Int position in gridPositionList)
-                    grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
-            }
             foreach (Vector2Int position in gridPositionList)
                 grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
             if(buildingSO.name == "Zandweg")
