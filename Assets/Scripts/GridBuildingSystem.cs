@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -44,6 +45,7 @@ public class GridBuildingSystem : MonoBehaviour
     private Vector3 GetRotatedObjectPositionAt(int x, int z)
     {
         Vector2Int rotationOffset = buildingSO.GetRotationOffset(buildingSO.Direction);
+        Debug.Log($"Object world position: {x} , {z}");
         return grid.GetWorldPosition(x, z);
     }
     private Vector3 GetRotatedObjectPositionAt(int x, int z, BuildingScriptableObject.Dir dir)
@@ -203,6 +205,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     public void RotateObject()
     {
+        if (buildingSO.modular) return;
         previewSystem.StopPlacementPreview();
         buildingSO.Direction = BuildingScriptableObject.GetNextDir(buildingSO.Direction);
         Debug.Log("Rotation updated: " + buildingSO.Direction);
