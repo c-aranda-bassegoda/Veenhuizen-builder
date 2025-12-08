@@ -13,7 +13,7 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: BushSmall_Color
-    second: {fileID: 2800000, guid: 147b13a6c6c07ac4ea9fb9086acaad05, type: 3}
+    second: {fileID: 2800000, guid: 6b0943573038e444db3957620d4f3ccc, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
