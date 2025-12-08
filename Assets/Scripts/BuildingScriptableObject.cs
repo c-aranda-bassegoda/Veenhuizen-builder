@@ -14,7 +14,7 @@ public class BuildingScriptableObject : ScriptableObject
             case Dir.Down: return Dir.Left;
             case Dir.Left: return Dir.Up;
             case Dir.Up: return Dir.Right;
-            case Dir.Right: 
+            case Dir.Right:
             default: return Dir.Down;
         }
     }
@@ -31,9 +31,7 @@ public class BuildingScriptableObject : ScriptableObject
     // id?
     public GameObject prefab;
     public GameObject modulePrefab;
-    public GameObject moduleCore;
-    public List<BuildingScriptableObject> moduleBSOs;
-    public List<Vector2Int> modulePositions;
+    public List<GameObject> modules;
     public int width;
     public int height;
     public float hapiness;
@@ -41,8 +39,6 @@ public class BuildingScriptableObject : ScriptableObject
     public float buildCost;
     public float yearlyCost;
     public float yearlyEarnings;
-    public float yearlyFoodCost;
-    public float yearlyFoodEarnings;
     public int maxPlacements;
     [DoNotSerialize] public bool module;
     public bool modular;
@@ -54,7 +50,7 @@ public class BuildingScriptableObject : ScriptableObject
     {
         switch (dir)
         {
-            default: 
+            default:
             case Dir.Down: return 0;
             case Dir.Left: return 90;
             case Dir.Up: return 180;
@@ -67,15 +63,14 @@ public class BuildingScriptableObject : ScriptableObject
         switch (dir)
         {
             default:
-            case Dir.Down: return new Vector2Int(0,0);
-            case Dir.Left: return new Vector2Int(0,width);
+            case Dir.Down: return new Vector2Int(0, 0);
+            case Dir.Left: return new Vector2Int(0, width);
             case Dir.Up: return new Vector2Int(width, height);
             case Dir.Right: return new Vector2Int(height, 0);
         }
     }
     public List<Vector2Int> GetGridPositionList(Vector2Int offset, Dir dir)
     {
-        Debug.Log($"Offset is: {offset}");
         List<Vector2Int> gridPositionList = new List<Vector2Int>();
         int helpWidth = 0, helpHeight = 0;
         switch (dir)

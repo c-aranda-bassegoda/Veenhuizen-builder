@@ -15,15 +15,13 @@ MonoBehaviour:
   name: Slaapzaal
   prefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
   modulePrefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
-  moduleCore: {fileID: 0}
-  moduleBSOs: []
-  modulePositions: []
+  modules: []
   width: 1
   height: 1
   hapiness: 10
   control: 10
   buildCost: 500
-  yearlyCost: 240
+  yearlyCost: 140
   yearlyEarnings: 0
   maxPlacements: 10
   module: 1

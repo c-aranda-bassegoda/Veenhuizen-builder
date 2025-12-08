@@ -8,18 +8,16 @@ using static Testing;
 
 public class PlacedObject : MonoBehaviour
 {
-    public static PlacedObject Create(Vector3 worldPosition, Vector2Int origin, BuildingScriptableObject.Dir dir, BuildingScriptableObject placedObjectSO, bool inInstitution, Grid<GridObject> _gridObject = null)
+    public static PlacedObject Create(Vector3 worldPosition, Vector2Int origin, BuildingScriptableObject.Dir dir, BuildingScriptableObject placedObjectSO, bool inInstitution)
     {
         GameObject placedObjTransform;
         PlacedObject placedObject = null;
-
         if (!placedObjectSO.modular)
         {
             GameObject prefab = (inInstitution ? placedObjectSO.modulePrefab : placedObjectSO.prefab);
-            placedObjTransform = Instantiate(prefab, worldPosition, Quaternion.identity);
+            placedObjTransform = Instantiate(prefab, worldPosition, Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0));
 
             placedObject = placedObjTransform.GetComponent<PlacedObject>();
-            if (_gridObject != null) placedObject.gridObject = _gridObject;
             placedObject.placedSctiptableObject = placedObjectSO;
             placedObject.origin = origin;
             placedObject.dir = dir;
@@ -30,23 +28,22 @@ public class PlacedObject : MonoBehaviour
         }
         else
         {
-            GameObject corePrefab = placedObjectSO.moduleCore;
+            GameObject corePrefab = placedObjectSO.modules[0];
             placedObjTransform = Instantiate(
                 corePrefab,
                 worldPosition,
-                Quaternion.identity
+                Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0)
             );
 
             placedObject = placedObjTransform.GetComponent<PlacedObject>();
-            if (_gridObject != null) placedObject.gridObject = _gridObject;
             placedObject.placedSctiptableObject = placedObjectSO;
             placedObject.origin = origin;
             placedObject.dir = dir;
             placedObject.worldPosition = worldPosition;
             placedObject.name = placedObjectSO.name;
             placedObject.isModule = false;
-            placedObject.placedModules = new List<PlacedObject>();
-            placedObject.inInstitution = false ;
+            placedObject.modules = new List<PlacedObject>();
+            placedObject.inInstitution = false;
 
             List<OffsetInfo> offsetsInfo = new List<OffsetInfo>();
             int cellSize = 10;
@@ -69,14 +66,12 @@ public class PlacedObject : MonoBehaviour
                         else if (x == w - 1) { rotY = 180f; fix = new Vector2Int(cellSize, cellSize); modDir = BuildingScriptableObject.Dir.Right; }    // right
                         else if (z == h - 1) { rotY = 90f; fix = new Vector2Int(0, cellSize); modDir = BuildingScriptableObject.Dir.Up; }  // top
 
-                        offsetsInfo.Add(new OffsetInfo( new Vector3(x * cellSize, 0, z * cellSize), new Vector3(fix.x, 0, fix.y), rotY, modDir));
+                        offsetsInfo.Add(new OffsetInfo(new Vector3(x * cellSize, 0, z * cellSize), new Vector3(fix.x, 0, fix.y), rotY, modDir));
                     }
                 }
             }
 
-            Vector2Int institutionGridPos = new Vector2Int(placedObject.GetGridPositionList()[0].x, placedObject.GetGridPositionList()[0].y);
-
-            for (int i = 0; i < placedObjectSO.moduleBSOs.Count; i ++)
+            for (int i = 0; i < placedObjectSO.modules.Count - 1; i++)
             {
                 Quaternion R1 = Quaternion.Euler(0, offsetsInfo[i].rotationY, 0);
                 Quaternion R2 = Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0);
@@ -87,28 +82,24 @@ public class PlacedObject : MonoBehaviour
                 Quaternion moduleRot = (R2 * R1);
                 Vector3 modulePos = worldPosition + rotatedOffset;
 
-                _gridObject.GetXYZ(modulePos, out int x, out int y, out int z);
-                Debug.Log($"module pos = {x}, {z}");
+                GameObject modObj = Instantiate(
+                    placedObjectSO.modules[i + 1],
+                    modulePos,
+                    moduleRot
+                );
 
-                //GameObject modObj = Instantiate(
-                //    placedObjectSO.modules[i+1],
-                //    modulePos,
-                //    moduleRot
-                //);
+                PlacedObject modPlaced = modObj.GetComponent<PlacedObject>();
+                modPlaced.placedSctiptableObject = placedObjectSO;
+                modPlaced.origin = origin;
+                modPlaced.dir = offsetsInfo[i].dir;
+                modPlaced.worldPosition = modulePos;
+                modPlaced.worldRotation = moduleRot;
+                modPlaced.name = placedObjectSO.name + "_module";
+                modPlaced.isModule = true;
+                modPlaced.parent = placedObject;
+                modPlaced.inInstitution = true;
 
-                Vector2Int modGridPos = institutionGridPos + new Vector2Int(placedObjectSO.modulePositions[i].x, placedObjectSO.modulePositions[i].y);
-
-                Debug.Log($"Module grid pos: {modGridPos}");
-
-                if (!EconomyManager.instance.CanAfford(placedObjectSO))
-                {
-                    break;
-                }
-
-                PlacedObject modPlaced = PlacedObject.Create(_gridObject.GetWorldPosition(modGridPos.x, modGridPos.y), modGridPos, placedObjectSO.moduleBSOs[i].Direction, placedObjectSO.moduleBSOs[i], true);
-                EconomyManager.instance.HandleNewPlacedBuilding(placedObjectSO);
-                modPlaced.OnPlace();
-                placedObject.placedModules.Add(modPlaced);
+                placedObject.modules.Add(modPlaced);
             }
         }
 
@@ -123,47 +114,43 @@ public class PlacedObject : MonoBehaviour
     private Vector2Int gridPos;
     public GameObject exclamationMark;
     public List<PlacedObject> connectedObjects;
-    public List<PlacedObject> placedModules;
+    public List<PlacedObject> modules;
     public bool isModule;
     public PlacedObject parent;
     public bool inInstitution;
     private Grid<GridObject> gridObject;
 
-    public PlacedObject Replace(Vector2Int gridPos, BuildingScriptableObject placedObjectSO)
-    {;
-        //return placedObject;
-        PlacedObject oldObject = null;
-        if(!EconomyManager.instance.CanAfford(placedObjectSO))
-        {
-            return oldObject;
-        }
-        foreach(PlacedObject obj in placedModules)
-        {
-            if(gridPos == obj.GetOrigin())
-            {
-                oldObject = obj;
-            }
-        }
-        if (oldObject != null)
-        {
-            int i = placedModules.IndexOf(oldObject);
-            BuildingScriptableObject.Dir oldDirection = placedModules[i].GetScriptableObject().Direction;
+    public PlacedObject Replace(BuildingScriptableObject placedObjectSO)
+    {
+        Vector3 pos = this.worldPosition;
+        Vector2Int orig = this.origin;
+        BuildingScriptableObject.Dir direction = this.dir;
 
-            placedModules.Remove(oldObject);
-            oldObject.Destructor();
-            Destroy(oldObject.gameObject);
-            Debug.Log($"New module grid pos: {gridPos}");
-            PlacedObject newModule = PlacedObject.Create(gridObject.GetWorldPosition(gridPos.x, gridPos.y), gridPos, oldDirection, placedObjectSO, true);
-            EconomyManager.instance.HandleNewPlacedBuilding(placedObjectSO);
-            newModule.OnPlace();
-            placedModules.Add(newModule);
-            return newModule;
-        }
-        else
-        {
-            throw new Exception("No object to remove");
-        }
+        if (this.parent != null)
+            this.parent.modules.Remove(this);
+        GameObject oldObject = this.gameObject;
 
+        PlacedObject placedObject = null;
+        GameObject prefab = (inInstitution ? placedObjectSO.modulePrefab : placedObjectSO.prefab);
+        GameObject placedObjTransform = Instantiate(prefab, this.worldPosition, this.worldRotation);
+
+        placedObject = placedObjTransform.GetComponent<PlacedObject>();
+        placedObject.placedSctiptableObject = placedObjectSO;
+        placedObject.origin = this.origin;
+        placedObject.dir = this.dir;
+        placedObject.worldPosition = this.worldPosition;
+        placedObject.worldRotation = this.worldRotation;
+        placedObject.name = placedObjectSO.name + "_module";
+        placedObject.isModule = placedObjectSO.module;
+        placedObject.parent = this.parent;
+        placedObject.inInstitution = this.inInstitution;
+
+        if (this.parent != null)
+            this.parent.modules.Add(placedObject);
+
+        Destroy(oldObject);
+
+        return placedObject;
     }
     [Header("People")]
     [SerializeField] NavmeshNpc person;
@@ -256,11 +243,11 @@ public class PlacedObject : MonoBehaviour
         int associatedPeopleAmt = 0;
         if (associatedPeople != null) associatedPeopleAmt = associatedPeople.Count;
 
-        foreach (PlacedObject module in placedModules)
-        {
-            module.Destructor();
-            Destroy(module.gameObject);
-        }
+        //foreach (PlacedObject module in placedModules)
+        //{
+        //    module.Destructor();
+        //    Destroy(module.gameObject);
+        //}
         foreach(NavmeshNpc _npc in associatedPeople)
         {
             Destroy(_npc.gameObject);

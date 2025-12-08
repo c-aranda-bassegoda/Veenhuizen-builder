@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Kerk
   m_EditorClassIdentifier: 
-  name: Kerk
+  name: Church
   prefab: {fileID: 6600959261270428487, guid: 80d3ebaa941b85545868173bb448ad3c, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: 80d3ebaa941b85545868173bb448ad3c, type: 3}
-  moduleCore: {fileID: 0}
-  moduleBSOs: []
-  modulePositions: []
+  modulePrefab: {fileID: 0}
+  modules: []
   width: 1
   height: 1
   hapiness: 10

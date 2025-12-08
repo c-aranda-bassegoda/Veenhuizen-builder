@@ -64,6 +64,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: School_Textured
       objectReference: {fileID: 0}
+    - target: {fileID: 5354422271247742727, guid: b123a489cc7a33a4aa982108238b14d8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5354422271247742727, guid: b123a489cc7a33a4aa982108238b14d8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5354422271247742727, guid: b123a489cc7a33a4aa982108238b14d8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5354422271247742727, guid: b123a489cc7a33a4aa982108238b14d8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5354422271247742727, guid: b123a489cc7a33a4aa982108238b14d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

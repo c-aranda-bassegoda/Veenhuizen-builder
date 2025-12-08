@@ -73,12 +73,23 @@ public class GridBuildingSystem : MonoBehaviour
 
         if (CanPlace(gridPositionList))
         {
-            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false, grid);
-            placedObj.transform.GetChild(0).Rotate(new Vector3(0, buildingSO.GetRotationAngle(buildingSO.Direction)));
+            PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false);
 
-            foreach (Vector2Int position in gridPositionList)
-                grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
-            if(buildingSO.name == "Zandweg")
+            if (placedObj.modules.Count > 0)
+            {
+                int i = 0;
+                foreach (Vector2Int position in gridPositionList)
+                {
+                    grid.GetGridObj(position.x, position.y).SetPlacedObject((i % 2 == 0 ? placedObj : placedObj.modules[i / 2])); // Only works for 3x3 institutions needs reworking for arbitrary sized inst (gridPositionList doesn't have info of height and width)
+                    i++;
+                }
+            }
+            else
+            {
+                foreach (Vector2Int position in gridPositionList)
+                    grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+            }
+            if (buildingSO.name == "Zandweg")
             {
                 roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).GetComponent<MeshFilter>());
             }
@@ -91,7 +102,6 @@ public class GridBuildingSystem : MonoBehaviour
         }
         else if (buildingSO.module && CanSubstitute(gridPositionList))
         {
-            Debug.Log("Substitutable");
             ReplaceModule(worldPosition);
         }
         else
@@ -117,9 +127,9 @@ public class GridBuildingSystem : MonoBehaviour
         Vector2Int gridPos = new Vector2Int(x, z);
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(gridPos, placedObject.GetDir());
 
-        PlacedObject placedObj = placedObject.Replace(gridPos, buildingSO);
-        //foreach (Vector2Int position in gridPositionList)
-        //    grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
+        PlacedObject placedObj = placedObject.Replace(buildingSO);
+        foreach (Vector2Int position in gridPositionList)
+            grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
         roadManager.UpdateRoads(gridPos, false);
 
         SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
@@ -266,43 +276,23 @@ public class GridBuildingSystem : MonoBehaviour
 
     private bool CanSubstitute(List<Vector2Int> gridPositionList)
     {
-        bool canSub = false;
+        bool canSub = true;
         foreach (Vector2Int position in gridPositionList)
         {
             GridObject gridObject = grid.GetGridObj(position.x, position.y);
             if (gridObject == null)
             {
-                Debug.Log("GridObject is null");
                 canSub = false; break;
             }
             else
             {
                 if (!gridObject.CanPlace())
-                { 
-                    if (gridObject.GetPlacedObject().GetScriptableObject().modular)
-                    {
-                        //Checks all the module positions, so always returns false. only needs to check the ones that matter (usually 1)
-                        foreach(PlacedObject mod in gridObject.GetPlacedObject().placedModules)
-                        {
-                            Vector2Int modGridPos = new Vector2Int(mod.GetGridPositionList()[0].x, mod.GetGridPositionList()[0].y);
-                            Debug.Log($"Sub check: modPos({modGridPos}), newPos({position})");
-                            if(position == modGridPos)
-                            {
-                                canSub = true;
-                                foreach (Vector2Int _position in gridPositionList)
-                                {
-                                    if(_position != modGridPos)
-                                    {
-                                        canSub = false; break;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                {
+                    if (!gridObject.GetPlacedObject().isModule)
+                        canSub = false; break;
                 }
             }
         }
-        Debug.Log($"Can Subsitute: {canSub}");
         return canSub;
     }
 

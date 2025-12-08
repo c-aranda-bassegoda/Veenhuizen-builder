@@ -68,8 +68,8 @@ public class EconomyManager : MonoBehaviour
             money -= (bso.yearlyCost / 124);
             money += (bso.yearlyEarnings / 124);
 
-            food -= (bso.yearlyFoodCost / 124);
-            food += (bso.yearlyFoodEarnings / 124);
+            //food -= (bso.yearlyFoodCost / 124);
+            //food += (bso.yearlyFoodEarnings / 124);
         }
         UIManager.instance.UpdateMoney(money);
     }
