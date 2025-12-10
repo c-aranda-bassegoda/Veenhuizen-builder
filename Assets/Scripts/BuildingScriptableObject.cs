@@ -36,12 +36,15 @@ public class BuildingScriptableObject : ScriptableObject
     public int height;
     public float hapiness;
     public float control;
+    public float population;
+    public float workersNeeded;
     public float buildCost;
     public float yearlyCost;
     public float yearlyEarnings;
     public int maxPlacements;
     [DoNotSerialize] public bool module;
     public bool modular;
+    public bool moduleOnly;
     public float GetControl() { return control; }
     public float GetHapiness() { return hapiness; }
     public Dir Direction { get; set; }

@@ -60,7 +60,7 @@ public class InputManager : MonoBehaviour
 
     private void CheckClickDownEvent()
     {
-        Debug.Log($"IsPointerOverGameObject: {EventSystem.current.IsPointerOverGameObject()}");
+        //Debug.Log($"IsPointerOverGameObject: {EventSystem.current.IsPointerOverGameObject()}");
         if (EventSystem.current.IsPointerOverGameObject())
         {
             // Build pointer event data based on current mouse position
@@ -74,10 +74,10 @@ public class InputManager : MonoBehaviour
             EventSystem.current.RaycastAll(pointerData, results);
 
             // Log what UI elements we hit
-            foreach (var result in results)
-            {
-                Debug.Log("Pointer is over UI object: " + result.gameObject.name);
-            }
+            //foreach (var result in results)
+            //{
+            //    //Debug.Log("Pointer is over UI object: " + result.gameObject.name);
+            //}
         }
         if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() == false)
         {

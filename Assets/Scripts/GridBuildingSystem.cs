@@ -73,7 +73,7 @@ public class GridBuildingSystem : MonoBehaviour
         Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
 
-        if (CanPlace(gridPositionList))
+        if (CanPlace(gridPositionList) && !buildingSO.moduleOnly)
         {
             PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, gridPos, buildingSO.Direction, buildingSO, false);
 
@@ -257,11 +257,12 @@ public class GridBuildingSystem : MonoBehaviour
 
     public bool CanPlace(List<Vector2Int> gridPositionList)
     {
+        if (buildingSO.moduleOnly) return false;
         bool canPlace = true;
         foreach (Vector2Int position in gridPositionList)
         {
             GridObject gridObject = grid.GetGridObj(position.x, position.y);
-            Debug.Log($"Found object at {position.x}, {position.y}");
+            //Debug.Log($"Found object at {position.x}, {position.y}");
             if (gridObject == null)
             {
                 canPlace = false; break;
@@ -292,8 +293,14 @@ public class GridBuildingSystem : MonoBehaviour
                 if (!gridObject.CanPlace())
                 {
                     if (!gridObject.GetPlacedObject().isModule)
-                        canSub = false; break;
+                        canSub = false; 
+                    break;
+                } else
+                {
+                    canSub = false;
+                    break; // nothing to sub
                 }
+                
             }
         }
         return canSub;
