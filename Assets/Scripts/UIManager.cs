@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance;
     public GameObject happyOut, controlOut;
-    [SerializeField] public EconomyManager manager;
     [SerializeField] TextMeshProUGUI moneyAmountText;
     [SerializeField] TextMeshProUGUI foodAmountText;
 
@@ -14,16 +12,29 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI seasonText;
     [SerializeField] TextMeshProUGUI yearNumberText;
 
-    private void Awake()
+
+
+    private void OnEnable()
     {
-        instance = this;
+        GameEvents.OnStatsChanged += UpdateStats;
+        GameEvents.OnMoneyChanged += UpdateMoney;
+        GameEvents.OnCalendarChanged += UpdateCalendar;
     }
 
-    public void UpdateStats()
+    private void OnDisable()
     {
-        happyOut.GetComponentInChildren<TMP_Text>().text = manager.happy.ToString();
-        controlOut.GetComponentInChildren<TMP_Text>().text = manager.control.ToString();
+        GameEvents.OnStatsChanged -= UpdateStats;
+        GameEvents.OnMoneyChanged -= UpdateMoney;
+        GameEvents.OnCalendarChanged -= UpdateCalendar; 
     }
+
+    public void UpdateStats(float happy, float control, float ppl)
+    {
+        happyOut.GetComponentInChildren<TMP_Text>().text = happy.ToString();
+        controlOut.GetComponentInChildren<TMP_Text>().text = control.ToString();
+    }
+
+
 
     public void UpdateMoney(float newAmount)
     {

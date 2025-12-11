@@ -17,19 +17,15 @@ public class EconomyManager : MonoBehaviour
     }
 
     public float happy, control, money, food, ppl;
+    private bool timePaused = false;
     //[SerializeField] private List<BuildingScriptableObject> buildings;
     [SerializeField] private List<BuildingScriptableObject> placedBuildingsSOs;
     [SerializeField] private List<PlacedObject> connectedObjects;
     [SerializeField]private Dictionary<string, int> maxCount;
-    public static EconomyManager instance;
     [SerializeField] float secondsPerDay;
     int dayNumber;
     int yearNumber;
 
-    private void Awake()
-    {
-        instance = this;
-    }
     private void Start()
     {
         connectedObjects = new();
@@ -42,7 +38,7 @@ public class EconomyManager : MonoBehaviour
 
         maxCount = new Dictionary<string, int>();
 
-        UIManager.instance.UpdateMoney(money);
+        GameEvents.OnMoneyChanged(money);
 
         StartCoroutine(Economy());
     }
@@ -53,17 +49,33 @@ public class EconomyManager : MonoBehaviour
 
         while(true)
         {
+            while (timePaused)
+                yield return null;
             dayNumber++;
             if(dayNumber >= 125)
             {
                 dayNumber = 1;
                 yearNumber++;
+                PauseTime();
+                GameEvents.OnShowProgressReport?.Invoke();
             }
-            UIManager.instance.UpdateCalendar(dayNumber, yearNumber);
+            GameEvents.OnCalendarChanged(dayNumber, yearNumber);
             HandleDayEcon();
             yield return new WaitForSeconds(secondsPerDay);
         }
     }
+    private void OnEnable()
+    {
+        GameEvents.OnResumeTime += ResumeTime;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnResumeTime -= ResumeTime;
+    }
+
+    public void PauseTime() { timePaused = true; }
+    public void ResumeTime() { timePaused = false; }
 
     void HandleDayEcon()
     {
@@ -75,7 +87,7 @@ public class EconomyManager : MonoBehaviour
             //food -= (bso.yearlyFoodCost / 124);
             //food += (bso.yearlyFoodEarnings / 124);
         }
-        UIManager.instance.UpdateMoney(money);
+        GameEvents.OnMoneyChanged(money);
     }
 
     public bool CanAfford(BuildingScriptableObject buildingSO)
@@ -117,7 +129,8 @@ public class EconomyManager : MonoBehaviour
         money -= newObject.buildCost;
         control += newObject.control;
         ppl += newObject.population;
-        UIManager.instance.UpdateMoney(money);
+        GameEvents.OnMoneyChanged(money);
+        GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
     }
 
@@ -125,6 +138,7 @@ public class EconomyManager : MonoBehaviour
     {
         connectedObjects.Add(building);
         happy += newObject.hapiness;
+        GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
     }
 
@@ -150,6 +164,7 @@ public class EconomyManager : MonoBehaviour
         ppl -= oldObject.population;
         placedBuildingsSOs.Remove(oldObject);
         connectedObjects.Remove(building);
+        GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
     }
 }

@@ -10,7 +10,9 @@ public class UIController : MonoBehaviour
     public Action<BuildingScriptableObject> OnPlaceBuilding;
     public Action OnDelete, OnRotate, OnPlaceRoad;
     public Button  deleteButton, rotateButton;
-    public GameObject panelHousing;
+    public Button reportCloseButton;
+    public GameObject panelHousing, interruptionPanel;
+    public GameObject progressReport;
 
     [SerializeField] public AudioClip clickSound;
 
@@ -19,7 +21,7 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        buttons = new List<Button> {deleteButton, rotateButton};
+        buttons = new List<Button> {deleteButton, rotateButton, reportCloseButton};
         rotateButton.interactable = false;
         ResetButtonColor();
         
@@ -38,8 +40,30 @@ public class UIController : MonoBehaviour
             OnRotate?.Invoke();
             //HideHousingPanel();
         });
+        reportCloseButton.onClick.AddListener(() =>
+        {
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
+            progressReport.SetActive(false); // or whichever panel you want to hide
+            interruptionPanel.SetActive(false);
+            GameEvents.OnResumeTime?.Invoke();
+        });
     }
 
+    private void OnEnable()
+    {
+        GameEvents.OnShowProgressReport += ShowProgressReportPanel;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnShowProgressReport -= ShowProgressReportPanel;
+    }
+
+    private void ShowProgressReportPanel()
+    {
+        progressReport.SetActive(true);
+        interruptionPanel.SetActive(true);
+    }
 
     public void ModifyOutline(Button button)
     {
