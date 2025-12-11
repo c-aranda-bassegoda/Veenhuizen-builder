@@ -117,4 +117,5 @@ public static class GameEvents
     public static Action<int, int> OnCalendarChanged; 
     public static Action OnShowProgressReport;
     public static Action OnResumeTime;
+    public static Action<string> OnErrorMessage;
 }

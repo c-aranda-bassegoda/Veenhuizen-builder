@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,6 +14,10 @@ public class UIController : MonoBehaviour
     public Button reportCloseButton;
     public GameObject panelHousing, interruptionPanel;
     public GameObject progressReport;
+    public GameObject errorPopUp;
+    public Button errorCloseButton; 
+    public TextMeshProUGUI errorMessage;
+
 
     [SerializeField] public AudioClip clickSound;
 
@@ -21,7 +26,7 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        buttons = new List<Button> {deleteButton, rotateButton, reportCloseButton};
+        buttons = new List<Button> {deleteButton, rotateButton, reportCloseButton, errorCloseButton};
         rotateButton.interactable = false;
         ResetButtonColor();
         
@@ -47,18 +52,35 @@ public class UIController : MonoBehaviour
             interruptionPanel.SetActive(false);
             GameEvents.OnResumeTime?.Invoke();
         });
+        errorCloseButton.onClick.AddListener(() =>
+        {
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
+            errorPopUp.SetActive(false); // or whichever panel you want to hide
+            interruptionPanel.SetActive(false);
+            GameEvents.OnResumeTime?.Invoke();
+        });
     }
 
     private void OnEnable()
     {
         GameEvents.OnShowProgressReport += ShowProgressReportPanel;
+        GameEvents.OnErrorMessage += ShowErrorPanel;
     }
+
 
     private void OnDisable()
     {
         GameEvents.OnShowProgressReport -= ShowProgressReportPanel;
+        GameEvents.OnErrorMessage -= ShowErrorPanel;
     }
 
+    private void ShowErrorPanel(string mssg)
+    {
+        errorMessage.text = mssg;
+        errorPopUp.SetActive(true);
+        interruptionPanel.SetActive(true);
+
+    }
     private void ShowProgressReportPanel()
     {
         progressReport.SetActive(true);

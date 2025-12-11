@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -38,7 +39,7 @@ public class EconomyManager : MonoBehaviour
 
         maxCount = new Dictionary<string, int>();
 
-        GameEvents.OnMoneyChanged(money);
+        GameEvents.OnMoneyChanged?.Invoke(money);
 
         StartCoroutine(Economy());
     }
@@ -52,14 +53,14 @@ public class EconomyManager : MonoBehaviour
             while (timePaused)
                 yield return null;
             dayNumber++;
-            if(dayNumber >= 125)
+            if(dayNumber >= 15)
             {
                 dayNumber = 1;
                 yearNumber++;
                 PauseTime();
                 GameEvents.OnShowProgressReport?.Invoke();
             }
-            GameEvents.OnCalendarChanged(dayNumber, yearNumber);
+            GameEvents.OnCalendarChanged?.Invoke(dayNumber, yearNumber);
             HandleDayEcon();
             yield return new WaitForSeconds(secondsPerDay);
         }
@@ -87,21 +88,35 @@ public class EconomyManager : MonoBehaviour
             //food -= (bso.yearlyFoodCost / 124);
             //food += (bso.yearlyFoodEarnings / 124);
         }
-        GameEvents.OnMoneyChanged(money);
+        GameEvents.OnMoneyChanged?.Invoke(money);
     }
 
     public bool CanAfford(BuildingScriptableObject buildingSO)
     {
-        if (buildingSO.buildCost <= money) return true;
-        else return false;
+        if (buildingSO.buildCost >= money)
+        {
+            PauseTime();
+            GameEvents.OnErrorMessage("Can't afford building");
+            return false;
+        }
+
+        string buildingName = buildingSO.name;
+        if (!buildingCount.ContainsKey(buildingName))
+            return true;
+        if (maxCount[buildingName] <= buildingCount[buildingName])
+        {
+            PauseTime();
+            GameEvents.OnErrorMessage("Can't place more buildings of type " + buildingName);
+            return false;
+        }
+        
+        return true;
     }
 
     public void HandleNewPlacedBuilding(BuildingScriptableObject newObject)
     {
         if (newObject == null)
             Debug.LogError("No new object");
-
-        if (placedBuildingsSOs.Contains(newObject)) return;
 
         string buildingName = newObject.name;
 
@@ -111,10 +126,6 @@ public class EconomyManager : MonoBehaviour
             buildingCount.Add(newObject.name, 0);
         }
 
-        if (maxCount[buildingName] <= buildingCount[buildingName])
-        {
-            Debug.LogError("Can't place more buildings of type " + buildingName);
-        }
 
         if (buildingCount.ContainsKey(buildingName))
         {
@@ -129,7 +140,7 @@ public class EconomyManager : MonoBehaviour
         money -= newObject.buildCost;
         control += newObject.control;
         ppl += newObject.population;
-        GameEvents.OnMoneyChanged(money);
+        GameEvents.OnMoneyChanged?.Invoke(money);
         GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
     }

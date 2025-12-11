@@ -61,8 +61,6 @@ public class GridBuildingSystem : MonoBehaviour
 
         if(!economyManager.CanAfford(buildingSO))
         {
-            Debug.Log("Can't afford building");
-            //show some UI message
             return buildingSO;
         }
 
