@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject happyOut, controlOut;
+
+    [SerializeField] TextMeshProUGUI peopleText;
+    [SerializeField] TextMeshProUGUI happynessText;
+    [SerializeField] TextMeshProUGUI workingPeopleText;
+
     [SerializeField] TextMeshProUGUI moneyAmountText;
     [SerializeField] TextMeshProUGUI foodAmountText;
 
@@ -30,8 +34,9 @@ public class UIManager : MonoBehaviour
 
     public void UpdateStats(float happy, float control, float ppl)
     {
-        happyOut.GetComponentInChildren<TMP_Text>().text = happy.ToString();
-        controlOut.GetComponentInChildren<TMP_Text>().text = control.ToString();
+        happynessText.text = ((int)happy).ToString();
+        workingPeopleText.text = ((int)(ppl > control? control : ppl)).ToString();
+        peopleText.text = ((int) ppl).ToString();
     }
 
 
