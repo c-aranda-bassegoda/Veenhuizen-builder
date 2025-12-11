@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class RoadManager : MonoBehaviour
     [SerializeField] EconomyManager economyManager;
     [SerializeField] NavMeshSurface navMeshSurface;
 
+    public List<List<PlacedObject>> connectedObjectGroups = new();
+
     public void Update()
     {
 
@@ -26,7 +29,7 @@ public class RoadManager : MonoBehaviour
         if (!placedRoads.ContainsKey(roadPos))
         {
             placedRoads.Add(roadPos, newRoadMesh);
-            UpdateRoads(roadPos);
+            UpdateConnections(roadPos);
         }
     }
 
@@ -36,7 +39,7 @@ public class RoadManager : MonoBehaviour
         {
             //Destroy(GetPlacedRoad(roadPos));
             placedRoads.Remove(roadPos);
-            UpdateRoads(roadPos);
+            UpdateConnections(roadPos);
         }
     }
 
@@ -48,16 +51,18 @@ public class RoadManager : MonoBehaviour
         string roadConfig = CheckAdjacentRoads(isRoadThere);
         UpdateRoad(roadToUpdate, roadConfig);
     }
-    public void UpdateRoads(Vector2Int roadPos, bool placingRoad = true)
+    public void UpdateConnections(Vector2Int roadPos, bool placingRoad = true)
     {
+        ConnectNewObject(roadPos);
+
         List<Vector2Int> roadsToUpdate = GetAdjacentRoadPositions(roadPos);
-        if(placingRoad) roadsToUpdate.Add(roadPos);
-        CheckRoadConnectionOnBuild(roadPos);
+        if (placingRoad) roadsToUpdate.Add(roadPos);
+        //CheckRoadConnectionOnBuild(roadPos);
 
         foreach (Vector2Int pos in roadsToUpdate)
         {
             MeshFilter roadToUpdate = GetPlacedRoad(pos);
-            if(roadToUpdate == null) continue;
+            if (roadToUpdate == null) continue;
 
             Debug.Log($"Checking adjacent positions for {pos.x}, {pos.y}");
 
@@ -99,129 +104,279 @@ public class RoadManager : MonoBehaviour
         return isObjectThere;
     }
 
-    private void CheckRoadConnectionOnBuild(Vector2Int pos)
+
+    public void DisconnectObject(Vector2Int pos)
     {
-        List<PlacedObject> connectedObjects = GetConnectedObjects(pos, false);
-
-        foreach(PlacedObject connectedObject in connectedObjects)
-        {
-            foreach (PlacedObject addingConnectedObject in connectedObjects)
-            {
-                if( (connectedObject != addingConnectedObject) && (!connectedObject.connectedObjects.Contains(addingConnectedObject)) )
-                {
-                    connectedObject.connectedObjects.Add(addingConnectedObject);
-                }
-            }
-
-            UpdateObjectNotConnectedWarning(connectedObject);
-        }
-    }
-
-    public void CheckRoadConnectionOnDelete(Vector2Int pos)
-    {
-        List<PlacedObject> connectedObjects = GetConnectedObjects(pos, true);
-
-        Debug.Log($"Objects connected to {pos}: {connectedObjects.Count}");
-
-        Dictionary<Vector2Int, PlacedObject> connectedObjectPositions = new();
-
-        foreach(PlacedObject obj in connectedObjects)
-        {
-            Vector2Int objPos = obj.GetOrigin();
-            connectedObjectPositions.Add(objPos, obj);
-
-            //Debug.Log($"Connected Objects: {obj.name} at {objPos}");
-        }
-
-        foreach(KeyValuePair<Vector2Int, PlacedObject> obj in connectedObjectPositions)
-        {
-            List<PlacedObject> currentConnectedObjects = GetConnectedObjects(obj.Key, false);
-            obj.Value.connectedObjects.Clear();
-            Debug.Log($"Clearing {obj.Value.name}");
-            foreach(PlacedObject _obj in currentConnectedObjects)
-            {
-                if (obj.Value != _obj)
-                {
-                    obj.Value.connectedObjects.Add(_obj);
-                    Debug.Log($"Adding: {_obj.name} to {obj.Value.name} at {obj.Key}");
-                }
-            }
-
-            UpdateObjectNotConnectedWarning(obj.Value);
-        }
-    }
-
-    private List<PlacedObject> GetConnectedObjects(Vector2Int pos, bool isDelete)
-    {
+        /*
+         I think the old objects position doesnt get cleared from the grid before this check so nothing ever changes in terms of connectivity
+         */
         Grid<GridObject> grid = gridBuildingSystem.GetGrid();
-        bool skipFirstObjectCheck = isDelete;
+        GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
+        PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
+
+        int oldObjectCount = 0;
+        foreach(List<PlacedObject> objGroup in connectedObjectGroups)
+        {
+            if(objGroup.Contains(currentPlacedObject))
+            {
+                oldObjectCount = objGroup.Count;
+                objGroup.Remove(currentPlacedObject);
+            }
+        }
+
+        int oldListAmount = connectedObjectGroups.Count;
 
         List<Vector2Int> checkedPositions = new();
-        List<Vector2Int> uncheckedPositions = new();
-        List<PlacedObject> connectedObjects = new();
+        List<Vector2Int> adjPositionsToCheck = GetAdjacentRoadPositions(pos);
+        List<Vector2Int> adjObjectPositions = new();
 
-        uncheckedPositions.Add(pos);
+        List<PlacedObject> adjObjects = new() { currentPlacedObject };
 
-        while (uncheckedPositions.Count > 0)
+        foreach (Vector2Int adjPosToCheck in adjPositionsToCheck)
         {
-            List<Vector2Int> newPositionsTempList = new();
-            List<Vector2Int> oldPositionsTempList = new();
+            Debug.Log($"DisconnectObject: checking {adjPosToCheck})");
 
-            foreach (Vector2Int uncheckedPos in uncheckedPositions)
+            GridObject adjGridObject = grid.GetGridObj(adjPosToCheck.x, adjPosToCheck.y);
+            if (adjGridObject == null) continue;
+            PlacedObject adjPlacedObject = adjGridObject.GetPlacedObject();
+            if (adjPlacedObject != null)
             {
-                //Debug.Log($"Checking New Position: {uncheckedPos}");
-                oldPositionsTempList.Add(uncheckedPos);
-                checkedPositions.Add(uncheckedPos);
-
-                GridObject gridObject = grid.GetGridObj(uncheckedPos.x, uncheckedPos.y);
-                PlacedObject placedObject = null;
-
-                if (gridObject != null)
-                {
-                    placedObject = gridObject.GetPlacedObject();
-                }
-
-                if (placedObject == null && !skipFirstObjectCheck) continue;
-
-                if (!skipFirstObjectCheck)
-                {
-                    if (placedObject.gameObject.tag != "Road" && !connectedObjects.Contains(placedObject))
-                    {
-                        //Debug.Log($"Adding New Position Object: {uncheckedPos} , {placedObject.name}");
-                        connectedObjects.Add(placedObject);
-                    }
-                }
-                skipFirstObjectCheck = false;
-
-                List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(uncheckedPos);
-
-                foreach (Vector2Int adjRoadPos in adjacentRoadPositions)
-                {
-                    if (!checkedPositions.Contains(adjRoadPos))
-                    {
-                        newPositionsTempList.Add(adjRoadPos);
-                    }
-                }
-            }
-
-            foreach (Vector2Int tempPos in oldPositionsTempList)
-            {
-                uncheckedPositions.Remove(tempPos);
-            }
-
-            foreach (Vector2Int tempPos in newPositionsTempList)
-            {
-                uncheckedPositions.Add(tempPos);
+                adjObjectPositions.Add(adjPosToCheck);
+                adjObjects.Add(adjPlacedObject);
             }
         }
 
-        return connectedObjects;
+        //List<Vector2Int> positionsWithObjects = new();
+
+        bool foundAllPositions = false;
+        int foundAdjPositions = 0;
+
+        foreach (Vector2Int adjPosToCheck in adjPositionsToCheck)
+        {
+
+            List<PlacedObject> objectsInNewGroup = new();
+            List<Vector2Int> uncheckedPositions = new() { adjPosToCheck };
+
+            while (uncheckedPositions.Count > 0)
+            {
+                List<Vector2Int> newPositionsTempList = new();
+                List<Vector2Int> oldPositionsTempList = new();
+
+                foreach (Vector2Int uncheckedPos in uncheckedPositions)
+                {
+                    //Debug.Log($"Checking New Position: {uncheckedPos}");
+                    checkedPositions.Add(uncheckedPos);
+                    oldPositionsTempList.Add(uncheckedPos);
+
+                    if (uncheckedPos == pos) continue;
+
+                    GridObject gridObject = grid.GetGridObj(uncheckedPos.x, uncheckedPos.y);
+                    PlacedObject placedObject = null;
+
+                    if (gridObject != null)
+                    {
+                        placedObject = gridObject.GetPlacedObject();
+
+                        if (placedObject != null)
+                        {
+                            //positionsWithObjects.Add(uncheckedPos);
+
+                            if(adjObjectPositions.Contains(uncheckedPos))
+                            {
+                                foundAdjPositions++;
+                                Debug.Log($"Found adjacent position: {uncheckedPos}");
+                                if (foundAdjPositions == adjObjectPositions.Count) foundAllPositions = true;
+                            }
+
+                            if (foundAllPositions)
+                            {
+                                Debug.Log($"Found all positions, restoring groups to old");
+                                break;
+                            }
+                            objectsInNewGroup.Add(placedObject);
+
+                            List<Vector2Int> newAdjacentPositions = GetAdjacentRoadPositions(uncheckedPos);
+                            foreach(Vector2Int newAdjPos in newAdjacentPositions)
+                            {
+                                if(!checkedPositions.Contains(newAdjPos)) newPositionsTempList.Add(newAdjPos);
+                            }
+                        }
+                    }
+                }
+                if (foundAllPositions) break;
+
+                foreach (Vector2Int tempPos in oldPositionsTempList)
+                {
+                    uncheckedPositions.Remove(tempPos);
+                }
+
+                foreach (Vector2Int tempPos in newPositionsTempList)
+                {
+                    if(adjPositionsToCheck.Contains(tempPos)) uncheckedPositions.Insert(0, tempPos);
+                    else uncheckedPositions.Add(tempPos);
+                }
+            }
+
+            if (foundAllPositions) break;
+
+            Debug.Log($"DisconnectObject: Old List Amount: {connectedObjectGroups.Count}");
+
+            if (objectsInNewGroup.Count > 0)
+            {
+                List<PlacedObject> newObjectList = new();
+                newObjectList.AddRange(objectsInNewGroup);
+                connectedObjectGroups.Add(newObjectList);
+
+                Debug.Log($"DisconnectObject: new list: {newObjectList.Count}");
+                foreach (PlacedObject obj in newObjectList)
+                {
+                    Debug.Log($"DisconnectObject: new object: {obj.name}");
+                    UpdateObjectNotConnectedWarning(obj, newObjectList);
+                }
+
+                if (newObjectList.Count == (oldObjectCount - 1)) break;
+            }
+        }
+
+        if (foundAllPositions)
+        {
+            if(connectedObjectGroups.Count > oldListAmount)
+            { 
+                connectedObjectGroups.RemoveRange(oldListAmount, connectedObjectGroups.Count - oldListAmount);
+            }
+        }
+        else
+        {
+            List<List<PlacedObject>> listsToRemove = new();
+
+            foreach (PlacedObject adjObj in adjObjects)
+            {
+                //Debug.Log($"DisconnectObject: Checking {adjObj}");
+                foreach (List<PlacedObject> objGroup in connectedObjectGroups)
+                {
+                    if (objGroup.Contains(adjObj))
+                    {
+                        if (adjObjects.IndexOf(adjObj) == 0) oldObjectCount = objGroup.Count;
+                        if (!listsToRemove.Contains(objGroup))
+                        {
+                            listsToRemove.Add(objGroup);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            foreach (List<PlacedObject> listToRemove in listsToRemove)
+            {
+                connectedObjectGroups.Remove(listToRemove);
+                Debug.Log($"Removing object group, new amount {connectedObjectGroups.Count}");
+            }
+        }
     }
 
-    public void UpdateObjectNotConnectedWarning(PlacedObject obj)
+    private void ConnectNewObject(Vector2Int pos)
+    {
+        Grid<GridObject> grid = gridBuildingSystem.GetGrid();
+
+        //List<Vector2Int> checkedPositions = new();
+        //List<Vector2Int> uncheckedPositions = new();
+        List<PlacedObject> directlyConnectedObjects = new();
+        List<List<PlacedObject>> groupsToMerge = new();
+
+        GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
+        PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
+
+        List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(pos);
+
+        foreach (Vector2Int gridPos in adjacentRoadPositions)
+        {
+            GridObject gridObject = grid.GetGridObj(gridPos.x, gridPos.y);
+
+            if (gridObject != null)
+            {
+                PlacedObject placedObject = gridObject.GetPlacedObject();
+                directlyConnectedObjects.Add(placedObject);
+            }
+        }
+
+        foreach (PlacedObject placedObject in directlyConnectedObjects)
+        {
+            foreach (List<PlacedObject> placedObjGroup in connectedObjectGroups)
+            {
+                if (placedObjGroup.Contains(placedObject))
+                {
+                    groupsToMerge.Add(placedObjGroup);
+                }
+            }
+        }
+
+        if (groupsToMerge.Count > 1)
+        {
+            foreach (List<PlacedObject> objGroup in groupsToMerge)
+            {
+                if (groupsToMerge.IndexOf(objGroup) != 0)
+                {
+                    groupsToMerge[0].AddRange(objGroup);
+                    connectedObjectGroups.Remove(objGroup);
+                }
+            }
+            foreach (PlacedObject placedObject in groupsToMerge[0])
+            {
+                UpdateObjectNotConnectedWarning(placedObject, groupsToMerge[0]);
+            }
+
+            Debug.Log($"ConnectNewObject: merged {groupsToMerge.Count} groups into one: ");
+            foreach (PlacedObject placedObject in groupsToMerge[0]) Debug.Log($"ConnectNewObject: {placedObject.name}");
+        }
+        else if (groupsToMerge.Count == 1)
+        {
+            groupsToMerge[0].Add(currentPlacedObject);
+            foreach(PlacedObject placedObject in groupsToMerge[0])
+            {
+                UpdateObjectNotConnectedWarning(placedObject, groupsToMerge[0]);
+            }
+
+            Debug.Log("ConnectNewObject: added to 1 existing group: ");
+            foreach(PlacedObject placedObject in groupsToMerge[0]) Debug.Log($"ConnectNewObject: {placedObject.name}");
+        }
+        else
+        {
+            connectedObjectGroups.Add(new List<PlacedObject> { currentPlacedObject });
+            UpdateObjectNotConnectedWarning(currentPlacedObject, connectedObjectGroups[connectedObjectGroups.Count - 1]);
+
+            Debug.Log("ConnectNewObject: new group created");
+        }
+
+        //UpdateObjectNotConnectedWarning(currentPlacedObject);
+    }
+
+    private List<PlacedObject> GetConnectedObjects(Vector2Int pos)
+    {
+        Grid<GridObject> grid = gridBuildingSystem.GetGrid();
+        GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
+        PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
+
+        foreach(List<PlacedObject> objGroup in connectedObjectGroups)
+        {
+            if(objGroup.Contains(currentPlacedObject)) return objGroup;
+        }
+        throw new Exception("Object not in any group");
+    }
+
+    public void UpdateObjectNotConnectedWarning(PlacedObject obj, List<PlacedObject> objGroup)
     {
         BuildingScriptableObject buildingSO = obj.GetScriptableObject();
-        if(obj.connectedObjects.Count > 0)
+        int connectedBuildingCount = 0;
+
+        foreach (PlacedObject connectedObj in objGroup)
+        {
+            //Custom logic depending on object ideally
+            if (!connectedObj.gameObject.CompareTag("Road")) connectedBuildingCount++;
+        }
+
+        //Debug.Log($"ConnectNewObject: {connectedBuildingCount} buildings connected");
+
+        if (connectedBuildingCount > 1)
         {
             if(obj.exclamationMark != null) obj.exclamationMark.SetActive(false);
             Debug.Log($"Connected: {obj.name}");

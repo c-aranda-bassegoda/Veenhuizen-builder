@@ -96,7 +96,7 @@ public class GridBuildingSystem : MonoBehaviour
                 roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).GetComponent<MeshFilter>());
             }
             placedObjects.Add(placedObj);
-            roadManager.UpdateRoads(gridPos, false);
+            roadManager.UpdateConnections(gridPos, false);
             economyManager.HandleNewPlacedBuilding(buildingSO);
             placedObj.OnPlace();
 
@@ -132,7 +132,7 @@ public class GridBuildingSystem : MonoBehaviour
         PlacedObject placedObj = placedObject.Replace(buildingSO);
         foreach (Vector2Int position in gridPositionList)
             grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
-        roadManager.UpdateRoads(gridPos, false);
+        roadManager.UpdateConnections(gridPos, false);
 
         SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
     }
@@ -171,6 +171,8 @@ public class GridBuildingSystem : MonoBehaviour
     public PlacedObject RemoveObject(Vector3 worldPosition)
     {
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
+        roadManager.DisconnectObject(new Vector2Int(x, z));
+
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
 
         GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
@@ -195,7 +197,6 @@ public class GridBuildingSystem : MonoBehaviour
                 grid.GetGridObj(position.x, position.y).ClearPlacedObject();
             }
 
-            roadManager.CheckRoadConnectionOnDelete(new Vector2Int(x, z));
 
             SoundFXManager.Instance.PlaySoundFXClip(deleteSound, placedObject.transform, 0.1f);
             return placedObject;

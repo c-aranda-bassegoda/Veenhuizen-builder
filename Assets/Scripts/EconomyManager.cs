@@ -104,10 +104,10 @@ public class EconomyManager : MonoBehaviour
             buildingCount.Add(newObject.name, 0);
         }
 
-        if (maxCount[buildingName] <= buildingCount[buildingName])
-        {
-            Debug.LogError("Can't place more buildings of type " + buildingName);
-        }
+        //if (maxCount[buildingName] <= buildingCount[buildingName])
+        //{
+        //    Debug.LogError("Can't place more buildings of type " + buildingName);
+        //}
 
         if (buildingCount.ContainsKey(buildingName))
         {
