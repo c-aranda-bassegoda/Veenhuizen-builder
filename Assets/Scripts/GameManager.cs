@@ -87,7 +87,6 @@ public class GameManager : MonoBehaviour
         {
             PlacedObject objToRemove = gridBuildingSystem.RemoveObject(position);
             objectSO = objToRemove.GetScriptableObject();
-            economyManager.HandleRemovedBuilding(objectSO, objToRemove);
         }
         if (gridBuildingSystem.AddingBuilding)
         {

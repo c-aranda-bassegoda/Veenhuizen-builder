@@ -178,6 +178,8 @@ public class GridBuildingSystem : MonoBehaviour
         PlacedObject placedObject = gridObject.GetPlacedObject();
         if (placedObject != null)
         {
+            economyManager.HandleRemovedBuilding(placedObject.GetScriptableObject(), placedObject);
+
             placedObject.Destructor();
             placedObjects.Remove(placedObject);
 

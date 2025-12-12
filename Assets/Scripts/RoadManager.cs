@@ -401,7 +401,7 @@ public class RoadManager : MonoBehaviour
         else
         {
             if (obj.exclamationMark != null) obj.exclamationMark.SetActive(true);
-            if(buildingSO != null) economyManager.HandleRemovedBuilding(buildingSO, obj);
+            if(buildingSO != null) economyManager.HandleDisconnectedBuilding(buildingSO, obj);
         }
     }
         

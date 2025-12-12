@@ -160,10 +160,8 @@ public class EconomyManager : MonoBehaviour
     public void HandleRemovedBuilding(BuildingScriptableObject oldObject, PlacedObject building)
     {
         if (oldObject == null)
-            Debug.LogError("No new object");
+            Debug.LogError("No object");
         string buildingName = oldObject.name;
-
-        if (!connectedObjects.Contains(building)) return;
 
         if (buildingCount.ContainsKey(buildingName))
         {
@@ -174,13 +172,33 @@ public class EconomyManager : MonoBehaviour
         {
             Debug.LogError("No building named " + buildingName);
         }
+
+        if (connectedObjects.Contains(building))
+        {
+            happy -= oldObject.hapiness;
+            control -= oldObject.control;
+            ppl -= oldObject.population;
+            connectedObjects.Remove(building);
+            GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
+        }
+        money += oldObject.buildCost;
+        placedBuildingsSOs.Remove(oldObject);
+        GameEvents.OnMoneyChanged?.Invoke(money);
+        Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
+    }
+
+    internal void HandleDisconnectedBuilding(BuildingScriptableObject oldObject, PlacedObject building)
+    {
+        if (oldObject == null)
+            Debug.LogError("No object");
+        string buildingName = oldObject.name;
+        if (!connectedObjects.Contains(building)) return;
+
         happy -= oldObject.hapiness;
         control -= oldObject.control;
         ppl -= oldObject.population;
-        placedBuildingsSOs.Remove(oldObject);
         connectedObjects.Remove(building);
         GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
-        Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
     }
 }
 
