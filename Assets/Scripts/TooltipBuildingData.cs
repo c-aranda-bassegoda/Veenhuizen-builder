@@ -14,13 +14,13 @@ public class TooltipBuildingData : MonoBehaviour
     {
         body = "Happiness: " + buildingSO.hapiness + "\n";
         body += "Control: " + buildingSO.control + "\n";
-        body += "Max placements: " + buildingSO.maxPlacements + "\n";
+        body += "Building Cost: " + buildingSO.buildCost + "\n";
     }
 
     internal string GetBody()
     {
-        string dynamicBody = buildingSO.name + "s left: " + (buildingSO.maxPlacements - economyManager.GetBuildingCount(buildingSO.name)).ToString();
-        return body + dynamicBody;
+        //string dynamicBody = buildingSO.name + "s left: " + (buildingSO.maxPlacements - economyManager.GetBuildingCount(buildingSO.name)).ToString();
+        return body;
     }
 
     internal string GetHeader()
