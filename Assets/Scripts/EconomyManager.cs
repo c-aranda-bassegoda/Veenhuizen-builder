@@ -61,7 +61,7 @@ public class EconomyManager : MonoBehaviour
                 GameEvents.OnShowProgressReport?.Invoke();
             }
             GameEvents.OnCalendarChanged?.Invoke(dayNumber, yearNumber);
-            HandleDayEcon();
+            //HandleDayEcon();
             yield return new WaitForSeconds(secondsPerDay);
         }
     }
@@ -100,15 +100,15 @@ public class EconomyManager : MonoBehaviour
             return false;
         }
 
-        string buildingName = buildingSO.name;
-        if (!buildingCount.ContainsKey(buildingName))
-            return true;
-        if (maxCount[buildingName] <= buildingCount[buildingName])
-        {
-            PauseTime();
-            GameEvents.OnErrorMessage("Can't place more buildings of type " + buildingName);
-            return false;
-        }
+        //string buildingName = buildingSO.name;
+        //if (!buildingCount.ContainsKey(buildingName))
+        //    return true;
+        //if (maxCount[buildingName] <= buildingCount[buildingName])
+        //{
+        //    PauseTime();
+        //    GameEvents.OnErrorMessage("Can't place more buildings of type " + buildingName);
+        //    return false;
+        //}
         
         return true;
     }

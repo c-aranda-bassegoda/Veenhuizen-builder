@@ -21,6 +21,11 @@ public class BuildingButton : MonoBehaviour
         uiController.rotateButton.interactable = true;
         uiController.ResetButtonColor();
         uiController.ModifyOutline(button);
+        if (button.transform.childCount > 0)
+        {
+            Transform layout = button.transform.GetChild(0);
+            uiController.HideSidebarFold(layout, button.transform);
+        }
         uiController.OnPlaceBuilding?.Invoke(buildingSO);
     }
 }

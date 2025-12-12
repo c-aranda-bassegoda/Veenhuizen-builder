@@ -15,6 +15,7 @@ public class UIController : MonoBehaviour
     public GameObject panelHousing, interruptionPanel;
     public GameObject progressReport;
     public GameObject errorPopUp;
+    public GameObject buildMenu;
     public Button errorCloseButton; 
     public TextMeshProUGUI errorMessage;
 
@@ -23,13 +24,32 @@ public class UIController : MonoBehaviour
 
     public Color outlineColor;
     List<Button> buttons;
+    List<Button> buildingButtons;
 
     private void Start()
     {
         buttons = new List<Button> {deleteButton, rotateButton, reportCloseButton, errorCloseButton};
+        buildingButtons = new List<Button>();
+        foreach (Button button in buildMenu.GetComponentsInChildren<Button>())
+        {
+            buildingButtons.Add(button);
+        }
         rotateButton.interactable = false;
         ResetButtonColor();
         
+        /*foreach (Button button in buildingButtons)
+        {
+            button.onClick.AddListener(() =>
+            {
+                ResetButtonColor();
+                ModifyOutline(button);
+                Transform layout = button.transform.GetChild(0);
+                if(layout != null) 
+                    HideSidebarFold(layout, button.transform);
+            }
+            );
+        }*/
+
         deleteButton.onClick.AddListener(() =>
         {
             SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
@@ -89,14 +109,23 @@ public class UIController : MonoBehaviour
 
     public void ModifyOutline(Button button)
     {
-        foreach(Button btn in buttons)
-        {
-            Outline buttonOutline = button.GetComponent<Outline>();
-            buttonOutline.effectColor = Color.black;
-        }
+        //foreach(Button btn in buttons)
+        //{
+        //    Outline buttonOutline = btn.GetComponent<Outline>();
+        //    if(buttonOutline != null)
+        //        buttonOutline.effectColor = Color.black;
+        //}
+        //foreach (Button btn in buildingButtons)
+        //{
+        //    Outline buttonOutline = btn.GetComponent<Outline>();
+        //    if (buttonOutline != null)
+        //        buttonOutline.effectColor = Color.black;
+        //}
         var outline = button.GetComponent<Outline>();
-        if (outline == null)
+        if (outline == null) { 
             Debug.Log("no outline");
+            return;
+        }
         //outline.effectColor = outlineColor;
         outline.effectColor = Color.blue;
         outline.enabled = true;
@@ -109,11 +138,41 @@ public class UIController : MonoBehaviour
             if (button != null && button.GetComponent<Outline>() != null)
                 button.GetComponent<Outline>().enabled = false;
         }
+        foreach (Button button in buildingButtons)
+        {
+            if (button != null && button.GetComponent<Outline>() != null)
+                button.GetComponent<Outline>().enabled = false;
+            if(button.transform.childCount > 0)
+            {
+                Transform layout = button.transform.GetChild(0);
+                if (layout.gameObject.activeSelf)
+                {
+                    HideSidebarFold(layout, button.transform);
+                }
+                foreach (Button btn in layout.gameObject.GetComponentsInChildren<Button>())
+                {
+                    if (btn != null && btn.GetComponent<Outline>() != null)
+                        btn.GetComponent<Outline>().enabled = false;
+                }
+            }
+        }
     }
 
     public void ExitToMainMenu()
     {
         SceneManager.LoadSceneAsync("MainMenu");
+    }
+
+    public void HideSidebarFold(Transform layout, Transform button)
+    {
+
+        if (button.transform.childCount > 1)
+        {
+            //Disable all building options
+            layout.gameObject.SetActive(false);
+            //Enable the expand icon
+            button.GetChild(1).gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        }
     }
 
     public void ToggleSidebarFold(Transform button)
@@ -122,11 +181,7 @@ public class UIController : MonoBehaviour
         //menu is unfolded
         if (layout.gameObject.activeSelf)
         {
-            //Disable all building options
-            layout.gameObject.SetActive(false);
-
-            //Enable the expand icon
-            button.GetChild(1).gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            HideSidebarFold(layout, button);
         }
         //menu is folded
         else

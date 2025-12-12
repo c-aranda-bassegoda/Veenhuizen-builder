@@ -103,6 +103,7 @@ public class GridBuildingSystem : MonoBehaviour
         else if (buildingSO.module && CanSubstitute(gridPositionList))
         {
             ReplaceModule(worldPosition);
+            economyManager.HandleNewPlacedBuilding(buildingSO);
         }
         else
         {
