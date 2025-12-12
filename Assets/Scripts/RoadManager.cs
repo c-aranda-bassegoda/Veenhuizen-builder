@@ -21,7 +21,18 @@ public class RoadManager : MonoBehaviour
 
     public void Update()
     {
-
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log($"Connected Objects:");
+            foreach(List<PlacedObject> objGroup in connectedObjectGroups)
+            {
+                Debug.Log($"Connected Obejcts: List {connectedObjectGroups.IndexOf(objGroup)}:");
+                foreach(PlacedObject obj in objGroup)
+                {
+                    Debug.Log($"Connected Obejcts: {obj.name}:");
+                }
+            }
+        }
     }
 
     public void PlaceRoad(Vector2Int roadPos, MeshFilter newRoadMesh)
@@ -149,10 +160,10 @@ public class RoadManager : MonoBehaviour
         //List<Vector2Int> positionsWithObjects = new();
 
         bool foundAllPositions = false;
-        int foundAdjPositions = 0;
 
         foreach (Vector2Int adjPosToCheck in adjPositionsToCheck)
         {
+            int foundAdjPositions = 0;
 
             List<PlacedObject> objectsInNewGroup = new();
             List<Vector2Int> uncheckedPositions = new() { adjPosToCheck };
@@ -198,7 +209,7 @@ public class RoadManager : MonoBehaviour
                             List<Vector2Int> newAdjacentPositions = GetAdjacentRoadPositions(uncheckedPos);
                             foreach(Vector2Int newAdjPos in newAdjacentPositions)
                             {
-                                if(!checkedPositions.Contains(newAdjPos)) newPositionsTempList.Add(newAdjPos);
+                                if(!checkedPositions.Contains(newAdjPos) && (pos != newAdjPos)) newPositionsTempList.Add(newAdjPos);
                             }
                         }
                     }
@@ -277,9 +288,6 @@ public class RoadManager : MonoBehaviour
     private void ConnectNewObject(Vector2Int pos)
     {
         Grid<GridObject> grid = gridBuildingSystem.GetGrid();
-
-        //List<Vector2Int> checkedPositions = new();
-        //List<Vector2Int> uncheckedPositions = new();
         List<PlacedObject> directlyConnectedObjects = new();
         List<List<PlacedObject>> groupsToMerge = new();
 
@@ -295,9 +303,12 @@ public class RoadManager : MonoBehaviour
             if (gridObject != null)
             {
                 PlacedObject placedObject = gridObject.GetPlacedObject();
-                directlyConnectedObjects.Add(placedObject);
+                if(placedObject != null) directlyConnectedObjects.Add(placedObject);
             }
         }
+
+        Debug.Log($"Connected: connected objects: {directlyConnectedObjects.Count}");
+        bool debugthingy = false;
 
         foreach (PlacedObject placedObject in directlyConnectedObjects)
         {
@@ -306,8 +317,10 @@ public class RoadManager : MonoBehaviour
                 if (placedObjGroup.Contains(placedObject))
                 {
                     groupsToMerge.Add(placedObjGroup);
+                    debugthingy = true;
                 }
             }
+            if (!debugthingy) Debug.Log($"Connected: object not in group");
         }
 
         if (groupsToMerge.Count > 1)
@@ -325,7 +338,8 @@ public class RoadManager : MonoBehaviour
                 UpdateObjectNotConnectedWarning(placedObject, groupsToMerge[0]);
             }
 
-            Debug.Log($"ConnectNewObject: merged {groupsToMerge.Count} groups into one: ");
+            //Debug.Log($"ConnectNewObject: merged {groupsToMerge.Count} groups into one: ");
+            Debug.Log($"Connected Object: Adding new obj to list {connectedObjectGroups.IndexOf(groupsToMerge[0])}");
             foreach (PlacedObject placedObject in groupsToMerge[0]) Debug.Log($"ConnectNewObject: {placedObject.name}");
         }
         else if (groupsToMerge.Count == 1)
@@ -336,15 +350,17 @@ public class RoadManager : MonoBehaviour
                 UpdateObjectNotConnectedWarning(placedObject, groupsToMerge[0]);
             }
 
-            Debug.Log("ConnectNewObject: added to 1 existing group: ");
-            foreach(PlacedObject placedObject in groupsToMerge[0]) Debug.Log($"ConnectNewObject: {placedObject.name}");
+            //Debug.Log("ConnectNewObject: added to 1 existing group: ");
+            Debug.Log($"Connected Object: Adding new obj to list {connectedObjectGroups.IndexOf(groupsToMerge[0])}");
+            foreach (PlacedObject placedObject in groupsToMerge[0]) Debug.Log($"ConnectNewObject: {placedObject.name}");
         }
         else
         {
             connectedObjectGroups.Add(new List<PlacedObject> { currentPlacedObject });
             UpdateObjectNotConnectedWarning(currentPlacedObject, connectedObjectGroups[connectedObjectGroups.Count - 1]);
 
-            Debug.Log("ConnectNewObject: new group created");
+            //Debug.Log("ConnectNewObject: new group created");
+            Debug.Log($"Connected Object: Adding new obj to list {connectedObjectGroups.Count - 1}");
         }
 
         //UpdateObjectNotConnectedWarning(currentPlacedObject);
