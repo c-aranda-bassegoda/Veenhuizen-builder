@@ -18,13 +18,14 @@ MonoBehaviour:
   modules: []
   width: 1
   height: 1
-  hapiness: 10
-  control: 10
+  hapiness: 6
+  control: 12
   population: 0
-  workersNeeded: 1
-  buildCost: 900
+  workersNeeded: 0
+  buildCost: 70000
   yearlyCost: 360
   yearlyEarnings: 0
   maxPlacements: 10
   module: 0
   modular: 0
+  moduleOnly: 0

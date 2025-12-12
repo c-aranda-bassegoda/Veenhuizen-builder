@@ -23,11 +23,11 @@ MonoBehaviour:
   - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
   width: 3
   height: 3
-  hapiness: 15
-  control: 5
-  population: 800
+  hapiness: 2
+  control: 2
+  population: 12
   workersNeeded: 0
-  buildCost: 4000
+  buildCost: 65000
   yearlyCost: 1440
   yearlyEarnings: 2700
   maxPlacements: 3

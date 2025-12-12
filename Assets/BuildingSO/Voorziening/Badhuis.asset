@@ -15,16 +15,17 @@ MonoBehaviour:
   name: Church
   prefab: {fileID: 6600959261270428487, guid: 80d3ebaa941b85545868173bb448ad3c, type: 3}
   modulePrefab: {fileID: 0}
-  moduleCore: {fileID: 0}
-  moduleBSOs: []
-  modulePositions: []
+  modules: []
   width: 1
   height: 1
-  hapiness: 10
-  control: 10
-  buildCost: 200
+  hapiness: 1
+  control: 0
+  population: 0
+  workersNeeded: 0
+  buildCost: 3500
   yearlyCost: 96
   yearlyEarnings: 0
   maxPlacements: 10
-  module: 0
+  module: 1
   modular: 0
+  moduleOnly: 1
