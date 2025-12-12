@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Gesticht
   m_EditorClassIdentifier: 
-  name: House
+  name: Gesticht
   prefab: {fileID: 3202509837292703422, guid: 6712742dd9dc1d844b77cd59231b08d0, type: 3}
   modulePrefab: {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
   modules:
@@ -24,10 +24,13 @@ MonoBehaviour:
   width: 3
   height: 3
   hapiness: 15
-  control: -5
+  control: 5
+  population: 800
+  workersNeeded: 0
   buildCost: 4000
   yearlyCost: 1440
   yearlyEarnings: 2700
-  maxPlacements: 10
+  maxPlacements: 3
   module: 0
   modular: 1
+  moduleOnly: 0
