@@ -25,6 +25,7 @@ public class PlacedObject : MonoBehaviour
             placedObject.name = placedObjectSO.name;
             placedObject.isModule = placedObjectSO.module;
             placedObject.inInstitution = false;
+            placedObject.personAmount = placedObjectSO.population;
         }
         else
         {
@@ -44,6 +45,7 @@ public class PlacedObject : MonoBehaviour
             placedObject.isModule = false;
             placedObject.modules = new List<PlacedObject>();
             placedObject.inInstitution = false;
+            placedObject.personAmount = placedObjectSO.population;
 
             List<OffsetInfo> offsetsInfo = new List<OffsetInfo>();
             int cellSize = 10;
@@ -153,9 +155,10 @@ public class PlacedObject : MonoBehaviour
     }
     [Header("People")]
     [SerializeField] NavmeshNpc person;
-    [SerializeField] int personAmount;
+    [HideInInspector] public float personAmount;
     [SerializeField] float timeBetweenSpawns;
     [SerializeField] List<NavmeshNpc> associatedPeople;
+    List<NavmeshNpc> workingPeople;
     [SerializeField] Transform buildingOrigin;
     bool spawnedPeople;
 
@@ -175,8 +178,33 @@ public class PlacedObject : MonoBehaviour
         if(gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
         else if (gameObject.tag != "Road") buildingOrigin.rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
 
+        if (personAmount > 0) NPCManager.instance.RegisterBuilding(this);
+
         StartCoroutine(SpawnPeople());
     } 
+
+    public int SendPeopleToWork(int _amount)
+    {
+        if(workingPeople == null)
+        {
+            workingPeople = new List<NavmeshNpc>();
+        }
+
+        for(int i = 0; i < _amount; i++)
+        {
+            //Get new npc from associated people (one thats not already working) and send it to work
+        }
+
+        return workingPeople.Count;
+    }
+
+    public int GetPeopleFromWork(int _amount)
+    {
+        //Get people out of working people list and back to the building
+
+        //Return amount of people that stopped working
+        return _amount;
+    }
 
     IEnumerator SpawnPeople()
     {

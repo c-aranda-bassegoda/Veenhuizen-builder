@@ -144,6 +144,7 @@ public class EconomyManager : MonoBehaviour
         money -= newObject.buildCost;
         control += newObject.control;
         ppl += newObject.population;
+        NPCManager.instance.ChangeValues(control, happy, ppl);
         GameEvents.OnMoneyChanged?.Invoke(money);
         GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
@@ -153,6 +154,7 @@ public class EconomyManager : MonoBehaviour
     {
         connectedObjects.Add(building);
         happy += newObject.hapiness;
+        NPCManager.instance.ChangeValues(control, happy, ppl);
         GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
     }
@@ -183,6 +185,7 @@ public class EconomyManager : MonoBehaviour
         }
         money += oldObject.buildCost;
         placedBuildingsSOs.Remove(oldObject);
+        NPCManager.instance.ChangeValues(control, happy, ppl);
         GameEvents.OnMoneyChanged?.Invoke(money);
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
     }
@@ -198,6 +201,7 @@ public class EconomyManager : MonoBehaviour
         control -= oldObject.control;
         ppl -= oldObject.population;
         connectedObjects.Remove(building);
+        NPCManager.instance.ChangeValues(control, happy, ppl);
         GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
     }
 }
