@@ -182,10 +182,10 @@ public class EconomyManager : MonoBehaviour
             ppl -= oldObject.population;
             connectedObjects.Remove(building);
             GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
+            NPCManager.instance.ChangeValues(control, happy, ppl);
         }
         money += oldObject.buildCost;
         placedBuildingsSOs.Remove(oldObject);
-        NPCManager.instance.ChangeValues(control, happy, ppl);
         GameEvents.OnMoneyChanged?.Invoke(money);
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
     }

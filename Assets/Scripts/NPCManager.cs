@@ -31,19 +31,26 @@ public class NPCManager : MonoBehaviour
     void UpdateWorkingPeople()
     {
         int newTotalWorkingPeople = GetWorkingPplAmount();
+        bool foundNpc = false;
 
         //Working people increased
         if(newTotalWorkingPeople > totalWorkingPeople)
         {
             while (totalWorkingPeople < newTotalWorkingPeople)
             {
+                foundNpc = false;
                 foreach (PlacedObject obj in placedObjects)
                 {
-                    totalWorkingPeople += obj.SendPeopleToWork(newTotalWorkingPeople - totalWorkingPeople);
+                    int newWorkingPeople = obj.SendPeopleToWork(newTotalWorkingPeople - totalWorkingPeople);
+                    Debug.Log($"Sending new people to work: {newWorkingPeople}");
+                    totalWorkingPeople += newWorkingPeople;
+
+                    if(newWorkingPeople > 0) foundNpc = true;
 
                     if (totalWorkingPeople == newTotalWorkingPeople) break;
                     else if (totalWorkingPeople > newTotalWorkingPeople) Debug.LogError("More people working than available");
                 }
+                if (!foundNpc) break;
             }
         }
         //Working people decreased
@@ -51,13 +58,18 @@ public class NPCManager : MonoBehaviour
         {
             while (totalWorkingPeople > newTotalWorkingPeople)
             {
+                foundNpc = false;
                 foreach (PlacedObject obj in placedObjects)
                 {
-                    totalWorkingPeople -= obj.GetPeopleFromWork(totalWorkingPeople - newTotalWorkingPeople);
+                    int newNotWorkingPeople = obj.GetPeopleFromWork(totalWorkingPeople - newTotalWorkingPeople);
+                    totalWorkingPeople -= newNotWorkingPeople;
+
+                    if(newNotWorkingPeople > 0) foundNpc = true;
 
                     if (totalWorkingPeople == newTotalWorkingPeople) break;
                     else if (totalWorkingPeople < newTotalWorkingPeople) Debug.LogError("Less people working than should");
                 }
+                if (!foundNpc) break;
             }
         }
 
@@ -76,6 +88,7 @@ public class NPCManager : MonoBehaviour
     public int GetWorkingPplAmount()
     {
         int workingPeople = Mathf.Min(people, Mathf.FloorToInt(control / controlPerWorkingNPC));
+        Debug.Log($"New working people: {workingPeople}");
         return workingPeople;
     }
 }
