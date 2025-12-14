@@ -70,7 +70,38 @@ public class NavmeshNpc : MonoBehaviour
         originBuilding = _building;
         SetDesiredBuilding("Boerderij");
         //Debug.Log($"Set {gameObject.name} target to Farm");
-        StartCoroutine(TryFindTarget(false));
+        //StartCoroutine(TryFindTarget(false));
+    }
+
+    public Dictionary<PlacedObject, float> CanFindTarget()
+    {
+        List<PlacedObject> buildingsOfDesiredType = GridBuildingSystem.instance.GetBuildingsOfType(desiredBuilding);
+        Debug.Log($"Buildings of type: {buildingsOfDesiredType.Count}");
+
+        Dictionary<PlacedObject, float> accessibleBuildings = new();
+        foreach (PlacedObject obj in buildingsOfDesiredType)
+        {
+            Transform childObj = obj.transform.GetChild(0);
+            if(childObj != null)
+            {
+                float distanceToObj = GetPathDistance(obj.transform.GetChild(0).position);
+                if (distanceToObj >= 0)
+                {
+                    accessibleBuildings.Add(obj, distanceToObj);
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Child null: {obj.name}");
+            }
+        }
+
+        return accessibleBuildings;
+    }
+
+    public void FindTarget(Dictionary<PlacedObject, float> _accessibleBuildings)
+    {
+        StartCoroutine(TryFindTarget(false, _accessibleBuildings));
     }
 
     public void SetDesiredBuilding(string buildingName)
@@ -87,7 +118,7 @@ public class NavmeshNpc : MonoBehaviour
     }
    
 
-    IEnumerator TryFindTarget(bool findBetterPath)
+    IEnumerator TryFindTarget(bool findBetterPath, Dictionary<PlacedObject, float> _accessibleBuildings = null)
     {
         bool foundTarget = false;
         isFindingTarget = true;
@@ -95,17 +126,25 @@ public class NavmeshNpc : MonoBehaviour
 
         while (!foundTarget)
         {
-            List<PlacedObject> buildingsOfDesiredType = GridBuildingSystem.instance.GetBuildingsOfType(desiredBuilding);
-            Debug.Log($"Buildings of type: {buildingsOfDesiredType.Count}");
-
             Dictionary<PlacedObject, float> accessibleBuildings = new();
-            foreach(PlacedObject obj in buildingsOfDesiredType)
+
+            if (_accessibleBuildings == null)
             {
-                float distanceToObj = GetPathDistance(obj.transform.GetChild(0).position);
-                if (distanceToObj >= 0)
+                List<PlacedObject> buildingsOfDesiredType = GridBuildingSystem.instance.GetBuildingsOfType(desiredBuilding);
+                Debug.Log($"Buildings of type: {buildingsOfDesiredType.Count}");
+
+                foreach (PlacedObject obj in buildingsOfDesiredType)
                 {
-                    accessibleBuildings.Add(obj, distanceToObj);
+                    float distanceToObj = GetPathDistance(obj.transform.GetChild(0).position);
+                    if (distanceToObj >= 0)
+                    {
+                        accessibleBuildings.Add(obj, distanceToObj);
+                    }
                 }
+            }
+            else
+            {
+                accessibleBuildings = _accessibleBuildings;
             }
             if (accessibleBuildings.Count > 0)
             {
@@ -113,7 +152,7 @@ public class NavmeshNpc : MonoBehaviour
                 PlacedObject closestAccessibleBuilding = accessibleBuildingsByDistance[0];
                 Debug.Log($"Found nearest building for {gameObject.name}: {closestAccessibleBuilding.name}");
 
-                if(!findBetterPath || (currentTargetBuilding != desiredBuilding))
+                if (!findBetterPath || (currentTargetBuilding != desiredBuilding))
                 {
                     SetNavmeshTarget(closestAccessibleBuilding.transform.GetChild(0).position);
                     currentTargetBuilding = desiredBuilding;

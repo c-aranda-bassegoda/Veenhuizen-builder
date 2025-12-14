@@ -145,11 +145,13 @@ public class PlacedObject : MonoBehaviour
         placedObject.isModule = placedObjectSO.module;
         placedObject.parent = this.parent;
         placedObject.inInstitution = this.inInstitution;
+        placedObject.personAmount = placedObjectSO.population;
 
         if (this.parent != null)
             this.parent.modules.Add(placedObject);
 
         Destroy(oldObject);
+        placedObject.OnPlace();
 
         return placedObject;
     }
@@ -172,15 +174,15 @@ public class PlacedObject : MonoBehaviour
 
     public void OnPlace()
     {
-        if(exclamationMark != null) exclamationMark.transform.rotation = Quaternion.identity;
-        Debug.Log("building start");
-        buildingOrigin = transform.GetChild(0);
-        if(gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
-        else if (gameObject.tag != "Road") buildingOrigin.rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
+        //if(exclamationMark != null) exclamationMark.transform.rotation = Quaternion.identity;
+        //Debug.Log("building start");
+        //buildingOrigin = transform.GetChild(0);
+        //if(gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
+        //else if (gameObject.tag != "Road") buildingOrigin.rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
 
-        if (personAmount > 0) NPCManager.instance.RegisterBuilding(this);
+        //if (personAmount > 0) NPCManager.instance.RegisterBuilding(this);
 
-        StartCoroutine(SpawnPeople());
+        //StartCoroutine(SpawnPeople());
     } 
 
     public int SendPeopleToWork(int _amount)
@@ -190,9 +192,28 @@ public class PlacedObject : MonoBehaviour
             workingPeople = new List<NavmeshNpc>();
         }
 
-        for(int i = 0; i < _amount; i++)
+        for (int i = 0; i < _amount;)
         {
+            bool foundNpc = false;
             //Get new npc from associated people (one thats not already working) and send it to work
+            foreach (NavmeshNpc npc in associatedPeople)
+            {
+                if (workingPeople.Contains(npc)) continue;
+
+                Dictionary<PlacedObject, float> accessibleBuildings = npc.CanFindTarget();
+
+                if (accessibleBuildings.Count < 1) continue;
+                else
+                {
+                    workingPeople.Add(npc);
+                    npc.FindTarget(accessibleBuildings);
+                    i++;
+                    foundNpc = true;
+                    break;
+                }
+            }
+
+            if (!foundNpc) break;
         }
 
         return workingPeople.Count;

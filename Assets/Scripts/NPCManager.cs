@@ -10,10 +10,10 @@ public class NPCManager : MonoBehaviour
 
     public static NPCManager instance;
 
-    float control, happy;
+    [SerializeField] float control, happy;
     int people;
 
-    List<PlacedObject> placedObjects;
+    List<PlacedObject> placedObjects = new();
 
     Dictionary<PlacedObject, int> workingPeoplePerBuilding = new();
 
@@ -69,6 +69,8 @@ public class NPCManager : MonoBehaviour
         control = _control;
         happy = _happy;
         people = (int)_people;
+
+        UpdateWorkingPeople();
     }
 
     public int GetWorkingPplAmount()
