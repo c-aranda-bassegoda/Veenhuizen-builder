@@ -174,22 +174,11 @@ public class PlacedObject : MonoBehaviour
         if (gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
         else if (gameObject.tag != "Road") buildingOrigin.rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
 
+        SpawnPeople();
+
         if (placedSctiptableObject.name == "Boerderij")
         {
-            adjacentFarmlandWorked = new();
-            //Debug.Log($"Building origin: {origin}");
-            List<PlacedObject> newFarmland = RoadManager.instance.FindConnectedFarmsOrFarmland(origin, true);
-
-            foreach(PlacedObject farmland in newFarmland)
-            {
-                if((!farmland.isConnectedFarmland) && (adjacentFarmlandWorked.Count < 10))
-                {
-                    farmland.isConnectedFarmland = true;
-                    adjacentFarmlandWorked.Add(farmland, false);
-                }
-            }
-
-            Debug.Log($"Created farmland list for {gameObject.name}: {adjacentFarmlandWorked.Count}");
+            if (adjacentFarmlandWorked == null) ConnectFarmland();
         }
         if(placedSctiptableObject.name == "Akker")
         {
@@ -199,27 +188,52 @@ public class PlacedObject : MonoBehaviour
             {
                 if(farm.adjacentFarmlandWorked.Count < 10)
                 {
-                    adjacentFarmlandWorked = new();
+                    //Dictionary<PlacedObject, bool> newAdjacentFarmlandWorked = new();
                     List<PlacedObject> newFarmland = RoadManager.instance.FindConnectedFarmsOrFarmland(farm.GetOrigin(), true);
+
+                    Debug.Log($"New farmland count: {newFarmland.Count}");
 
                     foreach (PlacedObject farmland in newFarmland)
                     {
-                        if ((!farmland.isConnectedFarmland) && (adjacentFarmlandWorked.Count < 10))
+                        Debug.Log($"New farmland connected: {farmland.isConnectedFarmland}");
+                        Debug.Log($"New farmland dict count: {farm.adjacentFarmlandWorked.Count}");
+
+                        if (!farm.adjacentFarmlandWorked.ContainsKey(farmland))
                         {
-                            farmland.isConnectedFarmland = true;
-                            adjacentFarmlandWorked.Add(farmland, false);
+                            if ((!farmland.isConnectedFarmland) && (farm.adjacentFarmlandWorked.Count < 10))
+                            {
+                                farmland.isConnectedFarmland = true;
+                                farm.adjacentFarmlandWorked.Add(farmland, false);
+                            }
                         }
                     }
 
-                    farm.adjacentFarmlandWorked = adjacentFarmlandWorked;
-                    Debug.Log($"Created farmland list for {farm.gameObject.name}: {farm.adjacentFarmlandWorked.Count}");
+                    //This dict is always 1
+                    Debug.Log($"Updated farmland list from {gameObject.name} for {farm.gameObject.name}: {farm.adjacentFarmlandWorked.Count}");
                 }
             }
         }
-        if (personAmount > 0) NPCManager.instance.RegisterBuilding(this);
 
-        StartCoroutine(SpawnPeople());
+        NPCManager.instance.RegisterBuilding(this);
     } 
+
+    public void ConnectFarmland()
+    {
+        adjacentFarmlandWorked = new();
+        //Debug.Log($"Building origin: {origin}");
+        List<PlacedObject> newFarmland = RoadManager.instance.FindConnectedFarmsOrFarmland(origin, true);
+
+        foreach (PlacedObject farmland in newFarmland)
+        {
+            if ((!farmland.isConnectedFarmland) && (adjacentFarmlandWorked.Count < 10))
+            {
+                farmland.isConnectedFarmland = true;
+                adjacentFarmlandWorked.Add(farmland, false);
+            }
+        }
+
+        Debug.Log($"Created farmland list for {gameObject.name}: {adjacentFarmlandWorked.Count}");
+    }
 
     public PlacedObject GetFreeFarmland()
     {
@@ -257,23 +271,15 @@ public class PlacedObject : MonoBehaviour
         if (inInstitution) objectToCheck = parent;
         else objectToCheck = this;
 
-        List<PlacedObject> connectedFarms = RoadManager.instance.GetConnectedFarms(objectToCheck);
-        List<PlacedObject> fullFarms = new();
-        foreach(PlacedObject farm in connectedFarms)
-        {
-            if(farm.GetFreeFarmland() == null)
-            {
-                fullFarms.Add(farm);
-            }
-        }
-        foreach(PlacedObject farm in fullFarms) connectedFarms.Remove(farm);
+        List<PlacedObject> connectedFarms = RoadManager.instance.GetConnectedFarms(objectToCheck);  
 
-        Debug.Log($"Connected farms for {gameObject.name}: {connectedFarms.Count}");
+        Debug.Log($"Connected farms for {objectToCheck.name}: {connectedFarms.Count}");
 
         if(connectedFarms.Count < 1) return 0;
 
+        Debug.Log($"Sending people to work from {gameObject.name}");    
+
         //implement this on npc
-        PlacedObject targetFarmland = unemployedNpc.GetClosestObjectFromList(connectedFarms);
 
         for (int i = 0; i < _amount;)
         {
@@ -281,16 +287,37 @@ public class PlacedObject : MonoBehaviour
             //Get new npc from associated people (one thats not already working) and send it to work
             foreach (NavmeshNpc npc in associatedPeople)
             {
-                foundNpc = false;
                 if (workingPeople.Contains(npc)) continue;
 
-                npc.SetNavmeshTarget(targetFarmland.transform.position);
-
-                if (adjacentFarmlandWorked.ContainsKey(targetFarmland))
+                List<PlacedObject> emptyConnectedFarms = new();
+                foreach (PlacedObject farm in connectedFarms)
                 {
-                    adjacentFarmlandWorked[targetFarmland] = true;
+                    if (farm.GetFreeFarmland() != null)
+                    {
+                        emptyConnectedFarms.Add(farm);
+                    }
                 }
-                else Debug.LogWarning($"Adjacent farmland not in dictionary for {gameObject.name}");
+
+                Debug.Log($"Empty connected farms: {emptyConnectedFarms.Count}");
+
+                if(emptyConnectedFarms.Count < 1) break;
+
+                PlacedObject targetFarm = npc.GetClosestObjectFromList(emptyConnectedFarms);
+                foundNpc = false;
+
+                if (targetFarm.adjacentFarmlandWorked == null) ConnectFarmland();
+
+                PlacedObject targetFarmland = targetFarm.GetFreeFarmland();
+
+                Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
+
+                if (targetFarm.adjacentFarmlandWorked.ContainsKey(targetFarmland))
+                {
+                    targetFarm.adjacentFarmlandWorked[targetFarmland] = true;
+                    npc.SetNavmeshTarget(targetFarmland.transform.position);
+                    workingPeople.Add(npc);
+                }
+                else Debug.LogWarning($"Adjacent farmland not in dictionary for {targetFarm.gameObject.name}");
 
                 //Dictionary<PlacedObject, float> accessibleBuildings = npc.CanFindTarget();
 
@@ -321,7 +348,7 @@ public class PlacedObject : MonoBehaviour
         return _amount;
     }
 
-    IEnumerator SpawnPeople()
+    void SpawnPeople()
     {
         associatedPeople = new();
 
@@ -330,7 +357,6 @@ public class PlacedObject : MonoBehaviour
             NavmeshNpc newNpc = Instantiate(person, buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(0, 5, -0)), Quaternion.Euler(0, 0, 0));
             associatedPeople.Add(newNpc);
             newNpc.SetOrigin(this);
-            yield return new WaitForSeconds(timeBetweenSpawns);
         }
     }
 

@@ -24,7 +24,10 @@ public class NPCManager : MonoBehaviour
 
     public void RegisterBuilding(PlacedObject newBuilding)
     {
-        placedObjects.Insert(0, newBuilding);
+        if(newBuilding.personAmount > 0)
+        {
+            placedObjects.Insert(0, newBuilding);
+        }
         UpdateWorkingPeople();
     }
 
@@ -81,7 +84,7 @@ public class NPCManager : MonoBehaviour
         happy = _happy;
         people = (int)_people;
 
-        UpdateWorkingPeople();
+        //UpdateWorkingPeople();
     }
 
     public int GetWorkingPplAmount()

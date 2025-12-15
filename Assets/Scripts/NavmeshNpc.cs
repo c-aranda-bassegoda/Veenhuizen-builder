@@ -35,10 +35,10 @@ public class NavmeshNpc : MonoBehaviour
         {
             if(agent.remainingDistance > 2)
             {
-                if(!isFindingTarget)
-                {
-                    StartCoroutine(TryFindTarget(true));
-                }
+                //if(!isFindingTarget)
+                //{
+                //    StartCoroutine(TryFindTarget(true));
+                //}
                 MoveAnimations();
             }
             else if (hasTarget)
@@ -119,16 +119,20 @@ public class NavmeshNpc : MonoBehaviour
 
     public PlacedObject GetClosestObjectFromList(List<PlacedObject> objects)
     {
+        if(objects.Count == 0)
+        {
+            Debug.LogWarning("No objects in list to get closest");
+            return null;
+        }
+        Debug.Log($"Object list count: {objects.Count}");
         Dictionary<PlacedObject, float> objectDict = new();
         foreach (PlacedObject obj in objects)
         {
             float distanceToObj = GetPathDistance(obj.transform.GetChild(0).position);
-            if (distanceToObj >= 0)
-            {
-                objectDict.Add(obj, distanceToObj);
-            }
+            objectDict.Add(obj, distanceToObj);
+            
         }
-
+        Debug.Log($"Object dict count: {objectDict.Count}");
         List<PlacedObject> objectsByDistance = objectDict.OrderBy(x => x.Value).Select(x => x.Key).ToList();
         PlacedObject closestObject = objectsByDistance[0];
 

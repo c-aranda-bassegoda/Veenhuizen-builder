@@ -428,6 +428,7 @@ public class RoadManager : MonoBehaviour
             foreach(Vector2Int newAdjPos in newAdjacentPositions)
             {
                 if (checkedPositions.Contains(newAdjPos)) continue;
+                checkedPositions.Add(newAdjPos);
 
                 GridObject adjGridObject = grid.GetGridObj(newAdjPos.x, newAdjPos.y);
                 if (adjGridObject == null) continue;
