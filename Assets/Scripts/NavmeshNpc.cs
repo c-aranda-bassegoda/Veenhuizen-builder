@@ -119,7 +119,20 @@ public class NavmeshNpc : MonoBehaviour
 
     public PlacedObject GetClosestObjectFromList(List<PlacedObject> objects)
     {
-        return objects;
+        Dictionary<PlacedObject, float> objectDict = new();
+        foreach (PlacedObject obj in objects)
+        {
+            float distanceToObj = GetPathDistance(obj.transform.GetChild(0).position);
+            if (distanceToObj >= 0)
+            {
+                objectDict.Add(obj, distanceToObj);
+            }
+        }
+
+        List<PlacedObject> objectsByDistance = objectDict.OrderBy(x => x.Value).Select(x => x.Key).ToList();
+        PlacedObject closestObject = objectsByDistance[0];
+
+        return closestObject;
     }
    
     IEnumerator TryFindTarget(bool findBetterPath, Dictionary<PlacedObject, float> _accessibleBuildings = null)

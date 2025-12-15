@@ -400,8 +400,8 @@ public class RoadManager : MonoBehaviour
                 if (checkedPositions.Contains(newAdjPos)) continue;
 
                 GridObject adjGridObject = grid.GetGridObj(newAdjPos.x, newAdjPos.y);
+                if (adjGridObject == null) continue;
                 PlacedObject adjPlacedObject = adjGridObject.GetPlacedObject();
-
                 if(adjPlacedObject == null) continue;
 
                 if(findFarmland)
@@ -437,7 +437,7 @@ public class RoadManager : MonoBehaviour
     //Returns farms that are connected via road to origin building
     public List<PlacedObject> GetConnectedFarms(PlacedObject originBuilding)
     {
-        List<PlacedObject> targetObjectGroup = null;
+        List<PlacedObject> targetObjectGroup = new();
         foreach (List<PlacedObject> objGroup in connectedObjectGroups)
         {
             if (objGroup.Contains(originBuilding)) targetObjectGroup = objGroup;
@@ -445,6 +445,7 @@ public class RoadManager : MonoBehaviour
         List<PlacedObject> connectedFarms = new();
         foreach(PlacedObject obj in targetObjectGroup)
         {
+            Debug.Log($"Object in {originBuilding.name} object group: {obj.name}");
             if (obj.name == "Boerderij") connectedFarms.Add(obj);
         }
         return connectedFarms;

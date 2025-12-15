@@ -253,8 +253,11 @@ public class PlacedObject : MonoBehaviour
         }
         if (unemployedNpc == null) return 0;
 
-        
-        List<PlacedObject> connectedFarms = RoadManager.instance.GetConnectedFarms(this);
+        PlacedObject objectToCheck;
+        if (inInstitution) objectToCheck = parent;
+        else objectToCheck = this;
+
+        List<PlacedObject> connectedFarms = RoadManager.instance.GetConnectedFarms(objectToCheck);
         List<PlacedObject> fullFarms = new();
         foreach(PlacedObject farm in connectedFarms)
         {
@@ -264,6 +267,8 @@ public class PlacedObject : MonoBehaviour
             }
         }
         foreach(PlacedObject farm in fullFarms) connectedFarms.Remove(farm);
+
+        Debug.Log($"Connected farms for {gameObject.name}: {connectedFarms.Count}");
 
         if(connectedFarms.Count < 1) return 0;
 
@@ -280,7 +285,12 @@ public class PlacedObject : MonoBehaviour
                 if (workingPeople.Contains(npc)) continue;
 
                 npc.SetNavmeshTarget(targetFarmland.transform.position);
-                adjacentFarmlandWorked[targetFarmland] = true;
+
+                if (adjacentFarmlandWorked.ContainsKey(targetFarmland))
+                {
+                    adjacentFarmlandWorked[targetFarmland] = true;
+                }
+                else Debug.LogWarning($"Adjacent farmland not in dictionary for {gameObject.name}");
 
                 //Dictionary<PlacedObject, float> accessibleBuildings = npc.CanFindTarget();
 
