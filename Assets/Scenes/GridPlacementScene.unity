@@ -6621,7 +6621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   economyManager: {fileID: 0}
-  controlPerWorkingNPC: 12
+  controlPerWorkingNPC: 1
   control: 0
   happy: 0
 --- !u!4 &876293569

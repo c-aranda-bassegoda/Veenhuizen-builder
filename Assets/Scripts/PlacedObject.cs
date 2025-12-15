@@ -162,15 +162,9 @@ public class PlacedObject : MonoBehaviour
     [SerializeField] List<NavmeshNpc> associatedPeople;
     List<NavmeshNpc> workingPeople;
     [SerializeField] Transform buildingOrigin;
+    public Dictionary<PlacedObject, bool> adjacentFarmlandWorked;
+    public bool isConnectedFarmland;
     bool spawnedPeople;
-
-    [SerializeField] private float moveToCentreMultiplier = 0.01f;
-    [SerializeField] private float moveToPlaceMultiplier = 0.01f;
-    [SerializeField] private float matchVelocityMultiplier = 0.125f;
-    [SerializeField] private float minimumBoidDistance = 3f;
-
-    //[SerializeField] private Vector3 minMoveBounds;
-    //[SerializeField] private Vector3 maxMoveBounds;
 
     public void OnPlace()
     {
@@ -180,17 +174,101 @@ public class PlacedObject : MonoBehaviour
         if (gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
         else if (gameObject.tag != "Road") buildingOrigin.rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
 
+        if (placedSctiptableObject.name == "Boerderij")
+        {
+            adjacentFarmlandWorked = new();
+            //Debug.Log($"Building origin: {origin}");
+            List<PlacedObject> newFarmland = RoadManager.instance.FindConnectedFarmsOrFarmland(origin, true);
+
+            foreach(PlacedObject farmland in newFarmland)
+            {
+                if((!farmland.isConnectedFarmland) && (adjacentFarmlandWorked.Count < 10))
+                {
+                    farmland.isConnectedFarmland = true;
+                    adjacentFarmlandWorked.Add(farmland, false);
+                }
+            }
+
+            Debug.Log($"Created farmland list for {gameObject.name}: {adjacentFarmlandWorked.Count}");
+        }
+        if(placedSctiptableObject.name == "Akker")
+        {
+            List<PlacedObject> newFarms = RoadManager.instance.FindConnectedFarmsOrFarmland(origin, false);
+
+            foreach(PlacedObject farm in newFarms)
+            {
+                if(farm.adjacentFarmlandWorked.Count < 10)
+                {
+                    adjacentFarmlandWorked = new();
+                    List<PlacedObject> newFarmland = RoadManager.instance.FindConnectedFarmsOrFarmland(farm.GetOrigin(), true);
+
+                    foreach (PlacedObject farmland in newFarmland)
+                    {
+                        if ((!farmland.isConnectedFarmland) && (adjacentFarmlandWorked.Count < 10))
+                        {
+                            farmland.isConnectedFarmland = true;
+                            adjacentFarmlandWorked.Add(farmland, false);
+                        }
+                    }
+
+                    farm.adjacentFarmlandWorked = adjacentFarmlandWorked;
+                    Debug.Log($"Created farmland list for {farm.gameObject.name}: {farm.adjacentFarmlandWorked.Count}");
+                }
+            }
+        }
         if (personAmount > 0) NPCManager.instance.RegisterBuilding(this);
 
         StartCoroutine(SpawnPeople());
     } 
 
+    public PlacedObject GetFreeFarmland()
+    {
+        foreach(KeyValuePair<PlacedObject, bool> kvp in adjacentFarmlandWorked)
+        {
+            if (!kvp.Value) return kvp.Key;
+        }
+
+        return null;
+    }
+
     public int SendPeopleToWork(int _amount)
     {
-        if(workingPeople == null)
+        if (associatedPeople.Count <= 0) return 0;
+
+        NavmeshNpc unemployedNpc = null;
+        if (workingPeople == null)
         {
             workingPeople = new List<NavmeshNpc>();
         }
+        else
+        {
+            foreach(NavmeshNpc npc in associatedPeople)
+            {
+                if(!workingPeople.Contains(npc))
+                {
+                    unemployedNpc = npc;
+                    break;
+                }
+            }
+        }
+        if (unemployedNpc == null) return 0;
+
+        
+        List<PlacedObject> connectedFarms = RoadManager.instance.GetConnectedFarms(this);
+        List<PlacedObject> fullFarms = new();
+        foreach(PlacedObject farm in connectedFarms)
+        {
+            if(farm.GetFreeFarmland() == null)
+            {
+                fullFarms.Add(farm);
+            }
+        }
+        foreach(PlacedObject farm in fullFarms) connectedFarms.Remove(farm);
+
+        if(connectedFarms.Count < 1) return 0;
+
+        //implement this on npc
+        PlacedObject targetFarmland = unemployedNpc.GetClosestObjectFromList(connectedFarms);
 
         for (int i = 0; i < _amount;)
         {
@@ -201,19 +279,22 @@ public class PlacedObject : MonoBehaviour
                 foundNpc = false;
                 if (workingPeople.Contains(npc)) continue;
 
-                Dictionary<PlacedObject, float> accessibleBuildings = npc.CanFindTarget();
+                npc.SetNavmeshTarget(targetFarmland.transform.position);
+                adjacentFarmlandWorked[targetFarmland] = true;
 
-                Debug.Log($"Accessible buildings for {npc.name}: {accessibleBuildings.Count}");
+                //Dictionary<PlacedObject, float> accessibleBuildings = npc.CanFindTarget();
 
-                if (accessibleBuildings.Count < 1) continue;
-                else
-                {
-                    workingPeople.Add(npc);
-                    npc.FindTarget(accessibleBuildings);
-                    i++;
-                    foundNpc = true;
-                    break;
-                }
+                //Debug.Log($"Accessible buildings for {npc.name}: {accessibleBuildings.Count}");
+
+                //if (accessibleBuildings.Count < 1) continue;
+                //else
+                //{
+                //    workingPeople.Add(npc);
+                //    npc.FindTarget(accessibleBuildings);
+                //    i++;
+                //    foundNpc = true;
+                //    break;
+                //}
             }
 
             if (!foundNpc) break;
@@ -236,7 +317,7 @@ public class PlacedObject : MonoBehaviour
 
         for(int i = 0; i < personAmount; i++)
         {
-            NavmeshNpc newNpc = Instantiate(person, buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(0, 5, -0)), transform.rotation);
+            NavmeshNpc newNpc = Instantiate(person, buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(0, 5, -0)), Quaternion.Euler(0, 0, 0));
             associatedPeople.Add(newNpc);
             newNpc.SetOrigin(this);
             yield return new WaitForSeconds(timeBetweenSpawns);

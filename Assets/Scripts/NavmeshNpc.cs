@@ -68,7 +68,7 @@ public class NavmeshNpc : MonoBehaviour
     public void SetOrigin(PlacedObject _building)
     {
         originBuilding = _building;
-        SetDesiredBuilding("Boerderij");
+        SetDesiredBuilding("Akker");
         //Debug.Log($"Set {gameObject.name} target to Farm");
         //StartCoroutine(TryFindTarget(false));
     }
@@ -116,8 +116,12 @@ public class NavmeshNpc : MonoBehaviour
         agent.SetDestination(targetPos);
         hasTarget = true;
     }
-   
 
+    public PlacedObject GetClosestObjectFromList(List<PlacedObject> objects)
+    {
+        return objects;
+    }
+   
     IEnumerator TryFindTarget(bool findBetterPath, Dictionary<PlacedObject, float> _accessibleBuildings = null)
     {
         bool foundTarget = false;

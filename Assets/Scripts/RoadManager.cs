@@ -18,8 +18,14 @@ public class RoadManager : MonoBehaviour
     [SerializeField] GridBuildingSystem gridBuildingSystem;
     [SerializeField] EconomyManager economyManager;
     [SerializeField] NavMeshSurface navMeshSurface;
+    public static RoadManager instance;
 
     public List<List<PlacedObject>> connectedObjectGroups = new();
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     public void Update()
     {
@@ -367,6 +373,81 @@ public class RoadManager : MonoBehaviour
         }
 
         //UpdateObjectNotConnectedWarning(currentPlacedObject);
+    }
+
+    //Get farms or farmland only connected by other farm and farmland
+    public List<PlacedObject> FindConnectedFarmsOrFarmland(Vector2Int pos, bool findFarmland)
+    {
+        Grid<GridObject> grid = gridBuildingSystem.GetGrid();
+        List<PlacedObject> directlyConnectedObjects = new();
+
+        GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
+        PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
+
+        List<Vector2Int> uncheckedPositions = new List<Vector2Int>() { pos };
+        List<Vector2Int> checkedPositions = new();
+
+        while (uncheckedPositions.Count > 0)
+        {
+            Vector2Int newPos = uncheckedPositions[0];
+            List<Vector2Int> newAdjacentPositions = GetAdjacentRoadPositions(newPos);
+
+            uncheckedPositions.Remove(newPos);
+            checkedPositions.Add(newPos);
+
+            foreach(Vector2Int newAdjPos in newAdjacentPositions)
+            {
+                if (checkedPositions.Contains(newAdjPos)) continue;
+
+                GridObject adjGridObject = grid.GetGridObj(newAdjPos.x, newAdjPos.y);
+                PlacedObject adjPlacedObject = adjGridObject.GetPlacedObject();
+
+                if(adjPlacedObject == null) continue;
+
+                if(findFarmland)
+                {
+                    if (adjPlacedObject.name == "Boerderij")
+                    {
+                        uncheckedPositions.Add(newAdjPos);
+                    }
+                    else if (adjPlacedObject.name == "Akker")
+                    {
+                        uncheckedPositions.Add(newAdjPos);
+                        directlyConnectedObjects.Add(adjPlacedObject);
+                    }
+                }
+                else
+                {
+                    if (adjPlacedObject.name == "Boerderij")
+                    {
+                        directlyConnectedObjects.Add(adjPlacedObject);
+                        uncheckedPositions.Add(newAdjPos);
+                    }
+                    else if (adjPlacedObject.name == "Akker")
+                    {
+                        uncheckedPositions.Add(newAdjPos);
+                    }
+                }
+            }
+        }
+
+        return directlyConnectedObjects;
+    }
+
+    //Returns farms that are connected via road to origin building
+    public List<PlacedObject> GetConnectedFarms(PlacedObject originBuilding)
+    {
+        List<PlacedObject> targetObjectGroup = null;
+        foreach (List<PlacedObject> objGroup in connectedObjectGroups)
+        {
+            if (objGroup.Contains(originBuilding)) targetObjectGroup = objGroup;
+        }
+        List<PlacedObject> connectedFarms = new();
+        foreach(PlacedObject obj in targetObjectGroup)
+        {
+            if (obj.name == "Boerderij") connectedFarms.Add(obj);
+        }
+        return connectedFarms;
     }
 
     private List<PlacedObject> GetConnectedObjects(Vector2Int pos)
