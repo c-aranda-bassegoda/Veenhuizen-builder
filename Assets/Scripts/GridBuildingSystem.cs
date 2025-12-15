@@ -205,6 +205,47 @@ public class GridBuildingSystem : MonoBehaviour
         return null;
     }
 
+    public string ReturnObjectBody(Vector3 worldPosition)
+    {
+        string body = "";
+        grid.GetXYZ(worldPosition, out int x, out int y, out int z);
+
+        List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
+
+        GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
+        PlacedObject placedObject = gridObject.GetPlacedObject();
+        if (placedObject != null)
+        {
+
+            BuildingScriptableObject buildingSO = placedObject.GetScriptableObject();
+
+            body = buildingSO.GetData().GetBody();
+
+            return body;
+        }
+        return body;
+    }
+    public string ReturnObjectName(Vector3 worldPosition)
+    {
+        string body = "";
+        grid.GetXYZ(worldPosition, out int x, out int y, out int z);
+
+        List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
+
+        GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
+        PlacedObject placedObject = gridObject.GetPlacedObject();
+        if (placedObject != null)
+        {
+
+            BuildingScriptableObject buildingSO = placedObject.GetScriptableObject();
+
+            body = buildingSO.name;
+
+            return body;
+        }
+        return body;
+    }
+
     public void RotateObject()
     {
         if (buildingSO.modular) return;

@@ -65,11 +65,19 @@ public class Grid<TGridObject>
         return new Vector3(i, 0, j) * cellSize;
     }
 
-    public void GetXYZ(Vector3 worldPosition, out int x, out int y, out int z)
+    public void GetXYZ(Vector3? worldPosition, out int x, out int y, out int z)
     {
-        x = Mathf.FloorToInt(worldPosition.x / cellSize);
-        y = Mathf.FloorToInt(worldPosition.y / cellSize);
-        z = Mathf.FloorToInt(worldPosition.z / cellSize);
+        if (!worldPosition.HasValue)
+        {
+            x = 0;
+            y = 0;
+            z = 0;
+            return;
+        }
+
+        x = Mathf.FloorToInt(worldPosition.Value.x / cellSize);
+        y = Mathf.FloorToInt(worldPosition.Value.y / cellSize);
+        z = Mathf.FloorToInt(worldPosition.Value.z / cellSize);
     }
 
     public void TriggerGridObjChanged(int i, int j)
@@ -109,6 +117,14 @@ public class Grid<TGridObject>
     {
         int i,j,k;
         GetXYZ(worldPosition, out i, out k, out j);
+        return GetGridObj(i, j);
+    }
+
+    public TGridObject GetGridObj(Vector3? worldPosition)
+    {
+        if (worldPosition == null) return default(TGridObject);
+        int i, j, k;
+        GetXYZ(worldPosition.Value, out i, out k, out j);
         return GetGridObj(i, j);
     }
 

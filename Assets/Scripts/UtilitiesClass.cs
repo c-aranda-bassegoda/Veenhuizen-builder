@@ -18,14 +18,16 @@ public class UtilitiesClass
         return textMesh;
     }
 
-    public static Vector3 GetMouseWorldPositionXZ()
+    public static Vector3? GetMouseWorldPositionXZ()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y=0 plane
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+
         if (groundPlane.Raycast(ray, out float distance))
         {
             return ray.GetPoint(distance);
         }
-        return Vector3.zero; // fallback
+
+        return null;
     }
 }

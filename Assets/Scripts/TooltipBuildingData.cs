@@ -2,16 +2,16 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-public class TooltipBuildingData : MonoBehaviour
-{
+public class TooltipBuildingData 
+{ 
     [SerializeField]
     private BuildingScriptableObject buildingSO;
-    [SerializeField]
-    private EconomyManager economyManager;
+    //[SerializeField]
+    //private EconomyManager economyManager;
     private string body = "";
-
-    private void Start()
+    public TooltipBuildingData(BuildingScriptableObject buildingSO)
     {
+        this.buildingSO = buildingSO;
         body = "Happiness: " + buildingSO.hapiness + "\n";
         body += "Control: " + buildingSO.control + "\n";
         body += "Building Cost: " + buildingSO.buildCost + "\n";
