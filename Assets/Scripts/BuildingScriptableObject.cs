@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -61,6 +62,12 @@ public class BuildingScriptableObject : ScriptableObject
         }
     }
 
+
+    public TooltipBuildingData GetData()
+    {
+        TooltipBuildingData data = new TooltipBuildingData(this);
+        return data;
+    }
     public Vector2Int GetRotationOffset(Dir dir)
     {
         switch (dir)

@@ -5,6 +5,7 @@ public class BuildingButton : MonoBehaviour
 {
     [SerializeField] UIController uiController;
     [SerializeField] BuildingScriptableObject buildingSO;
+    [SerializeField] TooltipTrigger tooltipTrigger;
     Button button;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -12,6 +13,12 @@ public class BuildingButton : MonoBehaviour
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(OnButtonClick);
+
+        // Create tooltip data from the buildingSO and assign it
+        if (buildingSO != null && tooltipTrigger != null)
+        {
+            tooltipTrigger.buildingData = new TooltipBuildingData(buildingSO);
+        }
     }
 
     // Update is called once per frame

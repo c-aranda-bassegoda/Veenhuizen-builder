@@ -15,7 +15,7 @@ public class Testing : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             //grid.SetGridObj(UtilitiesClass.GetMouseWorldPositionXZ(), true);
-            Vector3 position = UtilitiesClass.GetMouseWorldPositionXZ();
+            Vector3 position = (Vector3)UtilitiesClass.GetMouseWorldPositionXZ();
             GridObject gridObj = grid.GetGridObj(position);
             if (gridObj != null)
                 gridObj.SetValue(true);
