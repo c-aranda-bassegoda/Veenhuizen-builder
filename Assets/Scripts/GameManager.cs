@@ -86,7 +86,8 @@ public class GameManager : MonoBehaviour
         if (gridBuildingSystem.RemovingBuilding)
         {
             PlacedObject objToRemove = gridBuildingSystem.RemoveObject(position);
-            objectSO = objToRemove.GetScriptableObject();
+            if (objToRemove != null) 
+                objectSO = objToRemove.GetScriptableObject();
         }
         if (gridBuildingSystem.AddingBuilding)
         {

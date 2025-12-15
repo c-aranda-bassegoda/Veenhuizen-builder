@@ -172,10 +172,12 @@ public class GridBuildingSystem : MonoBehaviour
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         roadManager.DisconnectObject(new Vector2Int(x, z));
 
+        if (buildingSO == null) return null;
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
 
         GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
-        PlacedObject placedObject = gridObject.GetPlacedObject();
+
+        PlacedObject placedObject = (gridObject == null ? null : gridObject.GetPlacedObject());
         if (placedObject != null)
         {
             economyManager.HandleRemovedBuilding(placedObject.GetScriptableObject(), placedObject);
