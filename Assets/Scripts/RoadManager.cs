@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.AI.Navigation;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UIElements;
 
 public class RoadManager : MonoBehaviour
@@ -86,7 +88,10 @@ public class RoadManager : MonoBehaviour
             UpdateRoad(roadToUpdate, roadConfig);
         }
 
+        Debug.Log("Building new navmesh");
         navMeshSurface.BuildNavMesh();
+        var surfaces = UnityEngine.Object.FindObjectsByType<NavMeshSurface>(FindObjectsSortMode.None);
+        Debug.Log($"NavMeshSurfaces in scene: {surfaces.Length}");
     }
 
     List<bool> FindAdjacentObjects(List<Vector2Int> adjacentRoadPositions, Vector2Int pos)
