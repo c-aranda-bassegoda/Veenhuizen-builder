@@ -313,7 +313,16 @@ public class RoadManager : MonoBehaviour
         GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
         PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
 
-        List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(pos);
+        if(currentPlacedObject.inInstitution) currentPlacedObject = currentPlacedObject.parent;
+        List<Vector2Int> adjacentRoadPositions = null;
+        if (currentPlacedObject.name == "Gesticht")
+        {
+            adjacentRoadPositions = GetAdjacentRoadPositionsGesticht(currentPlacedObject.GetOrigin());
+        }
+        else
+        {
+            adjacentRoadPositions = GetAdjacentRoadPositions(pos);
+        }
 
         foreach (Vector2Int gridPos in adjacentRoadPositions)
         {
@@ -322,7 +331,18 @@ public class RoadManager : MonoBehaviour
             if (gridObject != null)
             {
                 PlacedObject placedObject = gridObject.GetPlacedObject();
-                if(placedObject != null) directlyConnectedObjects.Add(placedObject);
+                if (placedObject != null)
+                {
+                    if(placedObject.inInstitution)
+                    {
+                        if(!directlyConnectedObjects.Contains(placedObject.parent)) directlyConnectedObjects.Add(placedObject.parent);
+                    }
+                    else if(placedObject.name == "Gesticht")
+                    {
+                        if(!directlyConnectedObjects.Contains(placedObject)) directlyConnectedObjects.Add(placedObject);
+                    }
+                    else directlyConnectedObjects.Add(placedObject);
+                }
             }
         }
 
@@ -661,6 +681,69 @@ public class RoadManager : MonoBehaviour
         Vector2Int roadLeft = roadPos;
         roadLeft.x -= 1;
         adjacentRoads.Add(roadLeft);
+
+        return adjacentRoads;
+    }
+
+    List<Vector2Int> GetAdjacentRoadPositionsGesticht(Vector2Int origin)
+    {
+        List<Vector2Int> adjacentRoads = new();
+
+        Vector2Int downLeft = origin;
+        downLeft.y -= 1;
+        adjacentRoads.Add(downLeft);
+
+        Vector2Int downMiddle = origin;
+        downLeft.y -= 1;
+        downLeft.x += 1;
+        adjacentRoads.Add(downMiddle);
+
+        Vector2Int downRight = origin;
+        downLeft.y -= 1;
+        downLeft.x += 2;
+        adjacentRoads.Add(downLeft);
+
+        Vector2Int leftDown = origin;
+        leftDown.x -= 1;
+        adjacentRoads.Add(leftDown);
+
+        Vector2Int leftMiddle = origin;
+        leftMiddle.x -= 1;
+        leftMiddle.y += 1;
+        adjacentRoads.Add(leftMiddle);
+
+        Vector2Int leftUp = origin;
+        leftUp.x -= 1;
+        leftUp.y += 2;
+        adjacentRoads.Add(leftUp);
+
+        Vector2Int rightDown = origin;
+        rightDown.x += 3;
+        adjacentRoads.Add(rightDown);
+
+        Vector2Int rightMiddle = origin;
+        rightMiddle.x += 3;
+        rightMiddle.y += 1;
+        adjacentRoads.Add(rightMiddle);
+
+        Vector2Int rightUp = origin;
+        rightUp.x += 3;
+        rightUp.y += 2;
+        adjacentRoads.Add(rightUp);
+
+        Vector2Int upLeft = origin;
+        upLeft.y += 3;
+        adjacentRoads.Add(upLeft);
+
+        Vector2Int upMiddle = origin;
+        upMiddle.y += 3;
+        upMiddle.x += 1;
+        adjacentRoads.Add(upMiddle);
+
+        Vector2Int upRight = origin;
+        upRight.x += 3;
+        upMiddle.x += 2;
+        adjacentRoads.Add(upRight);
 
         return adjacentRoads;
     }
