@@ -90,8 +90,6 @@ public class RoadManager : MonoBehaviour
 
         Debug.Log("Building new navmesh");
         navMeshSurface.BuildNavMesh();
-        var surfaces = UnityEngine.Object.FindObjectsByType<NavMeshSurface>(FindObjectsSortMode.None);
-        Debug.Log($"NavMeshSurfaces in scene: {surfaces.Length}");
     }
 
     List<bool> FindAdjacentObjects(List<Vector2Int> adjacentRoadPositions, Vector2Int pos)

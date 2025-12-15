@@ -701,7 +701,7 @@ MonoBehaviour:
     m_Bits: 256
   gridBuildingSystem: {fileID: 1434945243}
   economyManager: {fileID: 1754685237}
-  navMeshSurface: {fileID: 0}
+  navMeshSurface: {fileID: 968303292}
 --- !u!4 &94027757
 Transform:
   m_ObjectHideFlags: 0
