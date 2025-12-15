@@ -8,6 +8,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
 
 public class RoadManager : MonoBehaviour
 {
@@ -29,17 +30,26 @@ public class RoadManager : MonoBehaviour
 
     public void Update()
     {
+        //Debug stuff
         if(Input.GetKeyDown(KeyCode.L))
         {
             Debug.Log($"Connected Objects:");
-            foreach(List<PlacedObject> objGroup in connectedObjectGroups)
+            foreach (List<PlacedObject> objGroup in connectedObjectGroups)
             {
                 Debug.Log($"Connected Obejcts: List {connectedObjectGroups.IndexOf(objGroup)}:");
-                foreach(PlacedObject obj in objGroup)
+                foreach (PlacedObject obj in objGroup)
                 {
                     Debug.Log($"Connected Obejcts: {obj.name}:");
                 }
             }
+
+            //Grid<GridObject> grid = gridBuildingSystem.GetGrid();
+            //List<PlacedObject> directlyConnectedObjects = new();
+
+            //GridObject currentGridObject = grid.GetGridObj(2, 2);
+            //PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
+
+            //Debug.Log($"test1: {currentPlacedObject.gameObject.name}");
         }
     }
 

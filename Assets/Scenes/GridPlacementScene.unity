@@ -13361,7 +13361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   economyManager: {fileID: 1754685237}
-  controlPerWorkingNPC: 0
+  controlPerWorkingNPC: 1
   control: 0
   happy: 0
 --- !u!4 &1730525702
@@ -13461,7 +13461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   happy: 0
   control: 0
-  money: 400000
+  money: 4000000
   food: 0
   ppl: 0
   placedBuildingsSOs: []

@@ -33,6 +33,7 @@ public class NPCManager : MonoBehaviour
         int newTotalWorkingPeople = GetWorkingPplAmount();
         bool foundNpc = false;
 
+        Debug.Log($"Actual working people: {totalWorkingPeople}");
         //Working people increased
         if(newTotalWorkingPeople > totalWorkingPeople)
         {
@@ -72,8 +73,6 @@ public class NPCManager : MonoBehaviour
                 if (!foundNpc) break;
             }
         }
-
-        totalWorkingPeople = newTotalWorkingPeople;
     }
 
     public void ChangeValues(float _control, float _happy, float _people)
