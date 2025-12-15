@@ -248,6 +248,9 @@ public class PlacedObject : MonoBehaviour
     public int SendPeopleToWork(int _amount)
     {
         if (associatedPeople.Count <= 0) return 0;
+        int sentPeople = 0;
+
+        Debug.Log($"People Maximum: {_amount}");
 
         NavmeshNpc unemployedNpc = null;
         if (workingPeople == null)
@@ -281,12 +284,12 @@ public class PlacedObject : MonoBehaviour
 
         //implement this on npc
 
-        for (int i = 0; i < _amount;)
-        {
-            bool foundNpc = false;
+        //for (int i = 0; i < _amount;)
+        //{
             //Get new npc from associated people (one thats not already working) and send it to work
             foreach (NavmeshNpc npc in associatedPeople)
             {
+                if (sentPeople >= _amount) break;
                 if (workingPeople.Contains(npc)) continue;
 
                 List<PlacedObject> emptyConnectedFarms = new();
@@ -303,39 +306,24 @@ public class PlacedObject : MonoBehaviour
                 if(emptyConnectedFarms.Count < 1) break;
 
                 PlacedObject targetFarm = npc.GetClosestObjectFromList(emptyConnectedFarms);
-                foundNpc = false;
 
                 if (targetFarm.adjacentFarmlandWorked == null) ConnectFarmland();
 
                 PlacedObject targetFarmland = targetFarm.GetFreeFarmland();
 
-                Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
-
                 if (targetFarm.adjacentFarmlandWorked.ContainsKey(targetFarmland))
                 {
+                    Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
                     targetFarm.adjacentFarmlandWorked[targetFarmland] = true;
                     npc.SetNavmeshTarget(targetFarmland.transform.position);
                     workingPeople.Add(npc);
+                    sentPeople++;
                 }
                 else Debug.LogWarning($"Adjacent farmland not in dictionary for {targetFarm.gameObject.name}");
-
-                //Dictionary<PlacedObject, float> accessibleBuildings = npc.CanFindTarget();
-
-                //Debug.Log($"Accessible buildings for {npc.name}: {accessibleBuildings.Count}");
-
-                //if (accessibleBuildings.Count < 1) continue;
-                //else
-                //{
-                //    workingPeople.Add(npc);
-                //    npc.FindTarget(accessibleBuildings);
-                //    i++;
-                //    foundNpc = true;
-                //    break;
-                //}
             }
 
-            if (!foundNpc) break;
-        }
+        //    if (!foundNpc) break;
+        //}
 
         return workingPeople.Count;
     }

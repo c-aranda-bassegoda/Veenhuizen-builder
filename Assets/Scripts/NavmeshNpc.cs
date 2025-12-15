@@ -22,9 +22,11 @@ public class NavmeshNpc : MonoBehaviour
     bool isFindingTarget;
     bool hasTarget;
     bool stopCoroutine;
+    bool isHome;
 
     void Start()
     {
+        isHome = true;
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
     }
@@ -39,7 +41,6 @@ public class NavmeshNpc : MonoBehaviour
                 //{
                 //    StartCoroutine(TryFindTarget(true));
                 //}
-                MoveAnimations();
             }
             else if (hasTarget)
             {
@@ -48,6 +49,11 @@ public class NavmeshNpc : MonoBehaviour
                 hasTarget = false;
                 isFindingTarget = false;
             }
+        }
+
+        if(!isHome)
+        {
+            MoveAnimations();
         }
     }
 
@@ -115,6 +121,7 @@ public class NavmeshNpc : MonoBehaviour
         startY = charImage.transform.position.y;
         agent.SetDestination(targetPos);
         hasTarget = true;
+        isHome = false;
     }
 
     public PlacedObject GetClosestObjectFromList(List<PlacedObject> objects)

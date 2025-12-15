@@ -25,7 +25,7 @@ MonoBehaviour:
   height: 3
   hapiness: 2
   control: 2
-  population: 12
+  population: 0
   workersNeeded: 0
   buildCost: 65000
   yearlyCost: 1440
