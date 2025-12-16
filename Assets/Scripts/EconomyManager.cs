@@ -124,26 +124,26 @@ public class EconomyManager : MonoBehaviour
 
         string buildingName = newObject.name;
 
-        if (!maxCount.ContainsKey(buildingName))
-        {
-            maxCount.Add(newObject.name, newObject.maxPlacements);
-            buildingCount.Add(newObject.name, 0);
-        }
+        //if (!maxCount.ContainsKey(buildingName))
+        //{
+        //    maxCount.Add(newObject.name, newObject.maxPlacements);
+        //    buildingCount.Add(newObject.name, 0);
+        //}
 
         //if (maxCount[buildingName] <= buildingCount[buildingName])
         //{
         //    Debug.LogError("Can't place more buildings of type " + buildingName);
         //}
 
-        if (buildingCount.ContainsKey(buildingName))
-        {
-            buildingCount[buildingName] += 1;
-            Debug.Log(buildingName + "s: " + buildingCount[buildingName]);
-        }
-        else
-        {
-            buildingCount.Add(buildingName, 1);
-        }
+        //if (buildingCount.ContainsKey(buildingName))
+        //{
+        //    buildingCount[buildingName] += 1;
+        //    Debug.Log(buildingName + "s: " + buildingCount[buildingName]);
+        //}
+        //else
+        //{
+        //    buildingCount.Add(buildingName, 1);
+        //}
         placedBuildingsSOs.Add(newObject);
         money -= newObject.buildCost;
         happy += newObject.hapiness;
@@ -169,15 +169,15 @@ public class EconomyManager : MonoBehaviour
             Debug.LogError("No object");
         string buildingName = oldObject.name;
 
-        if (buildingCount.ContainsKey(buildingName))
-        {
-            buildingCount[buildingName] -= 1;
-            Debug.Log(buildingName + "s: " + buildingCount[buildingName]);
-        }
-        else
-        {
-            Debug.LogError("No building named " + buildingName);
-        }
+        //if (buildingCount.ContainsKey(buildingName))
+        //{
+        //    buildingCount[buildingName] -= 1;
+        //    Debug.Log(buildingName + "s: " + buildingCount[buildingName]);
+        //}
+        //else
+        //{
+        //    Debug.LogError("No building named " + buildingName);
+        //}
 
         if (connectedObjects.Contains(building))
         {
