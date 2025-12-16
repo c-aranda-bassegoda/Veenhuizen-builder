@@ -15,9 +15,9 @@ MonoBehaviour:
   name: Gesticht
   prefab: {fileID: 3202509837292703422, guid: 6712742dd9dc1d844b77cd59231b08d0, type: 3}
   modulePrefab: {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
+  coreModularBuilding: {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}
   modules:
   - {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}
-  - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
   - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
   - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
   - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
@@ -25,7 +25,7 @@ MonoBehaviour:
   height: 3
   hapiness: 2
   control: 2
-  population: 0
+  population: 12
   workersNeeded: 0
   buildCost: 65000
   yearlyCost: 1440

@@ -29,7 +29,7 @@ public class PlacedObject : MonoBehaviour
         }
         else
         {
-            GameObject corePrefab = placedObjectSO.modules[0];
+            GameObject corePrefab = placedObjectSO.coreModularBuilding;
             placedObjTransform = Instantiate(
                 corePrefab,
                 worldPosition,
@@ -73,7 +73,7 @@ public class PlacedObject : MonoBehaviour
                 }
             }
 
-            for (int i = 0; i < placedObjectSO.modules.Count - 1; i++)
+            for (int i = 0; i < placedObjectSO.modules.Count; i++)
             {
                 Quaternion R1 = Quaternion.Euler(0, offsetsInfo[i].rotationY, 0);
                 Quaternion R2 = Quaternion.Euler(0, placedObjectSO.GetRotationAngle(dir), 0);
@@ -85,13 +85,13 @@ public class PlacedObject : MonoBehaviour
                 Vector3 modulePos = worldPosition + rotatedOffset;
 
                 GameObject modObj = Instantiate(
-                    placedObjectSO.modules[i + 1],
+                    placedObjectSO.modules[i].prefab,
                     modulePos,
                     moduleRot
                 );
 
                 PlacedObject modPlaced = modObj.GetComponent<PlacedObject>();
-                modPlaced.placedSctiptableObject = placedObjectSO;
+                modPlaced.placedSctiptableObject = placedObjectSO.modules[i];
                 modPlaced.origin = origin;
                 modPlaced.dir = offsetsInfo[i].dir;
                 modPlaced.worldPosition = modulePos;

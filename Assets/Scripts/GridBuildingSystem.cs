@@ -105,6 +105,8 @@ public class GridBuildingSystem : MonoBehaviour
         }
         else if (buildingSO.module && CanSubstitute(gridPositionList))
         {
+            GridObject oldObject = grid.GetGridObj(worldPosition);
+            economyManager.HandleRemovedBuilding(oldObject.GetPlacedObject().GetScriptableObject(), oldObject.GetPlacedObject());
             ReplaceModule(worldPosition);
             economyManager.HandleNewPlacedBuilding(buildingSO);
         }
