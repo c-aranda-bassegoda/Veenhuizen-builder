@@ -99,9 +99,7 @@ public class GridBuildingSystem : MonoBehaviour
             placedObjects.Add(placedObj);
             roadManager.UpdateConnections(gridPos, false);
             economyManager.HandleNewPlacedBuilding(buildingSO);
-            Debug.LogError("Not error1");
             placedObj.OnPlace();
-            Debug.LogError("Not error2");
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, placeObjVolume);
         }
