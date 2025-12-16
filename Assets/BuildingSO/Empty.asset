@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Empty
   m_EditorClassIdentifier: 
   name: Empty
-  prefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
+  prefab: {fileID: 2613567964260009243, guid: ae133c716d06a5e4cb9f5dc72c67e61e, type: 3}
+  modulePrefab: {fileID: 2613567964260009243, guid: ae133c716d06a5e4cb9f5dc72c67e61e, type: 3}
   coreModularBuilding: {fileID: 0}
   modules: []
   width: 0
