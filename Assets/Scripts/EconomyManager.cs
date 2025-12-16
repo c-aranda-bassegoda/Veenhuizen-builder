@@ -23,9 +23,9 @@ public class EconomyManager : MonoBehaviour
     [SerializeField] private List<PlacedObject> connectedObjects;
     [SerializeField]private Dictionary<string, int> maxCount;
     [SerializeField] float secondsPerDay;
-    [SerializeField] int daysPerYear = 125;
+    [SerializeField] int daysPerSeason = 125;
     int dayNumber;
-    int yearNumber;
+    int seasonNumber;
 
     private void Start()
     {
@@ -46,23 +46,27 @@ public class EconomyManager : MonoBehaviour
 
     IEnumerator Economy()
     {
-        yearNumber = 1;
+        seasonNumber = 1;
 
         while(true)
         {
             while (timePaused)
                 yield return null;
             dayNumber++;
-            if(dayNumber >= daysPerYear)
+            if(dayNumber >= daysPerSeason)
             {
                 dayNumber = 1;
-                yearNumber++;
+                seasonNumber++;
                 PauseTime();
                 GameEvents.OnShowProgressReport?.Invoke();
             }
-            GameEvents.OnCalendarChanged?.Invoke(dayNumber, yearNumber);
+            GameEvents.OnCalendarChanged?.Invoke(dayNumber, seasonNumber);
             //HandleDayEcon();
             yield return new WaitForSeconds(secondsPerDay);
+            if (seasonNumber > 4)
+            {
+                GameEvents.OnGameFinished?.Invoke();
+            }
         }
     }
     private void OnEnable()
@@ -142,6 +146,7 @@ public class EconomyManager : MonoBehaviour
         }
         placedBuildingsSOs.Add(newObject);
         money -= newObject.buildCost;
+        happy += newObject.hapiness;
         control += newObject.control;
         ppl += newObject.population;
         NPCManager.instance.ChangeValues(control, happy, ppl);
@@ -153,7 +158,6 @@ public class EconomyManager : MonoBehaviour
     public void HandleNewConnectedBuilding(BuildingScriptableObject newObject, PlacedObject building)
     {
         connectedObjects.Add(building);
-        happy += newObject.hapiness;
         NPCManager.instance.ChangeValues(control, happy, ppl);
         GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
         Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
@@ -184,6 +188,15 @@ public class EconomyManager : MonoBehaviour
             GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
             NPCManager.instance.ChangeValues(control, happy, ppl);
         }
+
+        happy -= oldObject.hapiness;
+        control -= oldObject.control;
+        ppl -= oldObject.population;
+        connectedObjects.Remove(building);
+        NPCManager.instance.ChangeValues(control, happy, ppl);
+        GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
+
+
         money += oldObject.buildCost;
         placedBuildingsSOs.Remove(oldObject);
         GameEvents.OnMoneyChanged?.Invoke(money);
@@ -197,12 +210,6 @@ public class EconomyManager : MonoBehaviour
         string buildingName = oldObject.name;
         if (!connectedObjects.Contains(building)) return;
 
-        happy -= oldObject.hapiness;
-        control -= oldObject.control;
-        ppl -= oldObject.population;
-        connectedObjects.Remove(building);
-        NPCManager.instance.ChangeValues(control, happy, ppl);
-        GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
     }
 }
 

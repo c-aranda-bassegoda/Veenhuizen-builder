@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
@@ -20,6 +21,12 @@ public class GameManager : MonoBehaviour
         controller.OnDelete += BuildingDeletionHandler;
         controller.OnPlaceRoad += RoadPlacingHandler;
         inputManager.OnClicked += HandleMouseClick;
+        GameEvents.OnGameFinished += GameOver;
+    }
+
+    private void GameOver()
+    {
+        controller.ShowEndGameReportPanel();
     }
 
     private void BuildingDeletionHandler()
@@ -119,4 +126,5 @@ public static class GameEvents
     public static Action OnResumeTime;
     public static Action<string> OnErrorMessage;
     public static Action<int> OnWorkingChanged;
+    public static Action OnGameFinished;
 }

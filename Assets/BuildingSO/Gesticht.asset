@@ -31,6 +31,7 @@ MonoBehaviour:
   yearlyCost: 1440
   yearlyEarnings: 2700
   maxPlacements: 3
+  description: 'Inbegrepen: \n 2 slapzaals \n 2 Opzichterswoningen '
   module: 0
   modular: 1
   moduleOnly: 0

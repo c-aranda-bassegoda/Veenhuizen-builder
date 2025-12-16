@@ -13,7 +13,7 @@ public class UIController : MonoBehaviour
     public Button  deleteButton, rotateButton;
     public Button reportCloseButton;
     public GameObject panelHousing, interruptionPanel;
-    public GameObject progressReport;
+    public GameObject progressReport, gameOverMssg, menuButtom;
     public GameObject errorPopUp;
     public GameObject buildMenu;
     public Button errorCloseButton; 
@@ -104,6 +104,15 @@ public class UIController : MonoBehaviour
     private void ShowProgressReportPanel()
     {
         progressReport.SetActive(true);
+        interruptionPanel.SetActive(true);
+    }
+
+    public void ShowEndGameReportPanel()
+    {
+        progressReport.SetActive(true);
+        gameOverMssg.SetActive(true);
+        menuButtom.SetActive(true);
+        reportCloseButton.gameObject.SetActive(false);
         interruptionPanel.SetActive(true);
     }
 

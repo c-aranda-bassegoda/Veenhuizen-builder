@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private Coroutine hoverCoroutine;
-    public float delay = 1f;
+    [SerializeField] public float delay = 0.5f;
     public string header;
     [TextArea(4, 10)]
     public string body;

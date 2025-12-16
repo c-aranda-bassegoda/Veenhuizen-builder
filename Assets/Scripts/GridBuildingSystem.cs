@@ -17,8 +17,11 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] private EconomyManager economyManager;
 
     [SerializeField] private AudioClip placeObjectSound;
+    [SerializeField] private float placeObjVolume = 0.2f;
     [SerializeField] private AudioClip errorSound;
+    [SerializeField] private float errorVolume = 0.2f;
     [SerializeField] private AudioClip deleteSound;
+    [SerializeField] private float deleteVolume = 0.1f;
 
     [SerializeField] private List<PlacedObject> placedObjects;
 
@@ -66,7 +69,7 @@ public class GridBuildingSystem : MonoBehaviour
 
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         Vector2Int gridPos = new Vector2Int(x, z);
-        lastPosition = new Vector2Int(x, z+1); //workaround so it updates after placing
+        lastPosition = new Vector2Int(x, z + 1); //workaround so it updates after placing
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(gridPos, buildingSO.Direction);
         Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
 
@@ -98,7 +101,7 @@ public class GridBuildingSystem : MonoBehaviour
             economyManager.HandleNewPlacedBuilding(buildingSO);
             placedObj.OnPlace();
 
-            SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
+            SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, placeObjVolume);
         }
         else if (buildingSO.module && CanSubstitute(gridPositionList))
         {
@@ -109,7 +112,7 @@ public class GridBuildingSystem : MonoBehaviour
         {
             //TODO: "can't place" pop up message for player
             Debug.Log("Can't build");
-            SoundFXManager.Instance.PlaySoundFXClip(errorSound, transform, 1f);
+            SoundFXManager.Instance.PlaySoundFXClip(errorSound, transform, errorVolume);
         }
         return buildingSO;
     }
@@ -133,7 +136,7 @@ public class GridBuildingSystem : MonoBehaviour
             grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
         roadManager.UpdateConnections(gridPos, false);
 
-        SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
+        SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, placeObjVolume);
     }
     private void RemoveModule(Vector3 worldPosition)
     {
@@ -201,7 +204,7 @@ public class GridBuildingSystem : MonoBehaviour
             }
 
 
-            SoundFXManager.Instance.PlaySoundFXClip(deleteSound, placedObject.transform, 0.1f);
+            SoundFXManager.Instance.PlaySoundFXClip(deleteSound, placedObject.transform, deleteVolume);
             return placedObject;
         }
         return null;

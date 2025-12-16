@@ -12,7 +12,8 @@ public class TooltipBuildingData
     public TooltipBuildingData(BuildingScriptableObject buildingSO)
     {
         this.buildingSO = buildingSO;
-        body = "Happiness: " + buildingSO.hapiness + "\n";
+        body = buildingSO.description + "\n";
+        body += "Happiness: " + buildingSO.hapiness + "\n";
         body += "Control: " + buildingSO.control + "\n";
         body += "Building Cost: " + buildingSO.buildCost + "\n";
     }
