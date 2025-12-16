@@ -6,7 +6,7 @@ public class NPCManager : MonoBehaviour
 {
     [SerializeField] EconomyManager economyManager;
     [SerializeField] float controlPerWorkingNPC;
-    int totalWorkingPeople;
+    public int totalWorkingPeople;
 
     public static NPCManager instance;
 
@@ -60,21 +60,21 @@ public class NPCManager : MonoBehaviour
         //Working people decreased
         else if (newTotalWorkingPeople < totalWorkingPeople)
         {
-            while (totalWorkingPeople > newTotalWorkingPeople)
-            {
-                foundNpc = false;
-                foreach (PlacedObject obj in placedObjects)
-                {
-                    int newNotWorkingPeople = obj.GetPeopleFromWork(totalWorkingPeople - newTotalWorkingPeople);
-                    totalWorkingPeople -= newNotWorkingPeople;
+            //while (totalWorkingPeople > newTotalWorkingPeople)
+            //{
+            //    foundNpc = false;
+            //    foreach (PlacedObject obj in placedObjects)
+            //    {
+            //        int newNotWorkingPeople = obj.GetPeopleFromWork(totalWorkingPeople - newTotalWorkingPeople);
+            //        totalWorkingPeople -= newNotWorkingPeople;
 
-                    if(newNotWorkingPeople > 0) foundNpc = true;
+            //        if(newNotWorkingPeople > 0) foundNpc = true;
 
-                    if (totalWorkingPeople == newTotalWorkingPeople) break;
-                    else if (totalWorkingPeople < newTotalWorkingPeople) Debug.LogError("Less people working than should");
-                }
-                if (!foundNpc) break;
-            }
+            //        if (totalWorkingPeople == newTotalWorkingPeople) break;
+            //        else if (totalWorkingPeople < newTotalWorkingPeople) Debug.LogError("Less people working than should");
+            //    }
+            //    if (!foundNpc) break;
+            //}
         }
     }
 

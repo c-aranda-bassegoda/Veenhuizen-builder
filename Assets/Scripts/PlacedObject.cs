@@ -284,48 +284,42 @@ public class PlacedObject : MonoBehaviour
 
         //implement this on npc
 
-        //for (int i = 0; i < _amount;)
-        //{
-            //Get new npc from associated people (one thats not already working) and send it to work
-            foreach (NavmeshNpc npc in associatedPeople)
+        foreach (NavmeshNpc npc in associatedPeople)
+        {
+            if (sentPeople >= _amount) break;
+            if (workingPeople.Contains(npc)) continue;
+
+            List<PlacedObject> emptyConnectedFarms = new();
+            foreach (PlacedObject farm in connectedFarms)
             {
-                if (sentPeople >= _amount) break;
-                if (workingPeople.Contains(npc)) continue;
-
-                List<PlacedObject> emptyConnectedFarms = new();
-                foreach (PlacedObject farm in connectedFarms)
+                if (farm.GetFreeFarmland() != null)
                 {
-                    if (farm.GetFreeFarmland() != null)
-                    {
-                        emptyConnectedFarms.Add(farm);
-                    }
+                    emptyConnectedFarms.Add(farm);
                 }
-
-                Debug.Log($"Empty connected farms: {emptyConnectedFarms.Count}");
-
-                if(emptyConnectedFarms.Count < 1) break;
-
-                PlacedObject targetFarm = npc.GetClosestObjectFromList(emptyConnectedFarms);
-
-                if (targetFarm.adjacentFarmlandWorked == null) ConnectFarmland();
-
-                PlacedObject targetFarmland = targetFarm.GetFreeFarmland();
-
-                if (targetFarm.adjacentFarmlandWorked.ContainsKey(targetFarmland))
-                {
-                    Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
-                    targetFarm.adjacentFarmlandWorked[targetFarmland] = true;
-                    npc.SetNavmeshTarget(targetFarmland.transform.position);
-                    workingPeople.Add(npc);
-                    sentPeople++;
-                }
-                else Debug.LogWarning($"Adjacent farmland not in dictionary for {targetFarm.gameObject.name}");
             }
 
-        //    if (!foundNpc) break;
-        //}
+            Debug.Log($"Empty connected farms: {emptyConnectedFarms.Count}");
 
-        return workingPeople.Count;
+            if(emptyConnectedFarms.Count < 1) break;
+
+            PlacedObject targetFarm = npc.GetClosestObjectFromList(emptyConnectedFarms);
+
+            if (targetFarm.adjacentFarmlandWorked == null) ConnectFarmland();
+
+            PlacedObject targetFarmland = targetFarm.GetFreeFarmland();
+
+            if (targetFarm.adjacentFarmlandWorked.ContainsKey(targetFarmland))
+            {
+                Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
+                targetFarm.adjacentFarmlandWorked[targetFarmland] = true;
+                npc.SetNavmeshTarget(targetFarmland.transform.position);
+                workingPeople.Add(npc);
+                sentPeople++;
+            }
+            else Debug.LogWarning($"Adjacent farmland not in dictionary for {targetFarm.gameObject.name}");
+        }
+
+        return sentPeople;
     }
 
     public int GetPeopleFromWork(int _amount)
