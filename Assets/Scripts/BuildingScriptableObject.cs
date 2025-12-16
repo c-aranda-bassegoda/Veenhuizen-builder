@@ -32,6 +32,7 @@ public class BuildingScriptableObject : ScriptableObject
     // id?
     public GameObject prefab;
     public GameObject modulePrefab;
+    public GameObject core;
     public List<GameObject> modules;
     public int width;
     public int height;
@@ -49,7 +50,7 @@ public class BuildingScriptableObject : ScriptableObject
     public bool moduleOnly;
     public float GetControl() { return control; }
     public float GetHapiness() { return hapiness; }
-    public Dir Direction { get; set; }
+    [SerializeField] public Dir Direction { get; set; }
 
     public int GetRotationAngle(Dir dir)
     {
@@ -74,10 +75,10 @@ public class BuildingScriptableObject : ScriptableObject
         switch (dir)
         {
             default:
-            case Dir.Down: return new Vector2Int(0, 0);
-            case Dir.Left: return new Vector2Int(0, width);
-            case Dir.Up: return new Vector2Int(width, height);
-            case Dir.Right: return new Vector2Int(height, 0);
+            case Dir.Right: return new Vector2Int(0, 0);
+            case Dir.Down: return new Vector2Int(0, width);
+            case Dir.Left: return new Vector2Int(width, height);
+            case Dir.Up: return new Vector2Int(height, 0);
         }
     }
     public List<Vector2Int> GetGridPositionList(Vector2Int offset, Dir dir)
