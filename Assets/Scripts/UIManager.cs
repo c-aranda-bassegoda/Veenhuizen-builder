@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -29,13 +30,19 @@ public class UIManager : MonoBehaviour
     {
         GameEvents.OnStatsChanged -= UpdateStats;
         GameEvents.OnMoneyChanged -= UpdateMoney;
-        GameEvents.OnCalendarChanged -= UpdateCalendar; 
+        GameEvents.OnCalendarChanged -= UpdateCalendar;
+        GameEvents.OnWorkingChanged -= UpdateWorkers;
+    }
+
+    private void UpdateWorkers(int totWorking)
+    {
+        workingPeopleText.text = totWorking.ToString();
     }
 
     public void UpdateStats(float happy, float control, float ppl)
     {
         happynessText.text = ((int)happy).ToString();
-        workingPeopleText.text = ((int)(ppl > control? control : ppl)).ToString();
+        //workingPeopleText.text = ((int)(ppl > control? control : ppl)).ToString();
         peopleText.text = ((int) ppl).ToString();
     }
 

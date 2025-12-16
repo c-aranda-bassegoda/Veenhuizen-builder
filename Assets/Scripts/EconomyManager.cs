@@ -23,6 +23,7 @@ public class EconomyManager : MonoBehaviour
     [SerializeField] private List<PlacedObject> connectedObjects;
     [SerializeField]private Dictionary<string, int> maxCount;
     [SerializeField] float secondsPerDay;
+    [SerializeField] int daysPerYear = 125;
     int dayNumber;
     int yearNumber;
 
@@ -52,7 +53,7 @@ public class EconomyManager : MonoBehaviour
             while (timePaused)
                 yield return null;
             dayNumber++;
-            if(dayNumber >= 15)
+            if(dayNumber >= daysPerYear)
             {
                 dayNumber = 1;
                 yearNumber++;

@@ -76,6 +76,7 @@ public class NPCManager : MonoBehaviour
             //    if (!foundNpc) break;
             //}
         }
+        GameEvents.OnWorkingChanged?.Invoke(totalWorkingPeople);
     }
 
     public void ChangeValues(float _control, float _happy, float _people)

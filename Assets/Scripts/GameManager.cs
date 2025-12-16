@@ -118,4 +118,5 @@ public static class GameEvents
     public static Action OnShowProgressReport;
     public static Action OnResumeTime;
     public static Action<string> OnErrorMessage;
+    public static Action<int> OnWorkingChanged;
 }
