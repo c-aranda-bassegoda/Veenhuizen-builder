@@ -15,6 +15,7 @@ public class PlacedObject : MonoBehaviour
         if (!placedObjectSO.modular)
         {
             GameObject prefab = (inInstitution ? placedObjectSO.modulePrefab : placedObjectSO.prefab);
+            if (prefab == null) Debug.LogError("null prefab");
             placedObjTransform = Instantiate(prefab, worldPosition, Quaternion.identity);
 
             placedObject = placedObjTransform.GetComponent<PlacedObject>();
@@ -30,6 +31,7 @@ public class PlacedObject : MonoBehaviour
         else
         {
             GameObject corePrefab = placedObjectSO.coreModularBuilding;
+            if (corePrefab == null) Debug.LogError("null core");
             placedObjTransform = Instantiate(
                 corePrefab,
                 worldPosition,
@@ -84,6 +86,7 @@ public class PlacedObject : MonoBehaviour
                 Quaternion moduleRot = (R2 * R1);
                 Vector3 modulePos = worldPosition + rotatedOffset;
 
+                if (placedObjectSO.modules[i].prefab == null) Debug.LogError("null module");
                 GameObject modObj = Instantiate(
                     placedObjectSO.modules[i].prefab,
                     modulePos,
