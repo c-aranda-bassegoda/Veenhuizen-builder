@@ -17,10 +17,10 @@ MonoBehaviour:
   modulePrefab: {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
   coreModularBuilding: {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}
   modules:
-  - {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}
-  - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
-  - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
-  - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
+  - {fileID: 11400000, guid: 50a50848ba1702d46bda3bf6a1bf4d03, type: 2}
+  - {fileID: 11400000, guid: 50a50848ba1702d46bda3bf6a1bf4d03, type: 2}
+  - {fileID: 11400000, guid: 50a50848ba1702d46bda3bf6a1bf4d03, type: 2}
+  - {fileID: 11400000, guid: 50a50848ba1702d46bda3bf6a1bf4d03, type: 2}
   width: 3
   height: 3
   hapiness: 2
