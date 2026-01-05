@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Testing;
@@ -165,10 +166,23 @@ public class PlacedObject : MonoBehaviour
     [SerializeField] List<NavmeshNpc> associatedPeople;
     List<NavmeshNpc> workingPeople;
     [SerializeField] Transform buildingOrigin;
+    [SerializeField] TextMeshProUGUI farmlandCount;
     public Dictionary<PlacedObject, bool> adjacentFarmlandWorked;
     public bool isConnectedFarmland;
     bool spawnedPeople;
+    int connectedFarmlandCountInText;
 
+    public void Update()
+    {
+        if (placedSctiptableObject.name == "Boerderij")
+        {
+            if (connectedFarmlandCountInText != adjacentFarmlandWorked.Count)
+            {
+                connectedFarmlandCountInText = adjacentFarmlandWorked.Count;
+                farmlandCount.text = $"{connectedFarmlandCountInText}/10";
+            }
+        }
+    }
     public void OnPlace()
     {
         if (exclamationMark != null) exclamationMark.transform.rotation = Quaternion.identity;
@@ -183,6 +197,7 @@ public class PlacedObject : MonoBehaviour
 
         if (placedSctiptableObject.name == "Boerderij")
         {
+            farmlandCount.gameObject.transform.parent.gameObject.SetActive(true);
             if (adjacentFarmlandWorked == null) ConnectFarmland();
         }
         if(placedSctiptableObject.name == "Akker")
@@ -234,6 +249,7 @@ public class PlacedObject : MonoBehaviour
             {
                 farmland.isConnectedFarmland = true;
                 adjacentFarmlandWorked.Add(farmland, false);
+                farmland.exclamationMark.SetActive(false);
             }
         }
 
