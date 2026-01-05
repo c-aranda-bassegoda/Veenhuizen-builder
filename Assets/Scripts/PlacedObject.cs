@@ -174,12 +174,15 @@ public class PlacedObject : MonoBehaviour
 
     public void Update()
     {
-        if (placedSctiptableObject.name == "Boerderij")
+        if(placedSctiptableObject != null)
         {
-            if (connectedFarmlandCountInText != adjacentFarmlandWorked.Count)
+            if (placedSctiptableObject.name == "Boerderij")
             {
-                connectedFarmlandCountInText = adjacentFarmlandWorked.Count;
-                farmlandCount.text = $"{connectedFarmlandCountInText}/10";
+                if (connectedFarmlandCountInText != adjacentFarmlandWorked.Count)
+                {
+                    connectedFarmlandCountInText = adjacentFarmlandWorked.Count;
+                    farmlandCount.text = $"{connectedFarmlandCountInText}/10";
+                }
             }
         }
     }
@@ -354,6 +357,8 @@ public class PlacedObject : MonoBehaviour
     void SpawnPeople()
     {
         associatedPeople = new();
+
+        Debug.Log($"Spawning {personAmount} people");
 
         for(int i = 0; i < personAmount; i++)
         {

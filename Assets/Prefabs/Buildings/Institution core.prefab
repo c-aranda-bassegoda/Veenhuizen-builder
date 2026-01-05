@@ -268,16 +268,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
-  exclamationMark: {fileID: 5235796800375197727}
+  exclamationMark: {fileID: 0}
   modules: []
   isModule: 0
   parent: {fileID: 0}
   inInstitution: 0
-  person: {fileID: 0}
+  person: {fileID: -6640963970777890239, guid: 03509c7b27dbb11499f9a4c9f0bb2adf, type: 3}
   personAmount: 0
   timeBetweenSpawns: 0
   associatedPeople: []
   buildingOrigin: {fileID: 0}
+  farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
 --- !u!1001 &2859991712100736628
 PrefabInstance:
@@ -383,6 +384,7 @@ MonoBehaviour:
   timeBetweenSpawns: 0
   associatedPeople: []
   buildingOrigin: {fileID: 0}
+  farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
 --- !u!4 &7693558451822697617 stripped
 Transform:
@@ -449,11 +451,6 @@ PrefabInstance:
 --- !u!4 &4891641330629724837 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 121455035113484126, guid: b2e057f9c821a914c95ef79e3a673e56, type: 3}
-  m_PrefabInstance: {fileID: 4777729220163069435}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5235796800375197727 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 784943664356881892, guid: b2e057f9c821a914c95ef79e3a673e56, type: 3}
   m_PrefabInstance: {fileID: 4777729220163069435}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5798427233036866879
@@ -560,6 +557,7 @@ MonoBehaviour:
   timeBetweenSpawns: 0
   associatedPeople: []
   buildingOrigin: {fileID: 0}
+  farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
 --- !u!4 &2093504437398460378 stripped
 Transform:
@@ -675,6 +673,7 @@ MonoBehaviour:
   timeBetweenSpawns: 0
   associatedPeople: []
   buildingOrigin: {fileID: 0}
+  farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
 --- !u!1001 &8887193677898966640
 PrefabInstance:
@@ -785,4 +784,5 @@ MonoBehaviour:
   timeBetweenSpawns: 0
   associatedPeople: []
   buildingOrigin: {fileID: 0}
+  farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
