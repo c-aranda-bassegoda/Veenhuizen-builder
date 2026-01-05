@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 public class RoadManager : MonoBehaviour
 {
@@ -32,10 +29,10 @@ public class RoadManager : MonoBehaviour
             Debug.Log($"Connected Objects:");
             foreach (List<PlacedObject> objGroup in connectedObjectGroups)
             {
-                Debug.Log($"Connected Obejcts: List {connectedObjectGroups.IndexOf(objGroup)}:");
+                Debug.Log($"Connected Objects: List {connectedObjectGroups.IndexOf(objGroup)}:");
                 foreach (PlacedObject obj in objGroup)
                 {
-                    Debug.Log($"Connected Obejcts: {obj.name}:");
+                    Debug.Log($"Connected Objects: {obj.name}:");
                 }
             }
 
@@ -344,6 +341,7 @@ public class RoadManager : MonoBehaviour
 
         Debug.Log($"Connected: connected objects: {directlyConnectedObjects.Count}");
         bool debugthingy = false;
+        List<PlacedObject> firstObjGroup = null;
 
         foreach (PlacedObject placedObject in directlyConnectedObjects)
         {
@@ -351,8 +349,18 @@ public class RoadManager : MonoBehaviour
             {
                 if (placedObjGroup.Contains(placedObject))
                 {
-                    groupsToMerge.Add(placedObjGroup);
-                    debugthingy = true;
+                    if (firstObjGroup == null)
+                    {
+                        firstObjGroup = placedObjGroup;
+                        if (!groupsToMerge.Contains(firstObjGroup)) groupsToMerge.Add(firstObjGroup);
+                    }
+
+                    if(placedObjGroup != firstObjGroup)
+                    {
+                        if(!groupsToMerge.Contains(placedObjGroup)) groupsToMerge.Add(placedObjGroup);
+
+                        debugthingy = true;
+                    }
                 }
             }
             if (!debugthingy) Debug.Log($"Connected: object not in group");
@@ -368,13 +376,14 @@ public class RoadManager : MonoBehaviour
                     connectedObjectGroups.Remove(objGroup);
                 }
             }
+            groupsToMerge[0].Add(currentPlacedObject);
             foreach (PlacedObject placedObject in groupsToMerge[0])
             {
                 UpdateObjectNotConnectedWarning(placedObject, groupsToMerge[0]);
             }
 
             //Debug.Log($"ConnectNewObject: merged {groupsToMerge.Count} groups into one: ");
-            Debug.Log($"Connected Object: Adding new obj to list {connectedObjectGroups.IndexOf(groupsToMerge[0])}");
+            Debug.Log($"Connected Object: Merging, Adding new obj to list {connectedObjectGroups.IndexOf(groupsToMerge[0])}");
             foreach (PlacedObject placedObject in groupsToMerge[0]) Debug.Log($"ConnectNewObject: {placedObject.name}");
         }
         else if (groupsToMerge.Count == 1)
@@ -395,7 +404,7 @@ public class RoadManager : MonoBehaviour
             UpdateObjectNotConnectedWarning(currentPlacedObject, connectedObjectGroups[connectedObjectGroups.Count - 1]);
 
             //Debug.Log("ConnectNewObject: new group created");
-            Debug.Log($"Connected Object: Adding new obj to list {connectedObjectGroups.Count - 1}");
+            Debug.Log($"Connected Object: New group, Adding new obj to list {connectedObjectGroups.Count - 1}");
         }
 
         //UpdateObjectNotConnectedWarning(currentPlacedObject);
@@ -506,12 +515,24 @@ public class RoadManager : MonoBehaviour
 
         if (connectedBuildingCount > 1)
         {
-            if(obj.exclamationMark != null) obj.exclamationMark.SetActive(false);
+            if (obj.exclamationMark != null)
+            {
+                if (obj.gameObject.CompareTag("Farmland"))
+                {
+                    Debug.Log($"Found {GetConnectedFarms(obj).Count} farms adjacent to farmland");
+                    if (GetConnectedFarms(obj).Count >= 1)
+                    {
+                        obj.exclamationMark.SetActive(false);
+                    }
+                }
+                else obj.exclamationMark.SetActive(false);
+            }
             Debug.Log($"Connected: {obj.name}");
             if (buildingSO != null) economyManager.HandleNewConnectedBuilding(buildingSO, obj);
         }
         else
         {
+            Debug.Log($"Found no buildings connected to {obj.name}");
             if (obj.exclamationMark != null) obj.exclamationMark.SetActive(true);
             if(buildingSO != null) economyManager.HandleDisconnectedBuilding(buildingSO, obj);
         }

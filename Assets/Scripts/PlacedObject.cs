@@ -177,9 +177,9 @@ public class PlacedObject : MonoBehaviour
         if (gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
         else if (gameObject.tag != "Road") buildingOrigin.rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
 
-        Debug.LogError("Not error1");
+        Debug.Log("Not error1");
         SpawnPeople();
-        Debug.LogError("Not error2");
+        Debug.Log("Not error2");
 
         if (placedSctiptableObject.name == "Boerderij")
         {
