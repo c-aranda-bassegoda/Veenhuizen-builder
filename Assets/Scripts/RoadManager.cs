@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -519,11 +520,24 @@ public class RoadManager : MonoBehaviour
             {
                 if (obj.gameObject.CompareTag("Farmland"))
                 {
-                    Debug.Log($"Found {GetConnectedFarms(obj).Count} farms adjacent to farmland");
-                    if (GetConnectedFarms(obj).Count >= 1)
+                    List<PlacedObject> connectedFarms = GetConnectedFarms(obj);
+                    Debug.Log($"Found {connectedFarms.Count} farms adjacent to farmland");
+                    
+                    foreach(PlacedObject farm in connectedFarms)
                     {
-                        obj.exclamationMark.SetActive(false);
+                        StartCoroutine(DelayedWarningUpdate(farm, obj));
+                        //if(farm.adjacentFarmlandWorked == null)
+                        //{
+                        //    Debug.LogWarning($"Adjacent Farmland Null for {farm.GetOrigin()}");
+                        //    continue;
+                        //}
+                        //if(farm.adjacentFarmlandWorked.ContainsKey(obj))
+                        //{
+                        //    obj.exclamationMark.SetActive(false);
+                        //    break;
+                        //}
                     }
+                    
                 }
                 else obj.exclamationMark.SetActive(false);
             }
@@ -537,7 +551,39 @@ public class RoadManager : MonoBehaviour
             if(buildingSO != null) economyManager.HandleDisconnectedBuilding(buildingSO, obj);
         }
     }
-        
+
+    IEnumerator DelayedWarningUpdate(PlacedObject farm, PlacedObject farmland)
+    {
+        int initialFarmlandCount = farm.adjacentFarmlandWorked.Count;
+        int framesWaited = 0;
+        while ((farm.adjacentFarmlandWorked == null) || (initialFarmlandCount == farm.adjacentFarmlandWorked.Count))
+        {
+            yield return null;
+            if (!farmland.exclamationMark.activeSelf) break;
+
+            framesWaited++;
+            if(framesWaited == 5)
+            {
+                Debug.LogWarning("Broke out of delayed warning update");
+                break;
+            }
+        }
+
+        if(farmland.exclamationMark.activeSelf)
+        {
+            if (farm.adjacentFarmlandWorked.ContainsKey(farmland))
+            {
+                farmland.exclamationMark.SetActive(false);
+            }
+            else
+            {
+                Debug.Log("Farmland isnt being worked by farm");
+            }
+        }
+
+        yield return null;
+    }
+
 
     void UpdateRoad(MeshFilter road, string config)
     {
