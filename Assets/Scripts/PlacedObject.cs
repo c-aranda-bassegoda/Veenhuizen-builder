@@ -375,12 +375,11 @@ public class PlacedObject : MonoBehaviour
         return placedSctiptableObject.GetGridPositionList(origin, dir);
     }
 
-    public void Destructor()
+    public BuildingScriptableObject Destructor()
     {
         if (isModule && parent != null)
         {
-            parent.Destructor();
-            return; 
+            return parent.Destructor();
         }
         int associatedPeopleAmt = 0;
         if (associatedPeople != null) associatedPeopleAmt = associatedPeople.Count;
@@ -398,6 +397,7 @@ public class PlacedObject : MonoBehaviour
         associatedPeople.Clear();
 
         Destroy(gameObject);
+        return placedSctiptableObject;
     }
 
     internal BuildingScriptableObject.Dir GetDir()

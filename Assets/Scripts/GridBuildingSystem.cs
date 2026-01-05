@@ -99,7 +99,7 @@ public class GridBuildingSystem : MonoBehaviour
             placedObjects.Add(placedObj);
             roadManager.UpdateConnections(gridPos, false);
             economyManager.HandleNewPlacedBuilding(buildingSO);
-            economyManager.ShowTransaction(placedObj, true, false);
+            economyManager.ShowTransaction(placedObj.transform.position, placedObj.transform, placedObj.GetScriptableObject(), true, false);
             placedObj.OnPlace();
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, placeObjVolume);
@@ -110,7 +110,7 @@ public class GridBuildingSystem : MonoBehaviour
             BuildingScriptableObject oldSO = oldObject.GetPlacedObject().GetScriptableObject();
             economyManager.HandleRemovedBuilding(oldObject.GetPlacedObject().GetScriptableObject(), oldObject.GetPlacedObject());
             PlacedObject placedObj = ReplaceModule(worldPosition);
-            economyManager.ShowTransaction(placedObj, true, true, oldSO);
+            economyManager.ShowTransaction(placedObj.transform.position, placedObj.transform, placedObj.GetScriptableObject(), true, true, oldSO);
             economyManager.HandleNewPlacedBuilding(buildingSO); // Should be handle replaced building?
         }
         else
@@ -187,10 +187,12 @@ public class GridBuildingSystem : MonoBehaviour
         PlacedObject placedObject = (gridObject == null ? null : gridObject.GetPlacedObject());
         if (placedObject != null)
         {
+            Vector3 objPosition = placedObject.transform.position;
+            //BuildingScriptableObject objSO = placedObject.GetScriptableObject();
             economyManager.HandleRemovedBuilding(placedObject.GetScriptableObject(), placedObject);
-            economyManager.ShowTransaction(placedObject, false, false);
 
-            placedObject.Destructor();
+            BuildingScriptableObject objSO = placedObject.Destructor();
+            economyManager.ShowTransaction(objPosition, null, objSO, false, false);
             placedObjects.Remove(placedObject);
 
             //If object is a road, make sure to remove it from road list

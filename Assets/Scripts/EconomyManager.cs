@@ -215,9 +215,9 @@ public class EconomyManager : MonoBehaviour
 
 
     // Displays cost with floating text
-    internal void ShowTransaction(PlacedObject placedObject, bool paid, bool replaced, BuildingScriptableObject replacedObject = null)
+    internal void ShowTransaction(Vector3 position, Transform transform, BuildingScriptableObject placedObject, bool paid, bool replaced, BuildingScriptableObject replacedObject = null)
     {
-        float cost = placedObject.GetScriptableObject().buildCost;
+        float cost = placedObject.buildCost;
         if (replaced && replacedObject != null)
         {
             Debug.LogError(placedObject.name + " " + replacedObject.name);
@@ -227,7 +227,7 @@ public class EconomyManager : MonoBehaviour
         if (cost == 0) return; 
 
         Vector3 offset = new Vector3(0.0f, 9.0f, 0.0f);
-        var textGO =  Instantiate(floatingTextPrefab, placedObject.transform.position + offset, Quaternion.identity, placedObject.transform);
+        var textGO =  Instantiate(floatingTextPrefab, position + offset, Quaternion.identity, transform);
 
 
         textGO.GetComponent<TMP_Text>().text = (cost < 0? "": "+") + cost.ToString();
