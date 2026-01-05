@@ -24,6 +24,7 @@ public class EconomyManager : MonoBehaviour
     [SerializeField]private Dictionary<string, int> maxCount;
     [SerializeField] float secondsPerDay;
     [SerializeField] int daysPerSeason = 125;
+    [SerializeField] GameObject floatingTextPrefab;
     int dayNumber;
     int seasonNumber;
 
@@ -210,6 +211,28 @@ public class EconomyManager : MonoBehaviour
         string buildingName = oldObject.name;
         if (!connectedObjects.Contains(building)) return;
 
+    }
+
+
+    // Displays cost with floating text
+    internal void ShowTransaction(PlacedObject placedObject, bool paid, bool replaced, BuildingScriptableObject replacedObject = null)
+    {
+        float cost = placedObject.GetScriptableObject().buildCost;
+        if (replaced && replacedObject != null)
+        {
+            Debug.LogError(placedObject.name + " " + replacedObject.name);
+            cost = replacedObject.buildCost - cost;
+        } else if (paid) cost = -cost;
+
+        if (cost == 0) return; 
+
+        Vector3 offset = new Vector3(0.0f, 9.0f, 0.0f);
+        var textGO =  Instantiate(floatingTextPrefab, placedObject.transform.position + offset, Quaternion.identity, placedObject.transform);
+
+
+        textGO.GetComponent<TMP_Text>().text = (cost < 0? "": "+") + cost.ToString();
+
+        textGO.GetComponent<TMP_Text>().color = (cost < 0 ? Color.red: Color.green);
     }
 }
 

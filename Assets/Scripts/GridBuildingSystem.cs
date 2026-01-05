@@ -99,6 +99,7 @@ public class GridBuildingSystem : MonoBehaviour
             placedObjects.Add(placedObj);
             roadManager.UpdateConnections(gridPos, false);
             economyManager.HandleNewPlacedBuilding(buildingSO);
+            economyManager.ShowTransaction(placedObj, true, false);
             placedObj.OnPlace();
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, placeObjVolume);
@@ -106,9 +107,11 @@ public class GridBuildingSystem : MonoBehaviour
         else if (buildingSO.module && CanSubstitute(gridPositionList))
         {
             GridObject oldObject = grid.GetGridObj(worldPosition);
+            BuildingScriptableObject oldSO = oldObject.GetPlacedObject().GetScriptableObject();
             economyManager.HandleRemovedBuilding(oldObject.GetPlacedObject().GetScriptableObject(), oldObject.GetPlacedObject());
-            ReplaceModule(worldPosition);
-            economyManager.HandleNewPlacedBuilding(buildingSO);
+            PlacedObject placedObj = ReplaceModule(worldPosition);
+            economyManager.ShowTransaction(placedObj, true, true, oldSO);
+            economyManager.HandleNewPlacedBuilding(buildingSO); // Should be handle replaced building?
         }
         else
         {
@@ -119,12 +122,9 @@ public class GridBuildingSystem : MonoBehaviour
         return buildingSO;
     }
 
-    private void PlaceModule(Vector3 worldPosition)
-    {
-        PlaceObject(worldPosition); //Placeholder
-    }
 
-    private void ReplaceModule(Vector3 worldPosition)
+
+    private PlacedObject ReplaceModule(Vector3 worldPosition)
     {
         GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
         PlacedObject placedObject = gridObject.GetPlacedObject();
@@ -139,6 +139,8 @@ public class GridBuildingSystem : MonoBehaviour
         roadManager.UpdateConnections(gridPos, false);
 
         SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, placeObjVolume);
+
+        return placedObj;
     }
     private void RemoveModule(Vector3 worldPosition)
     {
@@ -186,6 +188,7 @@ public class GridBuildingSystem : MonoBehaviour
         if (placedObject != null)
         {
             economyManager.HandleRemovedBuilding(placedObject.GetScriptableObject(), placedObject);
+            economyManager.ShowTransaction(placedObject, false, false);
 
             placedObject.Destructor();
             placedObjects.Remove(placedObject);
