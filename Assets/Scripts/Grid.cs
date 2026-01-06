@@ -13,13 +13,13 @@ public class Grid<TGridObject>
     private int width;
     private int height;
     private float cellSize;
+    [SerializeField] bool debugging = true;
     public float GetCellSize() { return cellSize; }
 
     private TGridObject[,] gridArray;
     private TextMesh[,] textMesh;
     public Grid(int width, int height, float cellSize, Func<Grid<TGridObject>, int, int, TGridObject> createGridObj)
     {
-        bool debugging = false;
 
         this.width = width;
         this.height = height;
