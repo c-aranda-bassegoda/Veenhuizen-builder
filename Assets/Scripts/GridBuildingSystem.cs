@@ -138,6 +138,8 @@ public class GridBuildingSystem : MonoBehaviour
             grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
         roadManager.UpdateConnections(gridPos, false);
 
+        //if (placedObj.gameObject.name == "Badhuis_module") placedObj.transform.GetChild(0).rotation = Quaternion.Euler(90, placedObj.transform.rotation.y, placedObj.transform.rotation.z);
+
         SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, placeObjVolume);
 
         return placedObj;

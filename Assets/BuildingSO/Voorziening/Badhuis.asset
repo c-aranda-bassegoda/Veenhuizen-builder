@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Badhuis
   m_EditorClassIdentifier: 
-  name: Church
-  prefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
+  name: Badhuis
+  prefab: {fileID: 6600959261270428487, guid: 134da2ddb61419547bbcfe31ee2fb012, type: 3}
+  modulePrefab: {fileID: 6600959261270428487, guid: 134da2ddb61419547bbcfe31ee2fb012, type: 3}
+  coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
   height: 1
@@ -27,6 +28,8 @@ MonoBehaviour:
   yearlyEarnings: 0
   maxPlacements: 10
   description: 
+  possibleNpcTypes: []
+  nonWorkingPopulation: 0
   module: 1
   modular: 0
   moduleOnly: 1

@@ -15,6 +15,7 @@ MonoBehaviour:
   name: School
   prefab: {fileID: 6600959261270428487, guid: 3803875717da38e4f93703e26777e2fa, type: 3}
   modulePrefab: {fileID: 6600959261270428487, guid: 3803875717da38e4f93703e26777e2fa, type: 3}
+  coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
   height: 1
@@ -26,6 +27,12 @@ MonoBehaviour:
   yearlyCost: 120
   yearlyEarnings: 200
   maxPlacements: 20
+  description: 
+  possibleNpcTypes:
+  - boy
+  - girl
+  - teacher
+  nonWorkingPopulation: 4
   module: 1
   modular: 0
   moduleOnly: 1
