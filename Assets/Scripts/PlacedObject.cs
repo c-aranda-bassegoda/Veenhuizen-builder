@@ -28,6 +28,8 @@ public class PlacedObject : MonoBehaviour
             placedObject.isModule = placedObjectSO.module;
             placedObject.inInstitution = false;
             placedObject.personAmount = placedObjectSO.population;
+            placedObject.nonWorkingPopulation = placedObjectSO.nonWorkingPopulation;
+            placedObject.possibleNpcTypes = placedObjectSO.possibleNpcTypes;
         }
         else
         {
@@ -49,6 +51,8 @@ public class PlacedObject : MonoBehaviour
             placedObject.modules = new List<PlacedObject>();
             placedObject.inInstitution = false;
             placedObject.personAmount = placedObjectSO.population;
+            placedObject.nonWorkingPopulation = placedObjectSO.nonWorkingPopulation;
+            placedObject.possibleNpcTypes = placedObjectSO.possibleNpcTypes;
 
             List<OffsetInfo> offsetsInfo = new List<OffsetInfo>();
             int cellSize = 10;
@@ -124,6 +128,8 @@ public class PlacedObject : MonoBehaviour
     public PlacedObject parent;
     public bool inInstitution;
     private Grid<GridObject> gridObject;
+    int nonWorkingPopulation;
+    List<string> possibleNpcTypes;
 
     public PlacedObject Replace(BuildingScriptableObject placedObjectSO)
     {
@@ -150,6 +156,8 @@ public class PlacedObject : MonoBehaviour
         placedObject.parent = this.parent;
         placedObject.inInstitution = this.inInstitution;
         placedObject.personAmount = placedObjectSO.population;
+        placedObject.nonWorkingPopulation = placedObjectSO.nonWorkingPopulation;
+        placedObject.possibleNpcTypes = placedObjectSO.possibleNpcTypes;
 
         if (this.parent != null)
             this.parent.modules.Add(placedObject);
@@ -160,7 +168,6 @@ public class PlacedObject : MonoBehaviour
         return placedObject;
     }
     [Header("People")]
-    [SerializeField] NavmeshNpc person;
     [HideInInspector] public float personAmount;
     [SerializeField] float timeBetweenSpawns;
     [SerializeField] List<NavmeshNpc> associatedPeople;
@@ -188,7 +195,11 @@ public class PlacedObject : MonoBehaviour
     }
     public void OnPlace()
     {
-        if (exclamationMark != null) exclamationMark.transform.rotation = Quaternion.identity;
+        if (exclamationMark != null)
+        {
+            exclamationMark.transform.rotation = Quaternion.identity;
+            exclamationMark.SetActive(true);
+        }
         Debug.Log("building start");
         buildingOrigin = transform.GetChild(0);
         if (gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
@@ -357,11 +368,30 @@ public class PlacedObject : MonoBehaviour
     void SpawnPeople()
     {
         associatedPeople = new();
+        int npcsSpawnedOfType = 0;
+        int randomTypeInt = 0;
 
         Debug.Log($"Spawning {personAmount} people");
 
         for(int i = 0; i < personAmount; i++)
         {
+            NavmeshNpc person = null;
+            if(possibleNpcTypes.Count == 1) person = NPCManager.instance.GetRandomNpcOfType(possibleNpcTypes[0]);
+            if(possibleNpcTypes.Count > 1)
+            {
+                int switchInt = Mathf.FloorToInt(personAmount / possibleNpcTypes.Count);
+                if (npcsSpawnedOfType == switchInt)
+                {
+                    npcsSpawnedOfType = 0;
+                    randomTypeInt++;
+                    if (randomTypeInt > possibleNpcTypes.Count - 1) randomTypeInt = 0;
+                }
+
+                person = NPCManager.instance.GetRandomNpcOfType(possibleNpcTypes[randomTypeInt]);
+                npcsSpawnedOfType++;
+            }
+
+
             NavmeshNpc newNpc = Instantiate(person, buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(0, 5, -0)), Quaternion.Euler(0, 0, 0));
             associatedPeople.Add(newNpc);
             newNpc.SetOrigin(this);

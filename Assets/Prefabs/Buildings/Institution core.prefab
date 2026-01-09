@@ -273,7 +273,6 @@ MonoBehaviour:
   isModule: 0
   parent: {fileID: 0}
   inInstitution: 0
-  person: {fileID: -6640963970777890239, guid: 03509c7b27dbb11499f9a4c9f0bb2adf, type: 3}
   personAmount: 0
   timeBetweenSpawns: 0
   associatedPeople: []
@@ -379,7 +378,6 @@ MonoBehaviour:
   isModule: 0
   parent: {fileID: 0}
   inInstitution: 0
-  person: {fileID: 0}
   personAmount: 0
   timeBetweenSpawns: 0
   associatedPeople: []
@@ -442,6 +440,10 @@ PrefabInstance:
     - target: {fileID: 784943664356881892, guid: b2e057f9c821a914c95ef79e3a673e56, type: 3}
       propertyPath: m_Name
       value: Exclamation_Up
+      objectReference: {fileID: 0}
+    - target: {fileID: 784943664356881892, guid: b2e057f9c821a914c95ef79e3a673e56, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -552,7 +554,6 @@ MonoBehaviour:
   isModule: 0
   parent: {fileID: 0}
   inInstitution: 0
-  person: {fileID: 0}
   personAmount: 0
   timeBetweenSpawns: 0
   associatedPeople: []
@@ -668,7 +669,6 @@ MonoBehaviour:
   isModule: 0
   parent: {fileID: 0}
   inInstitution: 0
-  person: {fileID: 0}
   personAmount: 0
   timeBetweenSpawns: 0
   associatedPeople: []
@@ -779,7 +779,6 @@ MonoBehaviour:
   isModule: 0
   parent: {fileID: 0}
   inInstitution: 0
-  person: {fileID: 0}
   personAmount: 0
   timeBetweenSpawns: 0
   associatedPeople: []

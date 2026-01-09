@@ -32,6 +32,10 @@ MonoBehaviour:
   yearlyEarnings: 2700
   maxPlacements: 3
   description: 'Inbegrepen: \n 2 slapzaals \n 2 Opzichterswoningen '
+  possibleNpcTypes:
+  - man
+  - woman
+  nonWorkingPopulation: 0
   module: 0
   modular: 1
   moduleOnly: 0

@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5794637816808456209
 RectTransform:
   m_ObjectHideFlags: 0
@@ -134,6 +134,7 @@ MonoBehaviour:
   timeBetweenSpawns: 0.5
   associatedPeople: []
   buildingOrigin: {fileID: 0}
+  farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
 --- !u!1 &7519962663646669591
 GameObject:

@@ -45,6 +45,8 @@ public class BuildingScriptableObject : ScriptableObject
     public float yearlyEarnings;
     public int maxPlacements;
     public string description;
+    public List<string> possibleNpcTypes;
+    public int nonWorkingPopulation;
     [DoNotSerialize] public bool module;
     public bool modular;
     public bool moduleOnly;
