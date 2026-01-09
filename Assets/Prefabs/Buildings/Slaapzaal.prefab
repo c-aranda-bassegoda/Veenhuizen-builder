@@ -210,16 +210,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
-  exclamationMark: {fileID: 6169760798382510687}
+  exclamationMark: {fileID: 0}
   modules: []
   isModule: 0
   parent: {fileID: 0}
   inInstitution: 0
-  person: {fileID: -6640963970777890239, guid: 03509c7b27dbb11499f9a4c9f0bb2adf, type: 3}
   personAmount: 1
   timeBetweenSpawns: 0.5
-  associatedPeople: []
+  associatedWorkingPeople: []
+  associatedNonWorkingPeople: []
   buildingOrigin: {fileID: 0}
+  farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
 --- !u!1 &6972276144202234479
 GameObject:

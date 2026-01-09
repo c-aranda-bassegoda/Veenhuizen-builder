@@ -170,7 +170,7 @@ public class PlacedObject : MonoBehaviour
     [Header("People")]
     [HideInInspector] public float personAmount;
     [SerializeField] float timeBetweenSpawns;
-    [SerializeField] List<NavmeshNpc> associatedPeople;
+    [SerializeField] List<NavmeshNpc> associatedWorkingPeople, associatedNonWorkingPeople;
     List<NavmeshNpc> workingPeople;
     [SerializeField] Transform buildingOrigin;
     [SerializeField] TextMeshProUGUI farmlandCount;
@@ -282,7 +282,7 @@ public class PlacedObject : MonoBehaviour
 
     public int SendPeopleToWork(int _amount)
     {
-        if (associatedPeople.Count <= 0) return 0;
+        if (associatedWorkingPeople.Count <= 0) return 0;
         int sentPeople = 0;
 
         Debug.Log($"People Maximum: {_amount}");
@@ -294,7 +294,7 @@ public class PlacedObject : MonoBehaviour
         }
         else
         {
-            foreach(NavmeshNpc npc in associatedPeople)
+            foreach(NavmeshNpc npc in associatedWorkingPeople)
             {
                 if(!workingPeople.Contains(npc))
                 {
@@ -319,7 +319,7 @@ public class PlacedObject : MonoBehaviour
 
         //implement this on npc
 
-        foreach (NavmeshNpc npc in associatedPeople)
+        foreach (NavmeshNpc npc in associatedWorkingPeople)
         {
             if (sentPeople >= _amount) break;
             if (workingPeople.Contains(npc)) continue;
@@ -367,34 +367,45 @@ public class PlacedObject : MonoBehaviour
 
     void SpawnPeople()
     {
-        associatedPeople = new();
-        int npcsSpawnedOfType = 0;
-        int randomTypeInt = 0;
+        associatedWorkingPeople = new();
+        associatedNonWorkingPeople = new();
+
 
         Debug.Log($"Spawning {personAmount} people");
 
-        for(int i = 0; i < personAmount; i++)
+        for (int j = 0; j < 2; j++)
         {
-            NavmeshNpc person = null;
-            if(possibleNpcTypes.Count == 1) person = NPCManager.instance.GetRandomNpcOfType(possibleNpcTypes[0]);
-            if(possibleNpcTypes.Count > 1)
+            int npcsSpawnedOfType = 0;
+            int randomTypeInt = 0;
+
+            float intToCheck = personAmount;
+            if (j == 1) intToCheck = nonWorkingPopulation;
+
+            int switchInt = Mathf.FloorToInt(intToCheck / possibleNpcTypes.Count);
+
+            for (int i = 0; i < intToCheck; i++)
             {
-                int switchInt = Mathf.FloorToInt(personAmount / possibleNpcTypes.Count);
-                if (npcsSpawnedOfType == switchInt)
+                NavmeshNpc person = null;
+                if (possibleNpcTypes.Count == 1) person = NPCManager.instance.GetRandomNpcOfType(possibleNpcTypes[0]);
+                if (possibleNpcTypes.Count > 1)
                 {
-                    npcsSpawnedOfType = 0;
-                    randomTypeInt++;
-                    if (randomTypeInt > possibleNpcTypes.Count - 1) randomTypeInt = 0;
+                    if (npcsSpawnedOfType == switchInt)
+                    {
+                        npcsSpawnedOfType = 0;
+                        randomTypeInt++;
+                        if (randomTypeInt > possibleNpcTypes.Count - 1) randomTypeInt = UnityEngine.Random.Range(0, possibleNpcTypes.Count);
+                    }
+
+                    person = NPCManager.instance.GetRandomNpcOfType(possibleNpcTypes[randomTypeInt]);
+                    npcsSpawnedOfType++;
                 }
 
-                person = NPCManager.instance.GetRandomNpcOfType(possibleNpcTypes[randomTypeInt]);
-                npcsSpawnedOfType++;
+
+                NavmeshNpc newNpc = Instantiate(person, buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(0, 5, -0)), Quaternion.Euler(0, 0, 0));
+                if(j == 0) associatedWorkingPeople.Add(newNpc);
+                if(j == 1) associatedNonWorkingPeople.Add(newNpc);
+                newNpc.SetOrigin(this);
             }
-
-
-            NavmeshNpc newNpc = Instantiate(person, buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(0, 5, -0)), Quaternion.Euler(0, 0, 0));
-            associatedPeople.Add(newNpc);
-            newNpc.SetOrigin(this);
         }
     }
 
@@ -412,7 +423,7 @@ public class PlacedObject : MonoBehaviour
             return parent.Destructor();
         }
         int associatedPeopleAmt = 0;
-        if (associatedPeople != null) associatedPeopleAmt = associatedPeople.Count;
+        if (associatedWorkingPeople != null) associatedPeopleAmt = associatedWorkingPeople.Count;
         if (modules != null)
         {
             foreach (PlacedObject module in modules)
@@ -420,11 +431,11 @@ public class PlacedObject : MonoBehaviour
                 Destroy(module.gameObject);
             }
         }
-        foreach (NavmeshNpc _npc in associatedPeople)
+        foreach (NavmeshNpc _npc in associatedWorkingPeople)
         {
             Destroy(_npc.gameObject);
         }
-        associatedPeople.Clear();
+        associatedWorkingPeople.Clear();
 
         Destroy(gameObject);
         return placedSctiptableObject;

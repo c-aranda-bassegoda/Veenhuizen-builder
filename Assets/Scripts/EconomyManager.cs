@@ -220,7 +220,7 @@ public class EconomyManager : MonoBehaviour
         float cost = placedObject.buildCost;
         if (replaced && replacedObject != null)
         {
-            Debug.LogError(placedObject.name + " " + replacedObject.name);
+            Debug.Log(placedObject.name + " " + replacedObject.name);
             cost = replacedObject.buildCost - cost;
         } else if (paid) cost = -cost;
 
