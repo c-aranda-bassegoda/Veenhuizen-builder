@@ -101,6 +101,12 @@ public class UIController : MonoBehaviour
         interruptionPanel.SetActive(true);
 
     }
+
+    public void SkipTutorial()
+    {
+        SceneManager.LoadSceneAsync("GridPlacementScene");
+    }
+
     private void ShowProgressReportPanel()
     {
         progressReport.SetActive(true);
