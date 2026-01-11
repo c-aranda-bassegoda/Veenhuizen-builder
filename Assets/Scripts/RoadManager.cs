@@ -98,6 +98,12 @@ public class RoadManager : MonoBehaviour
             UpdateRoad(roadToUpdate, roadConfig);
         }
 
+        StartCoroutine(DelayNewNavmesh());
+    }
+
+    IEnumerator DelayNewNavmesh()
+    {
+        yield return new WaitForEndOfFrame();
         Debug.Log("Building new navmesh");
         navMeshSurface.BuildNavMesh();
     }
@@ -296,6 +302,8 @@ public class RoadManager : MonoBehaviour
                 Debug.Log($"Removing object group, new amount {connectedObjectGroups.Count}");
             }
         }
+
+        StartCoroutine(DelayNewNavmesh());
     }
 
     private void ConnectNewObject(Vector2Int pos)
@@ -482,8 +490,11 @@ public class RoadManager : MonoBehaviour
         List<PlacedObject> connectedFarms = new();
         foreach(PlacedObject obj in targetObjectGroup)
         {
-            Debug.Log($"Object in {originBuilding.name} object group: {obj.name}");
-            if (obj.name == "Boerderij") connectedFarms.Add(obj);
+            if(obj != null)
+            {
+                Debug.Log($"Object in {originBuilding.name} object group: {obj.name}");
+                if (obj.name == "Boerderij") connectedFarms.Add(obj);
+            }
         }
         return connectedFarms;
     }
@@ -509,7 +520,10 @@ public class RoadManager : MonoBehaviour
         foreach (PlacedObject connectedObj in objGroup)
         {
             //Custom logic depending on object ideally
-            if (!connectedObj.gameObject.CompareTag("Road")) connectedBuildingCount++;
+            if(connectedObj != null)
+            {
+                if (!connectedObj.gameObject.CompareTag("Road")) connectedBuildingCount++;
+            }
         }
 
         //Debug.Log($"ConnectNewObject: {connectedBuildingCount} buildings connected");

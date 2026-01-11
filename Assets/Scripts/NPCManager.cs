@@ -30,11 +30,12 @@ public class NPCManager : MonoBehaviour
         }
     }
 
-    public void RegisterBuilding(PlacedObject newBuilding)
+    public void RegisterBuilding(PlacedObject newBuilding, bool _add)
     {
         if(newBuilding.personAmount > 0)
         {
-            placedObjects.Insert(0, newBuilding);
+            if (_add) placedObjects.Insert(0, newBuilding);
+            else if (placedObjects.Contains(newBuilding)) placedObjects.Remove(newBuilding);
         }
         UpdateWorkingPeople();
     }
@@ -93,21 +94,21 @@ public class NPCManager : MonoBehaviour
         //Working people decreased
         else if (newTotalWorkingPeople < totalWorkingPeople)
         {
-            //while (totalWorkingPeople > newTotalWorkingPeople)
-            //{
-            //    foundNpc = false;
-            //    foreach (PlacedObject obj in placedObjects)
-            //    {
-            //        int newNotWorkingPeople = obj.GetPeopleFromWork(totalWorkingPeople - newTotalWorkingPeople);
-            //        totalWorkingPeople -= newNotWorkingPeople;
+            while (totalWorkingPeople > newTotalWorkingPeople)
+            {
+                foundNpc = false;
+                foreach (PlacedObject obj in placedObjects)
+                {
+                    int newNotWorkingPeople = obj.GetPeopleFromWork(totalWorkingPeople - newTotalWorkingPeople);
+                    totalWorkingPeople -= newNotWorkingPeople;
 
-            //        if(newNotWorkingPeople > 0) foundNpc = true;
+                    if (newNotWorkingPeople > 0) foundNpc = true;
 
-            //        if (totalWorkingPeople == newTotalWorkingPeople) break;
-            //        else if (totalWorkingPeople < newTotalWorkingPeople) Debug.LogError("Less people working than should");
-            //    }
-            //    if (!foundNpc) break;
-            //}
+                    if (totalWorkingPeople == newTotalWorkingPeople) break;
+                    else if (totalWorkingPeople < newTotalWorkingPeople) Debug.LogError("Less people working than should");
+                }
+                if (!foundNpc) break;
+            }
         }
         GameEvents.OnWorkingChanged?.Invoke(totalWorkingPeople);
     }

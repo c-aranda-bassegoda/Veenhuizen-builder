@@ -248,7 +248,7 @@ public class PlacedObject : MonoBehaviour
             }
         }
 
-        NPCManager.instance.RegisterBuilding(this);
+        NPCManager.instance.RegisterBuilding(this, true);
     } 
 
     public void ConnectFarmland()
@@ -347,7 +347,7 @@ public class PlacedObject : MonoBehaviour
             {
                 Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
                 targetFarm.adjacentFarmlandWorked[targetFarmland] = true;
-                npc.SetNavmeshTarget(targetFarmland.transform.position);
+                npc.SetNavmeshTarget(targetFarmland.transform.position, targetFarmland);
                 workingPeople.Add(npc);
                 sentPeople++;
             }
@@ -360,9 +360,31 @@ public class PlacedObject : MonoBehaviour
     public int GetPeopleFromWork(int _amount)
     {
         //Get people out of working people list and back to the building
+        int peopleSentBack = 0;
+        Debug.Log($"Sending People Back: {_amount}");
+
+        foreach(NavmeshNpc npc in workingPeople)
+        {
+            if (peopleSentBack < _amount)
+            {
+                npc.ReturnHome();
+                workingPeople.Remove(npc);
+                Debug.Log($"Sending people back: {npc.name} Back");
+                peopleSentBack++;
+            }
+            else break;
+        }
 
         //Return amount of people that stopped working
-        return _amount;
+        return peopleSentBack;
+    }
+
+    public void SendNpcBack(NavmeshNpc npc, bool teleport)
+    {
+        NPCManager.instance.totalWorkingPeople--;
+        npc.destinationBuilding = null;
+        workingPeople.Remove(npc);
+        if(teleport) npc.ReturnHome();
     }
 
     void SpawnPeople()
@@ -418,6 +440,7 @@ public class PlacedObject : MonoBehaviour
 
     public BuildingScriptableObject Destructor()
     {
+
         if (isModule && parent != null)
         {
             return parent.Destructor();
@@ -437,6 +460,7 @@ public class PlacedObject : MonoBehaviour
         }
         associatedWorkingPeople.Clear();
 
+        NPCManager.instance.RegisterBuilding(this, false);
         Destroy(gameObject);
         return placedSctiptableObject;
     }

@@ -11,6 +11,8 @@ public class NavmeshNpc : MonoBehaviour
 {
     NavMeshAgent agent;
     PlacedObject originBuilding;
+    public PlacedObject destinationBuilding;
+    public Vector3 navmeshDestination;
     string desiredBuilding, currentTargetBuilding;
     bool movingToTarget;
 
@@ -23,6 +25,8 @@ public class NavmeshNpc : MonoBehaviour
     bool hasTarget;
     bool stopCoroutine;
     bool isHome;
+
+    int frameCount;
 
     void Start()
     {
@@ -54,6 +58,7 @@ public class NavmeshNpc : MonoBehaviour
         if(!isHome)
         {
             MoveAnimations();
+            CheckConnection();
         }
     }
 
@@ -69,6 +74,47 @@ public class NavmeshNpc : MonoBehaviour
             if (charImage.transform.position.y > startY) charImage.transform.position += new Vector3(0, -bobSpeed * Time.deltaTime, 0);
             else goingUp = true;
         }
+    }
+
+    void CheckConnection()
+    {
+        frameCount++;
+        if(frameCount >= 15)
+        {
+            frameCount = 0;
+            if(!IsConnectedToOrigin())
+            {
+                originBuilding.SendNpcBack(this, true);
+            }
+            else if (!IsConnectedToTarget())
+            {
+                originBuilding.SendNpcBack(this, false);
+                SetNavmeshTarget(originBuilding.transform.GetChild(0).position, originBuilding);
+            }
+        }
+    }
+
+    public bool IsConnectedToOrigin()
+    {
+        float pathDistance = GetPathDistance(originBuilding.transform.GetChild(0).position);
+        Debug.Log($"Is Connected To Origin: {pathDistance}");
+        if (pathDistance == -1)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool IsConnectedToTarget()
+    {
+        if(destinationBuilding == null) return false;
+        float pathDistance = GetPathDistance(navmeshDestination);
+        Debug.Log($"Is Connected To Target: {pathDistance}");
+        if (pathDistance == -1)
+        {
+            return false;
+        }
+        return true;
     }
 
     public void SetOrigin(PlacedObject _building)
@@ -115,13 +161,24 @@ public class NavmeshNpc : MonoBehaviour
         desiredBuilding = buildingName;
     }
 
-    // Update is called once per frame
-    public void SetNavmeshTarget(Vector3 targetPos)
+    public void SetNavmeshTarget(Vector3 targetPos, PlacedObject building)
     {
         startY = charImage.transform.position.y;
         agent.SetDestination(targetPos);
+        destinationBuilding = building;
+        navmeshDestination = targetPos;
         hasTarget = true;
         isHome = false;
+        agent.isStopped = false;
+    }
+
+    public void ReturnHome()
+    {
+        agent.isStopped = true;
+        hasTarget = false;
+        isHome = true;
+        Debug.Log($"Sending agent back to {originBuilding.transform.GetChild(0).position}");
+        transform.position = originBuilding.transform.GetChild(0).position;
     }
 
     public PlacedObject GetClosestObjectFromList(List<PlacedObject> objects)
@@ -182,7 +239,7 @@ public class NavmeshNpc : MonoBehaviour
 
                 if (!findBetterPath || (currentTargetBuilding != desiredBuilding))
                 {
-                    SetNavmeshTarget(closestAccessibleBuilding.transform.GetChild(0).position);
+                    SetNavmeshTarget(closestAccessibleBuilding.transform.GetChild(0).position, closestAccessibleBuilding);
                     currentTargetBuilding = desiredBuilding;
                     foundTarget = true;
                 }
@@ -193,7 +250,7 @@ public class NavmeshNpc : MonoBehaviour
                         Debug.Log($"Considering better path: {GetPathDistance(accessibleBuildingsByDistance[0].transform.GetChild(0).position)} vs {agent.remainingDistance}");
                         if (GetPathDistance(accessibleBuildingsByDistance[0].transform.GetChild(0).position) < agent.remainingDistance)
                         {
-                            SetNavmeshTarget(closestAccessibleBuilding.transform.GetChild(0).position);
+                            SetNavmeshTarget(closestAccessibleBuilding.transform.GetChild(0).position, closestAccessibleBuilding);
                             currentTargetBuilding = desiredBuilding;
                             foundTarget = true;
                         }
