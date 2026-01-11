@@ -162,6 +162,7 @@ public class PlacedObject : MonoBehaviour
         if (this.parent != null)
             this.parent.modules.Add(placedObject);
 
+        oldObject.GetComponent<PlacedObject>().RemoveAllPeople();
         Destroy(oldObject);
         placedObject.OnPlace();
 
@@ -454,15 +455,28 @@ public class PlacedObject : MonoBehaviour
                 Destroy(module.gameObject);
             }
         }
+
+        RemoveAllPeople();
+
+
+        Destroy(gameObject);
+        return placedSctiptableObject;
+    }
+
+    public void RemoveAllPeople()
+    {
         foreach (NavmeshNpc _npc in associatedWorkingPeople)
         {
             Destroy(_npc.gameObject);
         }
+        foreach (NavmeshNpc _npc in associatedNonWorkingPeople)
+        {
+            Destroy(_npc.gameObject);
+        }
         associatedWorkingPeople.Clear();
+        associatedNonWorkingPeople.Clear();
 
         NPCManager.instance.RegisterBuilding(this, false);
-        Destroy(gameObject);
-        return placedSctiptableObject;
     }
 
     internal BuildingScriptableObject.Dir GetDir()

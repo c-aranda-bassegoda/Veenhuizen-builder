@@ -67,7 +67,7 @@ public class InputManager : MonoBehaviour
 
     private void CheckClickHoldEvent()
     {
-        if (Input.GetMouseButton(0) && EventSystem.current.IsPointerOverGameObject() == false)
+        if (Input.GetMouseButton(0) && IsPointerOverNonWorldSpaceUI() == false)
         {
             var position = RaycastGround();
             if (position != null)
@@ -75,6 +75,45 @@ public class InputManager : MonoBehaviour
                 OnMouseHold?.Invoke(position.Value);
             }
         }
+    }
+
+    bool IsPointerOverNonWorldSpaceUI()
+    {
+        if (EventSystem.current == null)
+            return false;
+
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        bool foundWorldSpace = false;
+        bool foundNonWorldSpace = false;
+
+        foreach (RaycastResult result in results)
+        {
+            Canvas canvas = result.gameObject.GetComponentInParent<Canvas>();
+            if (canvas == null)
+                continue;
+
+            if (canvas.renderMode == RenderMode.WorldSpace)
+                foundWorldSpace = true;
+            else
+                foundNonWorldSpace = true;
+
+            // Early exit: non-world-space always wins
+            if (foundNonWorldSpace)
+            {
+                Debug.Log($"Found non-world space canvas: {result.gameObject.name}");
+                return true;
+            }
+        }
+
+        // Only true if we found non-world-space UI
+        return false;
     }
 
     private Vector3? RaycastGround()
@@ -90,7 +129,7 @@ public class InputManager : MonoBehaviour
 
     private void CheckClickUpEvent()
     {
-        if(Input.GetMouseButtonUp(0) && EventSystem.current.IsPointerOverGameObject() == false)
+        if(Input.GetMouseButtonUp(0) && IsPointerOverNonWorldSpaceUI() == false)
         {
             OnMouseUp?.Invoke();
         }
@@ -98,7 +137,7 @@ public class InputManager : MonoBehaviour
 
     private void CheckClickDownEvent()
     {
-        if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() == false)
+        if (Input.GetMouseButtonDown(0) && IsPointerOverNonWorldSpaceUI() == false)
         {
             var position = RaycastGround();
             if (position != null)
