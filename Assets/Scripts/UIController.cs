@@ -19,6 +19,8 @@ public class UIController : MonoBehaviour
     public Button errorCloseButton; 
     public TextMeshProUGUI errorMessage;
 
+    [SerializeField] List<Transform> expandMenus;
+
 
     [SerializeField] public AudioClip clickSound;
 
@@ -32,7 +34,7 @@ public class UIController : MonoBehaviour
         buildingButtons = new List<Button>();
         foreach (Button button in buildMenu.GetComponentsInChildren<Button>())
         {
-            buildingButtons.Add(button);
+            if(button.GetComponent<BuildingButton>() != null) buildingButtons.Add(button);
         }
         rotateButton.interactable = false;
         ResetButtonColor();
@@ -142,7 +144,7 @@ public class UIController : MonoBehaviour
             return;
         }
         //outline.effectColor = outlineColor;
-        outline.effectColor = Color.blue;
+        outline.effectColor = Color.white;
         outline.enabled = true;
     }
 
@@ -159,10 +161,10 @@ public class UIController : MonoBehaviour
                 button.GetComponent<Outline>().enabled = false;
             if(button.transform.childCount > 0)
             {
-                Transform layout = button.transform.GetChild(0);
+                Transform layout = button.transform.parent.GetChild(1);
                 if (layout.gameObject.activeSelf)
                 {
-                    HideSidebarFold(layout, button.transform);
+                    //HideSidebarFold(layout, button.transform);
                 }
                 foreach (Button btn in layout.gameObject.GetComponentsInChildren<Button>())
                 {
@@ -180,19 +182,30 @@ public class UIController : MonoBehaviour
 
     public void HideSidebarFold(Transform layout, Transform button)
     {
+        //Disable all building options
+        layout.gameObject.SetActive(false);
+        //Enable the expand icon
+        button.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+    }
 
-        if (button.transform.childCount > 1)
+    public void HideOtherSidebars(Transform button)
+    {
+        foreach(Transform layout in expandMenus)
         {
-            //Disable all building options
-            layout.gameObject.SetActive(false);
-            //Enable the expand icon
-            button.GetChild(1).gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            if(!button.IsChildOf(layout))
+            {
+                HideSidebarFold(layout, layout.transform.parent.GetChild(0));
+            }
         }
     }
 
     public void ToggleSidebarFold(Transform button)
     {
-        Transform layout = button.GetChild(0);
+        HideOtherSidebars(button);
+
+        Transform layout = button.transform.parent.GetChild(1);
+
+        Debug.Log($"Toggling Sidebar: {layout.gameObject.name}");
         //menu is unfolded
         if (layout.gameObject.activeSelf)
         {
@@ -205,7 +218,7 @@ public class UIController : MonoBehaviour
             layout.gameObject.SetActive(true);
 
             //Disable the expand icon
-            button.GetChild(1).gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+            button.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
         }
     }
 }
