@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 
 public class GridBuildingSystem : MonoBehaviour
 {
+    public bool isTutorial = false;
     //[SerializeField] public List<BuildingScriptableObject> buildingSOList;
     [SerializeField] private BuildingScriptableObject buildingSO;
     private Grid<GridObject> grid;
@@ -119,6 +120,13 @@ public class GridBuildingSystem : MonoBehaviour
             Debug.Log("Can't build");
             SoundFXManager.Instance.PlaySoundFXClip(errorSound, transform, errorVolume);
         }
+        Debug.LogError("built sth");
+        if (isTutorial)
+        {
+            Debug.LogError("Play tutorial");
+            TimelineManager.Instance.Play();
+        }
+
         return buildingSO;
     }
 
