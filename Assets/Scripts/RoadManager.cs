@@ -98,6 +98,12 @@ public class RoadManager : MonoBehaviour
             UpdateRoad(roadToUpdate, roadConfig);
         }
 
+        StartCoroutine(DelayNewNavmesh());
+    }
+
+    IEnumerator DelayNewNavmesh()
+    {
+        yield return new WaitForEndOfFrame();
         Debug.Log("Building new navmesh");
         navMeshSurface.BuildNavMesh();
     }
@@ -131,14 +137,13 @@ public class RoadManager : MonoBehaviour
 
     public void DisconnectObject(Vector2Int pos)
     {
-        /*
-         I think the old objects position doesnt get cleared from the grid before this check so nothing ever changes in terms of connectivity
-         */
         Grid<GridObject> grid = gridBuildingSystem.GetGrid();
         GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
         PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
 
         int oldObjectCount = 0;
+        int oldListAmount = connectedObjectGroups.Count;
+
         foreach(List<PlacedObject> objGroup in connectedObjectGroups)
         {
             if(objGroup.Contains(currentPlacedObject))
@@ -148,7 +153,6 @@ public class RoadManager : MonoBehaviour
             }
         }
 
-        int oldListAmount = connectedObjectGroups.Count;
 
         List<Vector2Int> checkedPositions = new();
         List<Vector2Int> adjPositionsToCheck = GetAdjacentRoadPositions(pos);
@@ -296,6 +300,8 @@ public class RoadManager : MonoBehaviour
                 Debug.Log($"Removing object group, new amount {connectedObjectGroups.Count}");
             }
         }
+
+        StartCoroutine(DelayNewNavmesh());
     }
 
     private void ConnectNewObject(Vector2Int pos)
@@ -482,8 +488,11 @@ public class RoadManager : MonoBehaviour
         List<PlacedObject> connectedFarms = new();
         foreach(PlacedObject obj in targetObjectGroup)
         {
-            Debug.Log($"Object in {originBuilding.name} object group: {obj.name}");
-            if (obj.name == "Boerderij") connectedFarms.Add(obj);
+            if(obj != null)
+            {
+                Debug.Log($"Object in {originBuilding.name} object group: {obj.name}");
+                if (obj.name == "Boerderij") connectedFarms.Add(obj);
+            }
         }
         return connectedFarms;
     }
@@ -509,7 +518,10 @@ public class RoadManager : MonoBehaviour
         foreach (PlacedObject connectedObj in objGroup)
         {
             //Custom logic depending on object ideally
-            if (!connectedObj.gameObject.CompareTag("Road")) connectedBuildingCount++;
+            if(connectedObj != null)
+            {
+                if (!connectedObj.gameObject.CompareTag("Road")) connectedBuildingCount++;
+            }
         }
 
         //Debug.Log($"ConnectNewObject: {connectedBuildingCount} buildings connected");

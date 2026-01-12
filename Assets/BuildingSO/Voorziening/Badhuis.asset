@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Badhuis
   m_EditorClassIdentifier: 
   name: Badhuis
-  prefab: {fileID: 6600959261270428487, guid: 134da2ddb61419547bbcfe31ee2fb012, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: 134da2ddb61419547bbcfe31ee2fb012, type: 3}
+  prefab: {fileID: 30437322831070294, guid: 74b0ba1eeef8c774ca539b006fbedd30, type: 3}
+  modulePrefab: {fileID: 30437322831070294, guid: 74b0ba1eeef8c774ca539b006fbedd30, type: 3}
   coreModularBuilding: {fileID: 0}
   modules: []
   width: 1

@@ -7,6 +7,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
+public enum Season
+{
+    Spring,
+    Summer,
+    Autumn,
+    Winter
+}
 public class EconomyManager : MonoBehaviour
 {
     private Dictionary<string, int> buildingCount;
@@ -22,14 +29,16 @@ public class EconomyManager : MonoBehaviour
     [SerializeField] private List<BuildingScriptableObject> placedBuildingsSOs;
     [SerializeField] private List<PlacedObject> connectedObjects;
     [SerializeField]private Dictionary<string, int> maxCount;
-    [SerializeField] float secondsPerDay;
-    [SerializeField] int daysPerSeason = 125;
+    [SerializeField] float secondsPerSeason;
+    //[SerializeField] int daysPerSeason;
     [SerializeField] GameObject floatingTextPrefab;
-    int dayNumber;
-    int seasonNumber;
+
+    public Season currentSeason;
+    int seasonsPassed;
 
     private void Start()
     {
+        currentSeason = Season.Spring;
         connectedObjects = new();
         placedBuildingsSOs = new();
 
@@ -47,28 +56,47 @@ public class EconomyManager : MonoBehaviour
 
     IEnumerator Economy()
     {
-        seasonNumber = 1;
+        seasonsPassed = 0;
+        float timePassedInSeconds = 0;
 
         while(true)
         {
             while (timePaused)
                 yield return null;
-            dayNumber++;
-            if(dayNumber >= daysPerSeason)
+
+            timePassedInSeconds += Time.deltaTime;
+
+            if(timePassedInSeconds >= secondsPerSeason)
             {
-                dayNumber = 1;
-                seasonNumber++;
+                timePassedInSeconds = 0;
+                AdvanceSeason();
                 PauseTime();
-                GameEvents.OnShowProgressReport?.Invoke();
+
+                if (seasonsPassed >= 4)
+                {
+                    GameEvents.OnGameFinished?.Invoke();
+                    break;
+                }
+                else
+                {
+                    GameEvents.OnShowProgressReport?.Invoke();
+                }
             }
-            GameEvents.OnCalendarChanged?.Invoke(dayNumber, seasonNumber);
-            //HandleDayEcon();
-            yield return new WaitForSeconds(secondsPerDay);
-            if (seasonNumber > 4)
-            {
-                GameEvents.OnGameFinished?.Invoke();
-            }
+
+            GameEvents.OnCalendarChanged?.Invoke(currentSeason, timePassedInSeconds, secondsPerSeason);
+
+            yield return null;
         }
+    }
+
+    void AdvanceSeason()
+    {
+        seasonsPassed++;
+
+        if (currentSeason == Season.Spring) currentSeason = Season.Summer;
+        else if (currentSeason == Season.Summer) currentSeason = Season.Autumn;
+        else if (currentSeason == Season.Autumn) currentSeason = Season.Winter;
+        else if (currentSeason == Season.Winter) currentSeason = Season.Spring;
     }
     private void OnEnable()
     {
@@ -180,15 +208,15 @@ public class EconomyManager : MonoBehaviour
         //    Debug.LogError("No building named " + buildingName);
         //}
 
-        if (connectedObjects.Contains(building))
-        {
-            happy -= oldObject.hapiness;
-            control -= oldObject.control;
-            ppl -= oldObject.population;
-            connectedObjects.Remove(building);
-            GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
-            NPCManager.instance.ChangeValues(control, happy, ppl);
-        }
+        //if (connectedObjects.Contains(building))
+        //{
+        //    happy -= oldObject.hapiness;
+        //    control -= oldObject.control;
+        //    ppl -= oldObject.population;
+        //    connectedObjects.Remove(building);
+        //    GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
+        //    NPCManager.instance.ChangeValues(control, happy, ppl);
+        //}
 
         happy -= oldObject.hapiness;
         control -= oldObject.control;

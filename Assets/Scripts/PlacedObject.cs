@@ -162,6 +162,7 @@ public class PlacedObject : MonoBehaviour
         if (this.parent != null)
             this.parent.modules.Add(placedObject);
 
+        oldObject.GetComponent<PlacedObject>().RemoveAllPeople();
         Destroy(oldObject);
         placedObject.OnPlace();
 
@@ -201,7 +202,10 @@ public class PlacedObject : MonoBehaviour
             exclamationMark.SetActive(true);
         }
         Debug.Log("building start");
-        buildingOrigin = transform.GetChild(0);
+        
+        if(isModule) buildingOrigin = transform;
+        else buildingOrigin = transform.GetChild(0);
+
         if (gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
         else if (gameObject.tag != "Road") buildingOrigin.rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
 
@@ -248,7 +252,7 @@ public class PlacedObject : MonoBehaviour
             }
         }
 
-        NPCManager.instance.RegisterBuilding(this);
+        NPCManager.instance.RegisterBuilding(this, true);
     } 
 
     public void ConnectFarmland()
@@ -347,7 +351,7 @@ public class PlacedObject : MonoBehaviour
             {
                 Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
                 targetFarm.adjacentFarmlandWorked[targetFarmland] = true;
-                npc.SetNavmeshTarget(targetFarmland.transform.position);
+                npc.SetNavmeshTarget(targetFarmland.transform.position, targetFarmland);
                 workingPeople.Add(npc);
                 sentPeople++;
             }
@@ -360,9 +364,31 @@ public class PlacedObject : MonoBehaviour
     public int GetPeopleFromWork(int _amount)
     {
         //Get people out of working people list and back to the building
+        int peopleSentBack = 0;
+        Debug.Log($"Sending People Back: {_amount}");
+
+        foreach(NavmeshNpc npc in workingPeople)
+        {
+            if (peopleSentBack < _amount)
+            {
+                npc.ReturnHome();
+                workingPeople.Remove(npc);
+                Debug.Log($"Sending people back: {npc.name} Back");
+                peopleSentBack++;
+            }
+            else break;
+        }
 
         //Return amount of people that stopped working
-        return _amount;
+        return peopleSentBack;
+    }
+
+    public void SendNpcBack(NavmeshNpc npc, bool teleport)
+    {
+        NPCManager.instance.totalWorkingPeople--;
+        npc.destinationBuilding = null;
+        workingPeople.Remove(npc);
+        if(teleport) npc.ReturnHome();
     }
 
     void SpawnPeople()
@@ -418,6 +444,8 @@ public class PlacedObject : MonoBehaviour
 
     public BuildingScriptableObject Destructor()
     {
+        //Debug.Log($"Object Destructor: {name}");
+
         if (isModule && parent != null)
         {
             return parent.Destructor();
@@ -431,14 +459,28 @@ public class PlacedObject : MonoBehaviour
                 Destroy(module.gameObject);
             }
         }
+
+        RemoveAllPeople();
+
+
+        Destroy(gameObject);
+        return placedSctiptableObject;
+    }
+
+    public void RemoveAllPeople()
+    {
         foreach (NavmeshNpc _npc in associatedWorkingPeople)
         {
             Destroy(_npc.gameObject);
         }
+        foreach (NavmeshNpc _npc in associatedNonWorkingPeople)
+        {
+            Destroy(_npc.gameObject);
+        }
         associatedWorkingPeople.Clear();
+        associatedNonWorkingPeople.Clear();
 
-        Destroy(gameObject);
-        return placedSctiptableObject;
+        NPCManager.instance.RegisterBuilding(this, false);
     }
 
     internal BuildingScriptableObject.Dir GetDir()

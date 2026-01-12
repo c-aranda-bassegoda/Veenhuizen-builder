@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Werkplaats
   m_EditorClassIdentifier: 
   name: School
-  prefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
+  prefab: {fileID: 2298657352217149813, guid: 8864eb8d896eb0442b103e0c7dd864ac, type: 3}
+  modulePrefab: {fileID: 2298657352217149813, guid: 8864eb8d896eb0442b103e0c7dd864ac, type: 3}
+  coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
   height: 1
@@ -26,6 +27,9 @@ MonoBehaviour:
   yearlyCost: 216
   yearlyEarnings: 400
   maxPlacements: 20
+  description: 
+  possibleNpcTypes: []
+  nonWorkingPopulation: 0
   module: 1
   modular: 0
   moduleOnly: 1

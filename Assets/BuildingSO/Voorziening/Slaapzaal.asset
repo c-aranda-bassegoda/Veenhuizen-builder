@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Slaapzaal
   m_EditorClassIdentifier: 
   name: Slaapzaal
-  prefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: ef59ada1ada6fdd49a2a530300cdd085, type: 3}
+  prefab: {fileID: 1460527531912246447, guid: 8f3da6818081fa24ea6cc9e2702bdecb, type: 3}
+  modulePrefab: {fileID: 1460527531912246447, guid: 8f3da6818081fa24ea6cc9e2702bdecb, type: 3}
+  coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
   height: 1
@@ -26,6 +27,11 @@ MonoBehaviour:
   yearlyCost: 140
   yearlyEarnings: 0
   maxPlacements: 10
+  description: 
+  possibleNpcTypes:
+  - man
+  - woman
+  nonWorkingPopulation: 0
   module: 1
   modular: 0
   moduleOnly: 1
