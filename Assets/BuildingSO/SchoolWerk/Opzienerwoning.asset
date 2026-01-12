@@ -31,6 +31,6 @@ MonoBehaviour:
   possibleNpcTypes:
   - guard
   nonWorkingPopulation: 1
-  module: 1
+  module: 0
   modular: 0
   moduleOnly: 0

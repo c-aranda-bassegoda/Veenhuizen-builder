@@ -10,26 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
-  m_Name: Ziekenzaal
+  m_Name: Opziener (gst)
   m_EditorClassIdentifier: 
-  name: Ziekenzaal
-  prefab: {fileID: 3612910444755436083, guid: 9ab6af351089e29408e0485b4c787268, type: 3}
-  modulePrefab: {fileID: 3612910444755436083, guid: 9ab6af351089e29408e0485b4c787268, type: 3}
+  name: School
+  prefab: {fileID: 8269154034575838808, guid: 0a97101ce2ab3284ea25364adfe642f4, type: 3}
+  modulePrefab: {fileID: 8269154034575838808, guid: 0a97101ce2ab3284ea25364adfe642f4, type: 3}
   coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
   height: 1
-  hapiness: 2
-  control: 0
+  hapiness: 0
+  control: 1
   population: 0
   workersNeeded: 0
-  buildCost: 7000
-  yearlyCost: 240
+  buildCost: 2000
+  yearlyCost: 60
   yearlyEarnings: 0
-  maxPlacements: 10
+  maxPlacements: 20
   description: 
-  possibleNpcTypes: []
-  nonWorkingPopulation: 0
+  possibleNpcTypes:
+  - guard
+  nonWorkingPopulation: 1
   module: 1
   modular: 0
   moduleOnly: 1

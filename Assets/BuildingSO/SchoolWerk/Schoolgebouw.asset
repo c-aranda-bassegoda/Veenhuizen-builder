@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Schoolgebouw
   m_EditorClassIdentifier: 
   name: School
-  prefab: {fileID: 6600959261270428487, guid: 3803875717da38e4f93703e26777e2fa, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: 3803875717da38e4f93703e26777e2fa, type: 3}
+  prefab: {fileID: 272504002988200291, guid: 6da1bb8f13646e84fa17966e02643f9f, type: 3}
+  modulePrefab: {fileID: 272504002988200291, guid: 6da1bb8f13646e84fa17966e02643f9f, type: 3}
   coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
