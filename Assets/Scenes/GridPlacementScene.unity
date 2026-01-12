@@ -13300,6 +13300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc7050c730bf4b944a10b543b8b2f901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTutorial: 0
   buildingSO: {fileID: 0}
   roadSO: {fileID: 11400000, guid: 6c670bdf9f938de45aa5c6ea90603faf, type: 2}
   previewSystem: {fileID: 763488385}

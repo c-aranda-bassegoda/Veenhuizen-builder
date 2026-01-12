@@ -120,10 +120,10 @@ public class GridBuildingSystem : MonoBehaviour
             Debug.Log("Can't build");
             SoundFXManager.Instance.PlaySoundFXClip(errorSound, transform, errorVolume);
         }
-        Debug.LogError("built sth");
+        Debug.Log("built sth");
         if (isTutorial)
         {
-            Debug.LogError("Play tutorial");
+            Debug.Log("Play tutorial");
             TimelineManager.Instance.Play();
         }
 
