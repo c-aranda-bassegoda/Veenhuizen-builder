@@ -137,14 +137,13 @@ public class RoadManager : MonoBehaviour
 
     public void DisconnectObject(Vector2Int pos)
     {
-        /*
-         I think the old objects position doesnt get cleared from the grid before this check so nothing ever changes in terms of connectivity
-         */
         Grid<GridObject> grid = gridBuildingSystem.GetGrid();
         GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
         PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
 
         int oldObjectCount = 0;
+        int oldListAmount = connectedObjectGroups.Count;
+
         foreach(List<PlacedObject> objGroup in connectedObjectGroups)
         {
             if(objGroup.Contains(currentPlacedObject))
@@ -154,7 +153,6 @@ public class RoadManager : MonoBehaviour
             }
         }
 
-        int oldListAmount = connectedObjectGroups.Count;
 
         List<Vector2Int> checkedPositions = new();
         List<Vector2Int> adjPositionsToCheck = GetAdjacentRoadPositions(pos);

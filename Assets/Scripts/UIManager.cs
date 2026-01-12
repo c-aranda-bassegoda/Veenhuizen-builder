@@ -13,9 +13,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI foodAmountText;
 
     [Header("Calendar")]
-    [SerializeField] TextMeshProUGUI dayNumberText;
-    [SerializeField] TextMeshProUGUI seasonText;
-    [SerializeField] TextMeshProUGUI yearNumberText;
+    //[SerializeField] TextMeshProUGUI dayNumberText;
+    //[SerializeField] TextMeshProUGUI seasonText;
+    //[SerializeField] TextMeshProUGUI yearNumberText;
+    [SerializeField] Transform sliderPin;
     private int workingPpl = 0;
 
 
@@ -55,39 +56,43 @@ public class UIManager : MonoBehaviour
         moneyAmountText.text = ((int)newAmount).ToString();
     }
 
-    public void UpdateCalendar(int dayNumber, int seasonNumber)
+    public void UpdateCalendar(Season season, float timePassed, float timePerSeason)
     {
-        dayNumberText.text = dayNumber.ToString();
-        switch (seasonNumber)
+        //between 90 and -90
+
+        float pinAngle = 90f;
+
+        float seasonDegrees = 0f;
+
+        switch(season)
         {
-            case 1: yearNumberText.text = "Spring"; break;
-            case 2: yearNumberText.text = "Summer"; break;
-            case 3: yearNumberText.text = "Autumn"; break;
-            case 4: yearNumberText.text = "Winter"; break;
-            default: 
-                break;
+            case Season.Spring:
+                seasonDegrees = 0f;
+            break;
+            case Season.Summer:
+                seasonDegrees = 45;
+            break;
+            case Season.Autumn:
+                seasonDegrees = 90;
+            break;
+            case Season.Winter:
+                seasonDegrees = 135f;
+            break;
         }
-        //yearNumberText.text = seasonNumber.ToString();
-        //if(dayNumber <= 31)
-        //{
-        //    dayNumberText.text = dayNumber.ToString();
-        //    seasonText.text = "Spring";
-        //}
-        //else if (dayNumber <= 62)
-        //{
-        //    dayNumberText.text = (dayNumber - 31).ToString();
-        //    seasonText.text = "Summer";
-        //}
-        //else if (dayNumber <= 93)
-        //{
-        //    dayNumberText.text = (dayNumber - 62).ToString();
-        //    seasonText.text = "Autumn";
-        //}
-        //else if (dayNumber <= 124)
-        //{
-        //    dayNumberText.text = (dayNumber - 93).ToString();
-        //    seasonText.text = "Winter";
-        //}
+
+        pinAngle -= seasonDegrees;
+
+        float secondsDegrees = 0;
+
+        if(timePassed != 0)
+        {
+            secondsDegrees = (timePassed / timePerSeason) * 45;
+        }
+
+        pinAngle -= secondsDegrees;
+
+        sliderPin.transform.rotation = Quaternion.Euler(0f, 0f, pinAngle);
+
     }
 
     public void UpdateFood(int foodAmount)
