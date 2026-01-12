@@ -175,10 +175,11 @@ public class NavmeshNpc : MonoBehaviour
     public void ReturnHome()
     {
         agent.isStopped = true;
+        agent.ResetPath();
         hasTarget = false;
         isHome = true;
         Debug.Log($"Sending agent back to {originBuilding.transform.GetChild(0).position}");
-        transform.position = originBuilding.transform.GetChild(0).position;
+        agent.Warp(originBuilding.transform.GetChild(0).position);
     }
 
     public PlacedObject GetClosestObjectFromList(List<PlacedObject> objects)

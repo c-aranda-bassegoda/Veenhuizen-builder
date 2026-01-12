@@ -180,15 +180,15 @@ public class EconomyManager : MonoBehaviour
         //    Debug.LogError("No building named " + buildingName);
         //}
 
-        if (connectedObjects.Contains(building))
-        {
-            happy -= oldObject.hapiness;
-            control -= oldObject.control;
-            ppl -= oldObject.population;
-            connectedObjects.Remove(building);
-            GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
-            NPCManager.instance.ChangeValues(control, happy, ppl);
-        }
+        //if (connectedObjects.Contains(building))
+        //{
+        //    happy -= oldObject.hapiness;
+        //    control -= oldObject.control;
+        //    ppl -= oldObject.population;
+        //    connectedObjects.Remove(building);
+        //    GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
+        //    NPCManager.instance.ChangeValues(control, happy, ppl);
+        //}
 
         happy -= oldObject.hapiness;
         control -= oldObject.control;

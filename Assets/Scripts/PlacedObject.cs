@@ -441,6 +441,7 @@ public class PlacedObject : MonoBehaviour
 
     public BuildingScriptableObject Destructor()
     {
+        //Debug.Log($"Object Destructor: {name}");
 
         if (isModule && parent != null)
         {
