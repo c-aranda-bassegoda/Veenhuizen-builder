@@ -1708,7 +1708,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Lets build an institution. Click on the institution Icon.
+  m_text: 'Lets build an institution. Click on the institution Icon and place it.
 
 '
   m_isRightToLeft: 0
@@ -9787,7 +9787,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -129.37497, y: -0.000015258789}
+  m_AnchoredPosition: {x: -129.375, y: 0}
   m_SizeDelta: {x: -258.75006, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &882314954
@@ -10266,7 +10266,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'The people of Veenhuizen need a place to work. Lets build a farm. Click
-    on the Farm Icon.
+    on the Farm Icon and place it.
 
 '
   m_isRightToLeft: 0
@@ -12242,7 +12242,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: Farms need fields. Each farm can handle 10 fields at most and they need
-    to be connected to farms directly or through other fields.
+    to be connected to farms directly or through other fields.\nClick on the field
+    icon and place it.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -21797,7 +21798,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'Buildings that people can''t get to have an exclamation mark. For people
-    to get to work we need roads. \nClick on the rod icon.
+    to get to work we need roads. \nClick on the rod icon and place it.
 
 
 '
