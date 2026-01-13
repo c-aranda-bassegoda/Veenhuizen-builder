@@ -268,7 +268,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     public void RotateObject()
     {
-        if (buildingSO.modular) return;
+        if (buildingSO.modular || buildingSO.module) return;
         previewSystem.StopPlacementPreview();
         buildingSO.Direction = BuildingScriptableObject.GetNextDir(buildingSO.Direction);
         Debug.Log("Rotation updated: " + buildingSO.Direction);
