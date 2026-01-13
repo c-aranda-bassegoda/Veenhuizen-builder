@@ -28,6 +28,8 @@ MonoBehaviour:
   yearlyEarnings: 0
   maxPlacements: 10
   description: 
+  possibleNpcTypes: []
+  nonWorkingPopulation: 0
   module: 1
   modular: 0
   moduleOnly: 1
