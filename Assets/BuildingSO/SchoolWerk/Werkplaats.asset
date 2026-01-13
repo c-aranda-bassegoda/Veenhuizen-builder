@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Werkplaats
   m_EditorClassIdentifier: 
   name: School
-  prefab: {fileID: 2298657352217149813, guid: 8864eb8d896eb0442b103e0c7dd864ac, type: 3}
-  modulePrefab: {fileID: 2298657352217149813, guid: 8864eb8d896eb0442b103e0c7dd864ac, type: 3}
+  prefab: {fileID: 2906430575383778528, guid: 30f7aafcbb6fa1b4a888dd10514dd6d5, type: 3}
+  modulePrefab: {fileID: 2906430575383778528, guid: 30f7aafcbb6fa1b4a888dd10514dd6d5, type: 3}
   coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
