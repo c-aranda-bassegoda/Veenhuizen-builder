@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
-  exclamationMark: {fileID: 693166987353500508}
+  exclamationMark: {fileID: 0}
   modules: []
   isModule: 0
   parent: {fileID: 0}
