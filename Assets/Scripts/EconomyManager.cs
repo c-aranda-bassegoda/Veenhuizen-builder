@@ -24,7 +24,7 @@ public class EconomyManager : MonoBehaviour
     }
 
     public float happy, control, money, food, ppl;
-    private bool timePaused = false;
+    [SerializeField] private bool timePaused = false;
     //[SerializeField] private List<BuildingScriptableObject> buildings;
     [SerializeField] private List<BuildingScriptableObject> placedBuildingsSOs;
     [SerializeField] private List<PlacedObject> connectedObjects;
