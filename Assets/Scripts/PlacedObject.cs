@@ -206,8 +206,9 @@ public class PlacedObject : MonoBehaviour
         if(isModule) buildingOrigin = transform;
         else buildingOrigin = transform.GetChild(0);
 
-        if (gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
+        if (gameObject.tag == "Farmland" && !isModule) buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
         else if (gameObject.tag != "Road") buildingOrigin.rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
+        else if (isModule) buildingOrigin.rotation = Quaternion.Euler(90, 0, 0);
 
         Debug.Log("Not error1");
         SpawnPeople();
