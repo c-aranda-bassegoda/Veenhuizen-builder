@@ -179,6 +179,7 @@ public class PlacedObject : MonoBehaviour
     public bool isConnectedFarmland;
     bool spawnedPeople;
     int connectedFarmlandCountInText;
+    public PlacedObject farm;
 
     public void Update()
     {
@@ -241,6 +242,7 @@ public class PlacedObject : MonoBehaviour
                             if ((!farmland.isConnectedFarmland) && (farm.adjacentFarmlandWorked.Count < 10))
                             {
                                 farmland.isConnectedFarmland = true;
+                                farmland.farm = farm;
                                 farm.adjacentFarmlandWorked.Add(farmland, false);
                             }
                         }
@@ -266,6 +268,7 @@ public class PlacedObject : MonoBehaviour
             if ((!farmland.isConnectedFarmland) && (adjacentFarmlandWorked.Count < 10))
             {
                 farmland.isConnectedFarmland = true;
+                farmland.farm = this;
                 adjacentFarmlandWorked.Add(farmland, false);
                 farmland.exclamationMark.SetActive(false);
             }
@@ -452,15 +455,18 @@ public class PlacedObject : MonoBehaviour
     {
         if(name == "Akker")
         {
-            List<PlacedObject> connectedFarms = RoadManager.instance.GetConnectedFarms(this);
-
-            foreach(PlacedObject obj in connectedFarms)
+            if(farm != null)
             {
-                if(obj.adjacentFarmlandWorked.ContainsKey(this))
-                {
-                    Debug.Log($"Removing farm from farmland list");
-                    obj.adjacentFarmlandWorked.Remove(this);
-                }
+                if(farm.adjacentFarmlandWorked.ContainsKey(this)) farm.adjacentFarmlandWorked.Remove(this);
+            }
+        }
+
+        if(name == "Boerderij")
+        {
+            foreach(KeyValuePair<PlacedObject, bool> kvp in adjacentFarmlandWorked)
+            {
+                kvp.Key.farm = null;
+                kvp.Key.isConnectedFarmland = false;
             }
         }
 

@@ -547,21 +547,6 @@ public class RoadManager : MonoBehaviour
 
     IEnumerator DelayedWarningUpdate(PlacedObject farmland, List<PlacedObject> connectedFarms)
     {
-        //int initialFarmlandCount = farm.adjacentFarmlandWorked.Count;
-        //int framesWaited = 0;
-        //while (framesWaited < 5)
-        //{
-        //    yield return null;
-        //    if (!farmland.exclamationMark.activeSelf) break;
-
-        //    framesWaited++;
-        //    if(framesWaited == 5)
-        //    {
-        //        Debug.LogWarning("Broke out of delayed warning update");
-        //        break;
-        //    }
-        //}
-
         yield return new WaitForEndOfFrame();
         bool farmHasFarmland = false;
 
@@ -573,8 +558,26 @@ public class RoadManager : MonoBehaviour
             }
         }
 
-        if(farmHasFarmland) farmland.exclamationMark.SetActive(false);
-        else farmland.exclamationMark.SetActive(true);
+        if(farmland != null)
+        {
+            if (farmHasFarmland) farmland.exclamationMark.SetActive(false);
+            else
+            {
+                farmland.exclamationMark.SetActive(true);
+                if (farmland.farm != null)
+                {
+                    if (farmland.farm.adjacentFarmlandWorked.ContainsKey(farmland))
+                    {
+                        farmland.farm.adjacentFarmlandWorked.Remove(farmland);
+                        farmland.isConnectedFarmland = false;
+                        farmland.farm = null;
+
+                        //farmland.farm.ConnectFarmland();
+                    }
+                }
+            }
+        }
+
     }
 
 
