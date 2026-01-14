@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
         GameEvents.OnStatsChanged += UpdateStats;
         GameEvents.OnMoneyChanged += UpdateMoney;
         GameEvents.OnCalendarChanged += UpdateCalendar;
+        GameEvents.OnWorkingChanged += UpdateWorkers;
     }
 
     private void OnDisable()
