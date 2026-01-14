@@ -1075,10 +1075,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 102c22712cf847a4ca151ad9a28c7cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roadStraight: {fileID: 4300000, guid: e3c71c50de390ec4190b877211ba0717, type: 3}
-  roadTurn: {fileID: 4300000, guid: b38a4b1b87a3b81429916ae40f4a3f6f, type: 3}
-  roadCrossroad: {fileID: 4300000, guid: e99a120d866554343b007e93ab80eb6a, type: 3}
-  roadIntsct3: {fileID: 4300000, guid: 11b7c9a58a603e74caec54e139efb58d, type: 3}
+  roadStraight: {fileID: 7663948985455569407, guid: 2c2b0fbd3f97c034eb35f5288e6af6c9, type: 3}
+  roadTurn: {fileID: 6958538755889981169, guid: b0ce52517f0f7444899235526918439b, type: 3}
+  roadCrossroad: {fileID: 7326489279283371731, guid: 02a12e7b5a03e9f4b8131e9c18979b97, type: 3}
+  roadIntsct3: {fileID: 2435902267275110975, guid: d05cce72af955a348859295857cb1732, type: 3}
   roadPrefab: {fileID: 100000, guid: fc15b91b9d4fbad4eb5e12ab0c611f02, type: 3}
   roadTestLayer:
     serializedVersion: 2

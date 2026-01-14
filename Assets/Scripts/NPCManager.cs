@@ -110,6 +110,7 @@ public class NPCManager : MonoBehaviour
                 if (!foundNpc) break;
             }
         }
+
         GameEvents.OnWorkingChanged?.Invoke(totalWorkingPeople);
     }
 

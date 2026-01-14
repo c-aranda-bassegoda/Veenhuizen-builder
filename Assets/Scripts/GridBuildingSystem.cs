@@ -95,7 +95,7 @@ public class GridBuildingSystem : MonoBehaviour
             }
             if (buildingSO.name == "Zandweg")
             {
-                roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).GetComponent<MeshFilter>());
+                roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).gameObject);
             }
             placedObjects.Add(placedObj);
             roadManager.UpdateConnections(gridPos, false);

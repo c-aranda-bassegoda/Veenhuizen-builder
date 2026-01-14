@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class RoadManager : MonoBehaviour
 {
-    [SerializeField] Mesh roadStraight, roadTurn, roadCrossroad, roadIntsct3;
-    public Dictionary<Vector2Int, MeshFilter> placedRoads = new();
+    [SerializeField] GameObject roadStraight, roadTurn, roadCrossroad, roadIntsct3;
+    public Dictionary<Vector2Int, GameObject> placedRoads = new();
     [SerializeField] GameObject roadPrefab;
     [SerializeField] LayerMask roadTestLayer;
     [SerializeField] GridBuildingSystem gridBuildingSystem;
@@ -36,22 +36,14 @@ public class RoadManager : MonoBehaviour
                     Debug.Log($"Connected Objects: {obj.name}:");
                 }
             }
-
-            //Grid<GridObject> grid = gridBuildingSystem.GetGrid();
-            //List<PlacedObject> directlyConnectedObjects = new();
-
-            //GridObject currentGridObject = grid.GetGridObj(2, 2);
-            //PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
-
-            //Debug.Log($"test1: {currentPlacedObject.gameObject.name}");
         }
     }
 
-    public void PlaceRoad(Vector2Int roadPos, MeshFilter newRoadMesh)
+    public void PlaceRoad(Vector2Int roadPos, GameObject newRoadObj)
     {
         if (!placedRoads.ContainsKey(roadPos))
         {
-            placedRoads.Add(roadPos, newRoadMesh);
+            placedRoads.Add(roadPos, newRoadObj);
             UpdateConnections(roadPos);
         }
     }
@@ -68,7 +60,7 @@ public class RoadManager : MonoBehaviour
 
     public void UpdatePreviewRoad(GameObject previewRoad, Vector2Int newPosition)
     {
-        MeshFilter roadToUpdate = previewRoad.transform.GetChild(0).gameObject.GetComponent<MeshFilter>();
+        GameObject roadToUpdate = previewRoad;
         List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(newPosition);
         List<bool> isRoadThere = FindAdjacentObjects(adjacentRoadPositions, newPosition);
         string roadConfig = CheckAdjacentRoads(isRoadThere);
@@ -84,7 +76,7 @@ public class RoadManager : MonoBehaviour
 
         foreach (Vector2Int pos in roadsToUpdate)
         {
-            MeshFilter roadToUpdate = GetPlacedRoad(pos);
+            GameObject roadToUpdate = GetPlacedRoad(pos);
             if (roadToUpdate == null) continue;
 
             Debug.Log($"Checking adjacent positions for {pos.x}, {pos.y}");
@@ -520,16 +512,7 @@ public class RoadManager : MonoBehaviour
                 if (obj.gameObject.CompareTag("Farmland"))
                 {
                     List<PlacedObject> connectedFarms = GetConnectedFarms(obj);
-
-                    //foreach(PlacedObject farm in connectedFarms)
-                    //{
-                    //    StartCoroutine(DelayedWarningUpdate(farm, obj));
-                    //}
                     StartCoroutine(DelayedWarningUpdate(obj, connectedFarms));
-
-                    //if (connectedFarms.Count > 0) obj.exclamationMark.SetActive(false);
-                    //else obj.exclamationMark.SetActive(true);
-
                 }
                 else obj.exclamationMark.SetActive(false);
             }
@@ -546,21 +529,6 @@ public class RoadManager : MonoBehaviour
 
     IEnumerator DelayedWarningUpdate(PlacedObject farmland, List<PlacedObject> connectedFarms)
     {
-        //int initialFarmlandCount = farm.adjacentFarmlandWorked.Count;
-        //int framesWaited = 0;
-        //while (framesWaited < 5)
-        //{
-        //    yield return null;
-        //    if (!farmland.exclamationMark.activeSelf) break;
-
-        //    framesWaited++;
-        //    if(framesWaited == 5)
-        //    {
-        //        Debug.LogWarning("Broke out of delayed warning update");
-        //        break;
-        //    }
-        //}
-
         yield return new WaitForEndOfFrame();
 
         if (connectedFarms.Count > 0) farmland.exclamationMark.SetActive(false);
@@ -568,82 +536,83 @@ public class RoadManager : MonoBehaviour
     }
 
 
-    void UpdateRoad(MeshFilter road, string config)
+    void UpdateRoad(GameObject road, string config)
     {
         //4 way intersection
         if(config == "crossroad" || config == "zero")
         {
-            road.mesh = roadCrossroad;
+            Instantiate(roadCrossroad, road.transform.position, Quaternion.identity);
+            Destroy(road);
         }
 
         //straight road vertical
         else if(config == "oneUp" || config == "oneDown" || config == "upDown")
         {
-            road.mesh = roadStraight;
-            road.transform.rotation = Quaternion.identity;
+            Instantiate(roadStraight, road.transform.position, Quaternion.identity);
+            Destroy(road);
         }
 
         //straight road horizontal
         else if(config == "oneLeft" || config == "oneRight" || config == "rightLeft")
         {
-            road.mesh = roadStraight;
-            road.transform.rotation = Quaternion.Euler(0, 90, 0);
+            Instantiate(roadStraight, road.transform.position, Quaternion.Euler(0, 90, 0));
+            Destroy(road);
         }
 
         //turn: ^ >
         else if(config == "downRight")
         {
-            road.mesh = roadTurn;
-            road.transform.rotation = Quaternion.Euler(0, 180, 0);
+            Instantiate(roadTurn, road.transform.position, Quaternion.Euler(0, 180, 0));
+            Destroy(road);
         }
 
         //turn ^ <
         else if(config == "downLeft")
         {
-            road.mesh = roadTurn;
-            road.transform.rotation = Quaternion.Euler(0, 270, 0);
+            Instantiate(roadTurn, road.transform.position, Quaternion.Euler(0, 270, 0));
+            Destroy(road);
         }
 
         //turn: > ^ 
         else if(config == "upLeft")
         {
-            road.mesh = roadTurn;
-            road.transform.rotation = Quaternion.identity;
+            Instantiate(roadTurn, road.transform.position, Quaternion.identity);
+            Destroy(road);
         }
 
         //turn: < ^ 
         else if(config == "upRight")
         {
-            road.mesh = roadTurn;
-            road.transform.rotation = Quaternion.Euler(0, 90, 0);
+            Instantiate(roadTurn, road.transform.position, Quaternion.Euler(0, 90, 0));
+            Destroy(road);
         }
 
         //3 way, not up
         else if(config == "notUp")
         {
-            road.mesh = roadIntsct3;
-            road.transform.rotation = Quaternion.Euler(0, 270, 0);
+            Instantiate(roadIntsct3, road.transform.position, Quaternion.Euler(0, 270, 0));
+            Destroy(road);
         }
 
         //3 way, not down
         else if(config == "notDown")
         {
-            road.mesh = roadIntsct3;
-            road.transform.rotation = Quaternion.Euler(0, 90, 0);
+            Instantiate(roadIntsct3, road.transform.position, Quaternion.Euler(0, 90, 0));
+            Destroy(road);
         }
 
         //3 way, not right
         else if(config == "notRight")
         {
-            road.mesh = roadIntsct3;
-            road.transform.rotation = Quaternion.identity;
+            Instantiate(roadIntsct3, road.transform.position, Quaternion.identity);
+            Destroy(road);
         }
 
         //3 way, not left
         else if(config == "notLeft")
         {
-            road.mesh = roadIntsct3;
-            road.transform.rotation = Quaternion.Euler(0, 180, 0);
+            Instantiate(roadIntsct3, road.transform.position, Quaternion.Euler(0, 180, 0));
+            Destroy(road);
         }
     }
 
@@ -795,7 +764,7 @@ public class RoadManager : MonoBehaviour
         return adjacentRoads;
     }
 
-    MeshFilter GetPlacedRoad(Vector2Int roadPos)
+    GameObject GetPlacedRoad(Vector2Int roadPos)
     {
         if(placedRoads.ContainsKey(roadPos))
         {
