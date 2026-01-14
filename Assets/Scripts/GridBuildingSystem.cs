@@ -4,6 +4,8 @@ using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Testing;
+using static UnityEditor.PlayerSettings;
 
 public class GridBuildingSystem : MonoBehaviour
 {
@@ -25,6 +27,8 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] private float deleteVolume = 0.1f;
 
     [SerializeField] private List<PlacedObject> placedObjects;
+
+    private PlacedObject highlightedObject;
 
     public static GridBuildingSystem instance;
     public bool AddingBuilding { get; set; }
@@ -282,6 +286,12 @@ public class GridBuildingSystem : MonoBehaviour
         grid.GetXYZ(UtilitiesClass.GetMouseWorldPositionXZ(), out int x, out int y, out int z);
         Vector2Int newPosition = new Vector2Int(x, z);
         //Debug.Log($"Updating Preview: {(AddingBuilding || PlacingRoad)}, {newPosition != lastPosition}, {buildingSO != null}");
+
+        if (RemovingBuilding && isOverBuilding(newPosition) && newPosition != lastPosition && !IsEndGame)
+            HighlightBuilding(newPosition);
+        else if (newPosition != lastPosition)
+            ClearHighlight();
+
         if ( (AddingBuilding || PlacingRoad) && newPosition != lastPosition && buildingSO != null && !IsEndGame)
         {
             lastPosition = newPosition;
@@ -290,13 +300,12 @@ public class GridBuildingSystem : MonoBehaviour
 
             Debug.Log($"Preview: Location = {x}, {z}, CanPlace = {CanPlace(gridPositionList)}, CanSub = {CanSubstitute(gridPositionList) && buildingSO.module}");
 
-            //if (buildingSO != null)
-            //{
-                if (CanSubstitute(gridPositionList))
-                    previewSystem.UpdatePreview(GetPosition(gridPositionList, rotatedObjWorldPosition), GetRotation(gridPositionList), CanPlace(gridPositionList), true && buildingSO.module);
-                else
-                    previewSystem.UpdatePreview(rotatedObjWorldPosition, Quaternion.identity, CanPlace(gridPositionList), false && buildingSO.module);
-            //}
+            
+            if (CanSubstitute(gridPositionList))
+                previewSystem.UpdatePreview(GetPosition(gridPositionList, rotatedObjWorldPosition), GetRotation(gridPositionList), CanPlace(gridPositionList), true && buildingSO.module);
+            else
+                previewSystem.UpdatePreview(rotatedObjWorldPosition, Quaternion.identity, CanPlace(gridPositionList), false && buildingSO.module);
+
         }
 
 
@@ -312,6 +321,54 @@ public class GridBuildingSystem : MonoBehaviour
             RotateObject();
         }
 
+    }
+
+    private void HighlightBuilding(Vector2Int position)
+    {
+        GridObject gridObject = grid.GetGridObj(position.x, position.y);
+        PlacedObject obj = gridObject?.GetPlacedObject();
+
+        if (obj == null)
+        {
+            ClearHighlight();
+            return;
+        }
+
+        // If hovering a module, highlight parent
+        if (obj.isModule && obj.parent != null)
+            obj = obj.parent;
+
+        if (highlightedObject == obj)
+            return;
+
+        ClearHighlight();
+        highlightedObject = obj;
+        highlightedObject.Highlight(new Color(1f, 0.3f, 0.3f, 1f));
+    }
+
+    private void ClearHighlight()
+    {
+        if (highlightedObject != null)
+        {
+            highlightedObject.Unhighlight();
+            highlightedObject = null;
+        }
+    }
+
+    private bool isOverBuilding(Vector2Int newPos)
+    {
+        GridObject gridObject = grid.GetGridObj(newPos.x, newPos.y);
+        if (gridObject == null)
+        {
+            return false;
+        } else
+        {
+            if (gridObject.GetPlacedObject() == null) 
+            { 
+                return false; 
+            }
+        }
+        return true;
     }
 
     private Vector3 GetPosition(List<Vector2Int> gridPositionList, Vector3 worldPos)

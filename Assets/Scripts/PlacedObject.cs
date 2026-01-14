@@ -9,6 +9,7 @@ using static Testing;
 
 public class PlacedObject : MonoBehaviour
 {
+
     public static PlacedObject Create(Vector3 worldPosition, Vector2Int origin, BuildingScriptableObject.Dir dir, BuildingScriptableObject placedObjectSO, bool inInstitution)
     {
         GameObject placedObjTransform;
@@ -251,6 +252,7 @@ public class PlacedObject : MonoBehaviour
                 }
             }
         }
+        CacheRenderers();
 
         NPCManager.instance.RegisterBuilding(this, true);
     } 
@@ -493,6 +495,59 @@ public class PlacedObject : MonoBehaviour
     {
         return dir;
     }
+
+    private Renderer[] renderers;
+    private MaterialPropertyBlock mpb;
+    private bool isHighlighted;
+
+    private static readonly int BaseColorID = Shader.PropertyToID("_BaseColor");
+    private static readonly int ColorID = Shader.PropertyToID("_Color");
+
+    private void CacheRenderers()
+    {
+        renderers = GetComponentsInChildren<Renderer>(true);
+        mpb = new MaterialPropertyBlock();
+    }
+
+    public void Highlight(Color tint)
+    {
+        if (isHighlighted) return;
+
+        foreach (Renderer r in renderers)
+        {
+            if (!r)
+                continue;
+
+            r.GetPropertyBlock(mpb);
+
+            if (r.sharedMaterial.HasProperty(BaseColorID))
+            {
+                mpb.SetColor(BaseColorID, tint);
+            }
+            else if (r.sharedMaterial.HasProperty(ColorID))
+            {
+                mpb.SetColor(ColorID, tint);
+            }
+
+            r.SetPropertyBlock(mpb);
+        }
+
+        isHighlighted = true;
+    }
+
+    public void Unhighlight()
+    {
+        if (!isHighlighted) return;
+
+        foreach (Renderer r in renderers)
+        {
+            if (r != null) 
+                r.SetPropertyBlock(null);
+        }
+
+        isHighlighted = false;
+    }
+
 }
 public struct OffsetInfo
 {
