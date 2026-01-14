@@ -217,7 +217,7 @@ public class PlacedObject : MonoBehaviour
         if (placedSctiptableObject.name == "Boerderij")
         {
             farmlandCount.gameObject.transform.parent.gameObject.SetActive(true);
-            if (adjacentFarmlandWorked == null) ConnectFarmland();
+            if (adjacentFarmlandWorked == null) ConnectFarmland(true);
         }
         if(placedSctiptableObject.name == "Akker")
         {
@@ -257,15 +257,16 @@ public class PlacedObject : MonoBehaviour
         NPCManager.instance.RegisterBuilding(this, true);
     } 
 
-    public void ConnectFarmland()
+    public void ConnectFarmland(bool createNewList)
     {
-        adjacentFarmlandWorked = new();
-        //Debug.Log($"Building origin: {origin}");
+        if(createNewList) adjacentFarmlandWorked = new();
         List<PlacedObject> newFarmland = RoadManager.instance.FindConnectedFarmsOrFarmland(origin, true);
+
+        Debug.Log($"Farm at {origin} looking for new farmland: {newFarmland.Count} adjacent farms found");
 
         foreach (PlacedObject farmland in newFarmland)
         {
-            if ((!farmland.isConnectedFarmland) && (adjacentFarmlandWorked.Count < 10))
+            if ((!farmland.isConnectedFarmland) && (adjacentFarmlandWorked.Count < 10) && (!adjacentFarmlandWorked.ContainsKey(farmland)))
             {
                 farmland.isConnectedFarmland = true;
                 farmland.farm = this;
@@ -346,7 +347,7 @@ public class PlacedObject : MonoBehaviour
 
             PlacedObject targetFarm = npc.GetClosestObjectFromList(emptyConnectedFarms);
 
-            if (targetFarm.adjacentFarmlandWorked == null) ConnectFarmland();
+            if (targetFarm.adjacentFarmlandWorked == null) ConnectFarmland(true);
 
             PlacedObject targetFarmland = targetFarm.GetFreeFarmland();
 
@@ -485,7 +486,7 @@ public class PlacedObject : MonoBehaviour
         }
 
         RemoveAllPeople();
-
+        Debug.Log("111order: first");
 
         Destroy(gameObject);
         return placedSctiptableObject;

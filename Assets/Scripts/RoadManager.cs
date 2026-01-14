@@ -286,7 +286,7 @@ public class RoadManager : MonoBehaviour
 
             foreach (PlacedObject obj in oldObjGroup)
             {
-                UpdateObjectNotConnectedWarning(obj, oldObjGroup);
+                if(obj != null) UpdateObjectNotConnectedWarning(obj, oldObjGroup);
             }
         }
         else
@@ -550,32 +550,41 @@ public class RoadManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         bool farmHasFarmland = false;
 
-        if (connectedFarms.Count > 0)
-        {
-            foreach(PlacedObject farm in connectedFarms)
-            {
-                if (farm.adjacentFarmlandWorked.ContainsKey(farmland)) farmHasFarmland = true;
-            }
-        }
+        //if (connectedFarms.Count > 0)
+        //{
+        //    foreach(PlacedObject farm in connectedFarms)
+        //    {
+        //        if (farm.adjacentFarmlandWorked.ContainsKey(farmland))
+        //        {
+        //            farmHasFarmland = true;
+        //        }
+        //    }
+        //}
 
+        //Debug.Log("111order: second");
         if(farmland != null)
         {
-            if (farmHasFarmland) farmland.exclamationMark.SetActive(false);
+            if (farmland.isConnectedFarmland) farmland.exclamationMark.SetActive(false);
             else
             {
-                farmland.exclamationMark.SetActive(true);
-                if (farmland.farm != null)
-                {
-                    if (farmland.farm.adjacentFarmlandWorked.ContainsKey(farmland))
-                    {
-                        farmland.farm.adjacentFarmlandWorked.Remove(farmland);
-                        farmland.isConnectedFarmland = false;
-                        farmland.farm = null;
+                List<PlacedObject> newConnectedFarms = GetConnectedFarms(farmland);
+                Debug.Log($"Finding New Farms: {newConnectedFarms.Count}");
 
-                        //farmland.farm.ConnectFarmland();
+                foreach(PlacedObject farm in newConnectedFarms)
+                {
+                    if(farm.adjacentFarmlandWorked.Count < 10)
+                    {
+                        farm.adjacentFarmlandWorked.Add(farmland, false);
+                        farmland.isConnectedFarmland = true;
+                        farmland.farm = farm;
+                        break;
                     }
                 }
+                
             }
+
+            if(farmland.isConnectedFarmland) farmland.exclamationMark.SetActive(false);
+            else farmland.exclamationMark.SetActive(true);
         }
 
     }
