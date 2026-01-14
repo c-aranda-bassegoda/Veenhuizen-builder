@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Werkplaats
   m_EditorClassIdentifier: 
-  name: School
+  name: Werkplaats
   prefab: {fileID: 2906430575383778528, guid: 30f7aafcbb6fa1b4a888dd10514dd6d5, type: 3}
   modulePrefab: {fileID: 2906430575383778528, guid: 30f7aafcbb6fa1b4a888dd10514dd6d5, type: 3}
   coreModularBuilding: {fileID: 0}
