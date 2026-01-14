@@ -563,8 +563,17 @@ public class RoadManager : MonoBehaviour
         //}
 
         yield return new WaitForEndOfFrame();
+        bool farmHasFarmland = false;
 
-        if (connectedFarms.Count > 0) farmland.exclamationMark.SetActive(false);
+        if (connectedFarms.Count > 0)
+        {
+            foreach(PlacedObject farm in connectedFarms)
+            {
+                if (farm.adjacentFarmlandWorked.ContainsKey(farmland)) farmHasFarmland = true;
+            }
+        }
+
+        if(farmHasFarmland) farmland.exclamationMark.SetActive(false);
         else farmland.exclamationMark.SetActive(true);
     }
 

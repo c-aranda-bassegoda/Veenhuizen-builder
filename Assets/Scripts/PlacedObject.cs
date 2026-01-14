@@ -199,7 +199,7 @@ public class PlacedObject : MonoBehaviour
         if (exclamationMark != null)
         {
             exclamationMark.transform.rotation = Quaternion.identity;
-            exclamationMark.SetActive(true);
+            //exclamationMark.SetActive(true);
         }
         Debug.Log("building start");
 
