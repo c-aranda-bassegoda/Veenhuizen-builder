@@ -351,7 +351,7 @@ public class PlacedObject : MonoBehaviour
             {
                 Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
                 targetFarm.adjacentFarmlandWorked[targetFarmland] = true;
-                npc.SetNavmeshTarget(targetFarmland.transform.position, targetFarmland);
+                npc.SetNavmeshTarget(targetFarmland.transform.position, targetFarmland, targetFarm);
                 workingPeople.Add(npc);
                 sentPeople++;
             }
@@ -386,9 +386,15 @@ public class PlacedObject : MonoBehaviour
     public void SendNpcBack(NavmeshNpc npc, bool teleport)
     {
         NPCManager.instance.totalWorkingPeople--;
+        if (npc.destinationBuilding.name == "Akker") FreeFarmland(npc.targetFarm, npc.destinationBuilding);
         npc.destinationBuilding = null;
         workingPeople.Remove(npc);
         if(teleport) npc.ReturnHome();
+    }
+
+    public void FreeFarmland(PlacedObject farm, PlacedObject farmland)
+    {
+        farm.adjacentFarmlandWorked[farmland] = false;
     }
 
     void SpawnPeople()

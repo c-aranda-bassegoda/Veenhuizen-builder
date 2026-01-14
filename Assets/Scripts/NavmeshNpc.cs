@@ -11,7 +11,7 @@ public class NavmeshNpc : MonoBehaviour
 {
     NavMeshAgent agent;
     PlacedObject originBuilding;
-    public PlacedObject destinationBuilding;
+    public PlacedObject destinationBuilding, targetFarm;
     public Vector3 navmeshDestination;
     string desiredBuilding, currentTargetBuilding;
     bool movingToTarget;
@@ -161,12 +161,13 @@ public class NavmeshNpc : MonoBehaviour
         desiredBuilding = buildingName;
     }
 
-    public void SetNavmeshTarget(Vector3 targetPos, PlacedObject building)
+    public void SetNavmeshTarget(Vector3 targetPos, PlacedObject building, PlacedObject _targetFarm = null)
     {
         startY = charImage.transform.position.y;
         agent.SetDestination(targetPos);
         destinationBuilding = building;
         navmeshDestination = targetPos;
+        if (_targetFarm != null) targetFarm = _targetFarm;
         hasTarget = true;
         isHome = false;
         agent.isStopped = false;
@@ -178,6 +179,7 @@ public class NavmeshNpc : MonoBehaviour
         agent.ResetPath();
         hasTarget = false;
         isHome = true;
+        targetFarm = null;
         Debug.Log($"Sending agent back to {originBuilding.transform.GetChild(0).position}");
         agent.Warp(originBuilding.transform.GetChild(0).position);
     }
