@@ -13,9 +13,10 @@ public class UIController : MonoBehaviour
     public Button  deleteButton, rotateButton;
     public Button reportCloseButton;
     public GameObject panelHousing, interruptionPanel;
-    public GameObject progressReport, gameOverMssg, menuButtom;
+    public GameObject progressReport, gameOverMssg, SeeVillageButtom, backToMenuButton;
     public GameObject errorPopUp;
     public GameObject buildMenu;
+    public GameObject helpMenu;
     public Button errorCloseButton; 
     public TextMeshProUGUI errorMessage;
 
@@ -119,9 +120,18 @@ public class UIController : MonoBehaviour
     {
         progressReport.SetActive(true);
         gameOverMssg.SetActive(true);
-        menuButtom.SetActive(true);
+        SeeVillageButtom.SetActive(true);
         reportCloseButton.gameObject.SetActive(false);
         interruptionPanel.SetActive(true);
+    }
+
+    public void ShowVillage()
+    {
+        progressReport.SetActive(false);
+        buildMenu.SetActive(false);
+        helpMenu.SetActive(false);
+        backToMenuButton.SetActive(true);
+        interruptionPanel.SetActive(false);
     }
 
     public void ModifyOutline(Button button)
