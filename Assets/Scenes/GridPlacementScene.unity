@@ -2945,6 +2945,7 @@ MonoBehaviour:
   gridBuildingSystem: {fileID: 1434945243}
   controller: {fileID: 916037047}
   economyManager: {fileID: 1754685237}
+  cursorManager: {fileID: 1840507356}
 --- !u!4 &215312192
 Transform:
   m_ObjectHideFlags: 0
@@ -18886,6 +18887,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6782586431524431099, guid: 765021bc4d144074ba94337117599e02, type: 3}
   m_PrefabInstance: {fileID: 1831009666}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1840507355
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1840507357}
+  - component: {fileID: 1840507356}
+  m_Layer: 0
+  m_Name: Cursor Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1840507356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840507355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b2547584b429445a4fe3eb3597226a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorTexture1: {fileID: 2800000, guid: 437ed1d2e339a0344a7b0293eed56b5d, type: 3}
+  cursorTexture2: {fileID: 2800000, guid: f5bb3d95b49b1574e986073cfc72738e, type: 3}
+--- !u!4 &1840507357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840507355}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 297.06073, y: 312.5358, z: -105.1891}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1872382599 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3577890276593558044, guid: 6ac2875c48ef48145a069b9ea236b189, type: 3}
@@ -22887,3 +22934,4 @@ SceneRoots:
   - {fileID: 1730525702}
   - {fileID: 1737797958}
   - {fileID: 1738052265}
+  - {fileID: 1840507357}

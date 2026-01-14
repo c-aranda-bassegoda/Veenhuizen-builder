@@ -12,7 +12,10 @@ public class BuildingButton : MonoBehaviour
     void Start()
     {
         button = GetComponent<Button>();
-        button.onClick.AddListener(OnButtonClick);
+        button.onClick.AddListener(() => {
+            uiController.cursorManager.ChangeCursorTexture1();
+            OnButtonClick();
+            });
 
         // Create tooltip data from the buildingSO and assign it
         if (buildingSO != null && tooltipTrigger != null)
