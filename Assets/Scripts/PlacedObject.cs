@@ -118,8 +118,8 @@ public class PlacedObject : MonoBehaviour
     private BuildingScriptableObject placedSctiptableObject;
     [SerializeField] private Vector2Int origin;
     private BuildingScriptableObject.Dir dir;
-    private Vector3 worldPosition;
-    private Quaternion worldRotation;
+    public Vector3 worldPosition;
+    public Quaternion worldRotation;
 
     private Vector2Int gridPos;
     public GameObject exclamationMark;

@@ -288,7 +288,10 @@ public class GridBuildingSystem : MonoBehaviour
 
             Debug.Log($"Preview: Location = {x}, {z}, CanPlace = {CanPlace(gridPositionList)}, CanSub = {CanSubstitute(gridPositionList) && buildingSO.module}");
 
-            previewSystem.UpdatePreview(rotatedObjWorldPosition, CanPlace(gridPositionList), CanSubstitute(gridPositionList) && buildingSO.module);
+            if (CanSubstitute(gridPositionList))
+                previewSystem.UpdatePreview(GetPosition(gridPositionList, rotatedObjWorldPosition), GetRotation(gridPositionList), CanPlace(gridPositionList), true && buildingSO.module);
+            else
+                previewSystem.UpdatePreview(rotatedObjWorldPosition, Quaternion.identity, CanPlace(gridPositionList), false && buildingSO.module);
         }
 
 
@@ -304,6 +307,46 @@ public class GridBuildingSystem : MonoBehaviour
             RotateObject();
         }
 
+    }
+
+    private Vector3 GetPosition(List<Vector2Int> gridPositionList, Vector3 worldPos)
+    {
+        Vector3 pos = worldPos;
+        foreach (Vector2Int position in gridPositionList)
+        {
+            GridObject gridObject = grid.GetGridObj(position.x, position.y);
+            if (gridObject == null)
+            {
+                break;
+            }
+            else
+            {
+                if (gridObject.GetPlacedObject() == null)
+                    break;
+                pos = gridObject.GetPlacedObject().worldPosition;
+            }
+        }
+        return pos;
+    }
+
+    private Quaternion GetRotation(List<Vector2Int> gridPositionList)
+    {
+        Quaternion rot = Quaternion.identity;
+        foreach (Vector2Int position in gridPositionList)
+        {
+            GridObject gridObject = grid.GetGridObj(position.x, position.y);
+            if (gridObject == null)
+            {
+                break;
+            }
+            else
+            {
+                if (gridObject.GetPlacedObject() == null)
+                    break;
+                rot = gridObject.GetPlacedObject().worldRotation;
+            }
+        }
+        return rot;
     }
 
     public List<PlacedObject> GetBuildingsOfType(string buildingType)
