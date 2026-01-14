@@ -143,6 +143,7 @@ public class RoadManager : MonoBehaviour
 
         int oldObjectCount = 0;
         int oldListAmount = connectedObjectGroups.Count;
+        List<PlacedObject> oldObjGroup = null;
 
         foreach(List<PlacedObject> objGroup in connectedObjectGroups)
         {
@@ -150,7 +151,8 @@ public class RoadManager : MonoBehaviour
             {
                 oldObjectCount = objGroup.Count;
                 objGroup.Remove(currentPlacedObject);
-                if(objGroup.Count == 0) connectedObjectGroups.Remove(objGroup);
+                oldObjGroup = objGroup;
+                if (objGroup.Count == 0) connectedObjectGroups.Remove(objGroup);
                 break;
             }
         }
@@ -219,7 +221,7 @@ public class RoadManager : MonoBehaviour
 
                             if (foundAllPositions)
                             {
-                                //Debug.Log($"Found all positions, restoring groups to old");
+                                Debug.Log($"Found all positions, restoring groups to old");
                                 break;
                             }
                             objectsInNewGroup.Add(placedObject);
@@ -280,27 +282,14 @@ public class RoadManager : MonoBehaviour
             { 
                 connectedObjectGroups.RemoveRange(oldListAmount, connectedObjectGroups.Count - oldListAmount);
             }
+
+            foreach(PlacedObject obj in oldObjGroup)
+            {
+                UpdateObjectNotConnectedWarning(obj, oldObjGroup);
+            }
         }
         else
         {
-            //List<List<PlacedObject>> listsToRemove = new();
-
-            //foreach (PlacedObject adjObj in adjObjects)
-            //{
-            //    //Debug.Log($"DisconnectObject: Checking {adjObj}");
-            //    foreach (List<PlacedObject> objGroup in connectedObjectGroups)
-            //    {
-            //        if (objGroup.Contains(adjObj))
-            //        {
-            //            if (adjObjects.IndexOf(adjObj) == 0) oldObjectCount = objGroup.Count;
-            //            if (!listsToRemove.Contains(objGroup))
-            //            {
-            //                listsToRemove.Add(objGroup);
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
 
             foreach (List<PlacedObject> listToRemove in listsToRemove)
             {
@@ -532,7 +521,7 @@ public class RoadManager : MonoBehaviour
             }
         }
 
-        //Debug.Log($"ConnectNewObject: {connectedBuildingCount} buildings connected");
+        Debug.Log($"ConnectNewObject: {connectedBuildingCount} buildings connected to {obj.name}");
 
         if (connectedBuildingCount > 1)
         {
@@ -541,23 +530,16 @@ public class RoadManager : MonoBehaviour
                 if (obj.gameObject.CompareTag("Farmland"))
                 {
                     List<PlacedObject> connectedFarms = GetConnectedFarms(obj);
-                    Debug.Log($"Found {connectedFarms.Count} farms adjacent to farmland");
-                    
-                    foreach(PlacedObject farm in connectedFarms)
-                    {
-                        StartCoroutine(DelayedWarningUpdate(farm, obj));
-                        //if(farm.adjacentFarmlandWorked == null)
-                        //{
-                        //    Debug.LogWarning($"Adjacent Farmland Null for {farm.GetOrigin()}");
-                        //    continue;
-                        //}
-                        //if(farm.adjacentFarmlandWorked.ContainsKey(obj))
-                        //{
-                        //    obj.exclamationMark.SetActive(false);
-                        //    break;
-                        //}
-                    }
-                    
+
+                    //foreach(PlacedObject farm in connectedFarms)
+                    //{
+                    //    StartCoroutine(DelayedWarningUpdate(farm, obj));
+                    //}
+                    StartCoroutine(DelayedWarningUpdate(obj, connectedFarms));
+
+                    //if (connectedFarms.Count > 0) obj.exclamationMark.SetActive(false);
+                    //else obj.exclamationMark.SetActive(true);
+
                 }
                 else obj.exclamationMark.SetActive(false);
             }
@@ -572,36 +554,27 @@ public class RoadManager : MonoBehaviour
         }
     }
 
-    IEnumerator DelayedWarningUpdate(PlacedObject farm, PlacedObject farmland)
+    IEnumerator DelayedWarningUpdate(PlacedObject farmland, List<PlacedObject> connectedFarms)
     {
-        int initialFarmlandCount = farm.adjacentFarmlandWorked.Count;
-        int framesWaited = 0;
-        while ((farm.adjacentFarmlandWorked == null) || (initialFarmlandCount == farm.adjacentFarmlandWorked.Count))
-        {
-            yield return null;
-            if (!farmland.exclamationMark.activeSelf) break;
+        //int initialFarmlandCount = farm.adjacentFarmlandWorked.Count;
+        //int framesWaited = 0;
+        //while (framesWaited < 5)
+        //{
+        //    yield return null;
+        //    if (!farmland.exclamationMark.activeSelf) break;
 
-            framesWaited++;
-            if(framesWaited == 5)
-            {
-                Debug.LogWarning("Broke out of delayed warning update");
-                break;
-            }
-        }
+        //    framesWaited++;
+        //    if(framesWaited == 5)
+        //    {
+        //        Debug.LogWarning("Broke out of delayed warning update");
+        //        break;
+        //    }
+        //}
 
-        if(farmland.exclamationMark.activeSelf)
-        {
-            if (farm.adjacentFarmlandWorked.ContainsKey(farmland))
-            {
-                farmland.exclamationMark.SetActive(false);
-            }
-            else
-            {
-                Debug.Log("Farmland isnt being worked by farm");
-            }
-        }
+        yield return new WaitForEndOfFrame();
 
-        yield return null;
+        if (connectedFarms.Count > 0) farmland.exclamationMark.SetActive(false);
+        else farmland.exclamationMark.SetActive(true);
     }
 
 
