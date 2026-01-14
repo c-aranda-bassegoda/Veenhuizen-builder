@@ -10,24 +10,27 @@ public class PreviewSystem : MonoBehaviour
     private GameObject buildingPreview;
 
     [SerializeField] private Material previewMaterialPrefab;
-    [SerializeField] private Material roadPreviewMaterial;
+    [SerializeField] private Material roadPreviewMaterialPrefab;
     [SerializeField] private RoadManager roadManager;
     [SerializeField] private GridBuildingSystem gridSystem;
-    private Material previewMaterial;
+    private Material previewMaterial, roadPreviewMaterial;
 
     private void Awake()
     {
         previewMaterial = new Material(previewMaterialPrefab);
+        roadPreviewMaterial = new Material(roadPreviewMaterialPrefab);
     }
 
     public void StartRoadPlacementPreview(BuildingScriptableObject roadSO)
     {
+        Debug.Log($"Start placement preview: road");
         buildingPreview = Instantiate(roadSO.prefab, new Vector3(0, 0, 0), Quaternion.identity);
         buildingPreview.transform.GetChild(0).GetComponent<MeshRenderer>().material = roadPreviewMaterial;
     }
 
     public void StartPlacementPreview(BuildingScriptableObject buildingSO)
     {
+        Debug.Log($"Start placement preview");
         buildingPreview = Instantiate(buildingSO.prefab, new Vector3(0,0,0), Quaternion.identity);
 
         Transform buildingPreviewTransform = null;
@@ -69,6 +72,7 @@ public class PreviewSystem : MonoBehaviour
         Color c = validity ? Color.blue : (replaceability ? Color.green : Color.red);
         c.a = 0.5f;
         previewMaterial.color = c;
+        if (validity) c = new Color(0, 1, 1, .5f);
         roadPreviewMaterial.color = c;
     }
 

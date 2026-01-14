@@ -72,6 +72,7 @@ public class RoadManager : MonoBehaviour
         List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(newPosition);
         List<bool> isRoadThere = FindAdjacentObjects(adjacentRoadPositions, newPosition);
         string roadConfig = CheckAdjacentRoads(isRoadThere);
+        Debug.Log($"Preview road config: {roadConfig}");
         UpdateRoad(roadToUpdate, roadConfig);
     }
     public void UpdateConnections(Vector2Int roadPos, bool placingRoad = true)

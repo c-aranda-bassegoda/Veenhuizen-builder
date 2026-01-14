@@ -51,7 +51,8 @@ public class GameManager : MonoBehaviour
         gridBuildingSystem.AddingBuilding = true;
         gridBuildingSystem.PlacingRoad = false;
         gridBuildingSystem.StopPlacementPreview();
-        gridBuildingSystem.StartPlacementPreview(buildingSO);
+        if(buildingSO.name == "Zandweg") gridBuildingSystem.StartRoadPlacementPreview();
+        else gridBuildingSystem.StartPlacementPreview(buildingSO);
 
         //HandleStats(buildingIdx);
 
