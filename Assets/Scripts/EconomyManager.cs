@@ -28,10 +28,11 @@ public class EconomyManager : MonoBehaviour
     //[SerializeField] private List<BuildingScriptableObject> buildings;
     [SerializeField] private List<BuildingScriptableObject> placedBuildingsSOs;
     [SerializeField] private List<PlacedObject> connectedObjects;
-    [SerializeField]private Dictionary<string, int> maxCount;
+    [SerializeField] private Dictionary<string, int> maxCount;
     [SerializeField] float secondsPerSeason;
     //[SerializeField] int daysPerSeason;
     [SerializeField] GameObject floatingTextPrefab;
+    [SerializeField] SeasonManager seasonManager;
 
     public Season currentSeason;
     int seasonsPassed;
@@ -70,6 +71,7 @@ public class EconomyManager : MonoBehaviour
             {
                 timePassedInSeconds = 0;
                 AdvanceSeason();
+                seasonManager.ChangeSeason(currentSeason);
                 PauseTime();
 
                 if (seasonsPassed >= 4)
