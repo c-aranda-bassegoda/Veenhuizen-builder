@@ -385,10 +385,6 @@ public class RoadManager : MonoBehaviour
             {
                 UpdateObjectNotConnectedWarning(placedObject, groupsToMerge[0]);
             }
-
-            //Debug.Log($"ConnectNewObject: merged {groupsToMerge.Count} groups into one: ");
-            Debug.Log($"Connected Object: Merging, Adding new obj to list {connectedObjectGroups.IndexOf(groupsToMerge[0])}");
-            foreach (PlacedObject placedObject in groupsToMerge[0]) Debug.Log($"ConnectNewObject: {placedObject.name}");
         }
         else if (groupsToMerge.Count == 1)
         {
@@ -397,18 +393,11 @@ public class RoadManager : MonoBehaviour
             {
                 UpdateObjectNotConnectedWarning(placedObject, groupsToMerge[0]);
             }
-
-            //Debug.Log("ConnectNewObject: added to 1 existing group: ");
-            Debug.Log($"Connected Object: Adding new obj to list {connectedObjectGroups.IndexOf(groupsToMerge[0])}");
-            foreach (PlacedObject placedObject in groupsToMerge[0]) Debug.Log($"ConnectNewObject: {placedObject.name}");
         }
         else
         {
             connectedObjectGroups.Add(new List<PlacedObject> { currentPlacedObject });
             UpdateObjectNotConnectedWarning(currentPlacedObject, connectedObjectGroups[connectedObjectGroups.Count - 1]);
-
-            //Debug.Log("ConnectNewObject: new group created");
-            Debug.Log($"Connected Object: New group, Adding new obj to list {connectedObjectGroups.Count - 1}");
         }
 
         //UpdateObjectNotConnectedWarning(currentPlacedObject);
@@ -509,6 +498,7 @@ public class RoadManager : MonoBehaviour
 
     public void UpdateObjectNotConnectedWarning(PlacedObject obj, List<PlacedObject> objGroup)
     {
+        if(obj == null) return;
         BuildingScriptableObject buildingSO = obj.GetScriptableObject();
         int connectedBuildingCount = 0;
 
