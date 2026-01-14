@@ -13,7 +13,7 @@ public class Grid<TGridObject>
     private int width;
     private int height;
     private float cellSize;
-    [SerializeField] bool debugging = true;
+    [SerializeField] bool debugging = false;
     public float GetCellSize() { return cellSize; }
 
     private TGridObject[,] gridArray;

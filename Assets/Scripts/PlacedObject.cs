@@ -118,8 +118,8 @@ public class PlacedObject : MonoBehaviour
     private BuildingScriptableObject placedSctiptableObject;
     [SerializeField] private Vector2Int origin;
     private BuildingScriptableObject.Dir dir;
-    private Vector3 worldPosition;
-    private Quaternion worldRotation;
+    public Vector3 worldPosition;
+    public Quaternion worldRotation;
 
     private Vector2Int gridPos;
     public GameObject exclamationMark;
@@ -202,13 +202,12 @@ public class PlacedObject : MonoBehaviour
             exclamationMark.SetActive(true);
         }
         Debug.Log("building start");
-        
-        if(isModule) buildingOrigin = transform;
-        else buildingOrigin = transform.GetChild(0);
 
-        if (gameObject.tag == "Farmland" && !isModule) buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
+        buildingOrigin = transform.GetChild(0);
+
+        if (gameObject.tag == "Farmland") buildingOrigin.rotation = Quaternion.Euler(0, 90, 0);
         else if (gameObject.tag != "Road") buildingOrigin.rotation = Quaternion.Euler(0, GetScriptableObject().GetRotationAngle(dir), 0);
-        else if (isModule) buildingOrigin.rotation = Quaternion.Euler(90, 0, 0);
+        
 
         Debug.Log("Not error1");
         SpawnPeople();
@@ -352,7 +351,7 @@ public class PlacedObject : MonoBehaviour
             {
                 Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
                 targetFarm.adjacentFarmlandWorked[targetFarmland] = true;
-                npc.SetNavmeshTarget(targetFarmland.transform.position, targetFarmland);
+                npc.SetNavmeshTarget(targetFarmland.transform.position, targetFarmland, targetFarm);
                 workingPeople.Add(npc);
                 sentPeople++;
             }
@@ -387,9 +386,15 @@ public class PlacedObject : MonoBehaviour
     public void SendNpcBack(NavmeshNpc npc, bool teleport)
     {
         NPCManager.instance.totalWorkingPeople--;
+        if (npc.destinationBuilding.name == "Akker") FreeFarmland(npc.targetFarm, npc.destinationBuilding);
         npc.destinationBuilding = null;
         workingPeople.Remove(npc);
         if(teleport) npc.ReturnHome();
+    }
+
+    public void FreeFarmland(PlacedObject farm, PlacedObject farmland)
+    {
+        farm.adjacentFarmlandWorked[farmland] = false;
     }
 
     void SpawnPeople()

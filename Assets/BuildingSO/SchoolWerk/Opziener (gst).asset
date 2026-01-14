@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Opziener (gst)
   m_EditorClassIdentifier: 
   name: School
-  prefab: {fileID: 8269154034575838808, guid: 0a97101ce2ab3284ea25364adfe642f4, type: 3}
-  modulePrefab: {fileID: 8269154034575838808, guid: 0a97101ce2ab3284ea25364adfe642f4, type: 3}
+  prefab: {fileID: 8717793308523734593, guid: e296071365724f64eab28783b102ffaf, type: 3}
+  modulePrefab: {fileID: 8717793308523734593, guid: e296071365724f64eab28783b102ffaf, type: 3}
   coreModularBuilding: {fileID: 0}
   modules: []
   width: 1

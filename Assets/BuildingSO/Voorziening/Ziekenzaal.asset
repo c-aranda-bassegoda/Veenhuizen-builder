@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Ziekenzaal
   m_EditorClassIdentifier: 
   name: Ziekenzaal
-  prefab: {fileID: 3612910444755436083, guid: 9ab6af351089e29408e0485b4c787268, type: 3}
-  modulePrefab: {fileID: 3612910444755436083, guid: 9ab6af351089e29408e0485b4c787268, type: 3}
+  prefab: {fileID: 8230784132453110784, guid: 4decc37c9a07d2e45b74cad823409eed, type: 3}
+  modulePrefab: {fileID: 8230784132453110784, guid: 4decc37c9a07d2e45b74cad823409eed, type: 3}
   coreModularBuilding: {fileID: 0}
   modules: []
   width: 1

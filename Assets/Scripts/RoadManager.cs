@@ -143,6 +143,7 @@ public class RoadManager : MonoBehaviour
 
         int oldObjectCount = 0;
         int oldListAmount = connectedObjectGroups.Count;
+        List<PlacedObject> oldObjGroup = null;
 
         foreach(List<PlacedObject> objGroup in connectedObjectGroups)
         {
@@ -150,6 +151,9 @@ public class RoadManager : MonoBehaviour
             {
                 oldObjectCount = objGroup.Count;
                 objGroup.Remove(currentPlacedObject);
+                oldObjGroup = objGroup;
+                if (objGroup.Count == 0) connectedObjectGroups.Remove(objGroup);
+                break;
             }
         }
 
@@ -174,8 +178,7 @@ public class RoadManager : MonoBehaviour
             }
         }
 
-        //List<Vector2Int> positionsWithObjects = new();
-
+        List<List<PlacedObject>> listsToRemove = new();
         bool foundAllPositions = false;
 
         foreach (Vector2Int adjPosToCheck in adjPositionsToCheck)
@@ -212,7 +215,7 @@ public class RoadManager : MonoBehaviour
                             if(adjObjectPositions.Contains(uncheckedPos))
                             {
                                 foundAdjPositions++;
-                                Debug.Log($"Found adjacent position: {uncheckedPos}");
+                                //Debug.Log($"Found adjacent position: {uncheckedPos}");
                                 if (foundAdjPositions == adjObjectPositions.Count) foundAllPositions = true;
                             }
 
@@ -258,6 +261,13 @@ public class RoadManager : MonoBehaviour
                 Debug.Log($"DisconnectObject: new list: {newObjectList.Count}");
                 foreach (PlacedObject obj in newObjectList)
                 {
+                    foreach(List<PlacedObject> objList in connectedObjectGroups)
+                    {
+                        if((objList != newObjectList) && (objList.Contains(obj)))
+                        { 
+                            listsToRemove.Add(objList);
+                        }
+                    }
                     Debug.Log($"DisconnectObject: new object: {obj.name}");
                     UpdateObjectNotConnectedWarning(obj, newObjectList);
                 }
@@ -272,27 +282,14 @@ public class RoadManager : MonoBehaviour
             { 
                 connectedObjectGroups.RemoveRange(oldListAmount, connectedObjectGroups.Count - oldListAmount);
             }
+
+            foreach(PlacedObject obj in oldObjGroup)
+            {
+                UpdateObjectNotConnectedWarning(obj, oldObjGroup);
+            }
         }
         else
         {
-            List<List<PlacedObject>> listsToRemove = new();
-
-            foreach (PlacedObject adjObj in adjObjects)
-            {
-                //Debug.Log($"DisconnectObject: Checking {adjObj}");
-                foreach (List<PlacedObject> objGroup in connectedObjectGroups)
-                {
-                    if (objGroup.Contains(adjObj))
-                    {
-                        if (adjObjects.IndexOf(adjObj) == 0) oldObjectCount = objGroup.Count;
-                        if (!listsToRemove.Contains(objGroup))
-                        {
-                            listsToRemove.Add(objGroup);
-                            break;
-                        }
-                    }
-                }
-            }
 
             foreach (List<PlacedObject> listToRemove in listsToRemove)
             {
@@ -388,10 +385,6 @@ public class RoadManager : MonoBehaviour
             {
                 UpdateObjectNotConnectedWarning(placedObject, groupsToMerge[0]);
             }
-
-            //Debug.Log($"ConnectNewObject: merged {groupsToMerge.Count} groups into one: ");
-            Debug.Log($"Connected Object: Merging, Adding new obj to list {connectedObjectGroups.IndexOf(groupsToMerge[0])}");
-            foreach (PlacedObject placedObject in groupsToMerge[0]) Debug.Log($"ConnectNewObject: {placedObject.name}");
         }
         else if (groupsToMerge.Count == 1)
         {
@@ -400,18 +393,11 @@ public class RoadManager : MonoBehaviour
             {
                 UpdateObjectNotConnectedWarning(placedObject, groupsToMerge[0]);
             }
-
-            //Debug.Log("ConnectNewObject: added to 1 existing group: ");
-            Debug.Log($"Connected Object: Adding new obj to list {connectedObjectGroups.IndexOf(groupsToMerge[0])}");
-            foreach (PlacedObject placedObject in groupsToMerge[0]) Debug.Log($"ConnectNewObject: {placedObject.name}");
         }
         else
         {
             connectedObjectGroups.Add(new List<PlacedObject> { currentPlacedObject });
             UpdateObjectNotConnectedWarning(currentPlacedObject, connectedObjectGroups[connectedObjectGroups.Count - 1]);
-
-            //Debug.Log("ConnectNewObject: new group created");
-            Debug.Log($"Connected Object: New group, Adding new obj to list {connectedObjectGroups.Count - 1}");
         }
 
         //UpdateObjectNotConnectedWarning(currentPlacedObject);
@@ -512,6 +498,7 @@ public class RoadManager : MonoBehaviour
 
     public void UpdateObjectNotConnectedWarning(PlacedObject obj, List<PlacedObject> objGroup)
     {
+        if(obj == null) return;
         BuildingScriptableObject buildingSO = obj.GetScriptableObject();
         int connectedBuildingCount = 0;
 
@@ -524,7 +511,7 @@ public class RoadManager : MonoBehaviour
             }
         }
 
-        //Debug.Log($"ConnectNewObject: {connectedBuildingCount} buildings connected");
+        Debug.Log($"ConnectNewObject: {connectedBuildingCount} buildings connected to {obj.name}");
 
         if (connectedBuildingCount > 1)
         {
@@ -533,23 +520,16 @@ public class RoadManager : MonoBehaviour
                 if (obj.gameObject.CompareTag("Farmland"))
                 {
                     List<PlacedObject> connectedFarms = GetConnectedFarms(obj);
-                    Debug.Log($"Found {connectedFarms.Count} farms adjacent to farmland");
-                    
-                    foreach(PlacedObject farm in connectedFarms)
-                    {
-                        StartCoroutine(DelayedWarningUpdate(farm, obj));
-                        //if(farm.adjacentFarmlandWorked == null)
-                        //{
-                        //    Debug.LogWarning($"Adjacent Farmland Null for {farm.GetOrigin()}");
-                        //    continue;
-                        //}
-                        //if(farm.adjacentFarmlandWorked.ContainsKey(obj))
-                        //{
-                        //    obj.exclamationMark.SetActive(false);
-                        //    break;
-                        //}
-                    }
-                    
+
+                    //foreach(PlacedObject farm in connectedFarms)
+                    //{
+                    //    StartCoroutine(DelayedWarningUpdate(farm, obj));
+                    //}
+                    StartCoroutine(DelayedWarningUpdate(obj, connectedFarms));
+
+                    //if (connectedFarms.Count > 0) obj.exclamationMark.SetActive(false);
+                    //else obj.exclamationMark.SetActive(true);
+
                 }
                 else obj.exclamationMark.SetActive(false);
             }
@@ -564,36 +544,27 @@ public class RoadManager : MonoBehaviour
         }
     }
 
-    IEnumerator DelayedWarningUpdate(PlacedObject farm, PlacedObject farmland)
+    IEnumerator DelayedWarningUpdate(PlacedObject farmland, List<PlacedObject> connectedFarms)
     {
-        int initialFarmlandCount = farm.adjacentFarmlandWorked.Count;
-        int framesWaited = 0;
-        while ((farm.adjacentFarmlandWorked == null) || (initialFarmlandCount == farm.adjacentFarmlandWorked.Count))
-        {
-            yield return null;
-            if (!farmland.exclamationMark.activeSelf) break;
+        //int initialFarmlandCount = farm.adjacentFarmlandWorked.Count;
+        //int framesWaited = 0;
+        //while (framesWaited < 5)
+        //{
+        //    yield return null;
+        //    if (!farmland.exclamationMark.activeSelf) break;
 
-            framesWaited++;
-            if(framesWaited == 5)
-            {
-                Debug.LogWarning("Broke out of delayed warning update");
-                break;
-            }
-        }
+        //    framesWaited++;
+        //    if(framesWaited == 5)
+        //    {
+        //        Debug.LogWarning("Broke out of delayed warning update");
+        //        break;
+        //    }
+        //}
 
-        if(farmland.exclamationMark.activeSelf)
-        {
-            if (farm.adjacentFarmlandWorked.ContainsKey(farmland))
-            {
-                farmland.exclamationMark.SetActive(false);
-            }
-            else
-            {
-                Debug.Log("Farmland isnt being worked by farm");
-            }
-        }
+        yield return new WaitForEndOfFrame();
 
-        yield return null;
+        if (connectedFarms.Count > 0) farmland.exclamationMark.SetActive(false);
+        else farmland.exclamationMark.SetActive(true);
     }
 
 

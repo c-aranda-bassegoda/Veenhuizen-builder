@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Opzienerwoning
   m_EditorClassIdentifier: 
-  name: School
-  prefab: {fileID: 6600959261270428487, guid: 0746228175eea1a4891f1d91375b5370, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: 0746228175eea1a4891f1d91375b5370, type: 3}
+  name: Opzienerwoning
+  prefab: {fileID: 8717793308523734593, guid: e296071365724f64eab28783b102ffaf, type: 3}
+  modulePrefab: {fileID: 8717793308523734593, guid: e296071365724f64eab28783b102ffaf, type: 3}
   coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
@@ -31,6 +31,6 @@ MonoBehaviour:
   possibleNpcTypes:
   - guard
   nonWorkingPopulation: 1
-  module: 0
+  module: 1
   modular: 0
   moduleOnly: 0

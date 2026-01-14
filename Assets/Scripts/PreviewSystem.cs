@@ -58,9 +58,9 @@ public class PreviewSystem : MonoBehaviour
         Destroy(buildingPreview);
     }
 
-    public void UpdatePreview(Vector3 worldPosition, bool validity, bool replaceability)
+    public void UpdatePreview(Vector3 worldPosition, Quaternion worldRotation, bool validity, bool replaceability)
     {
-        MovePreview(worldPosition);
+        MovePreview(worldPosition, worldRotation);
         ApplyFeedback(validity, replaceability);
     }
 
@@ -72,7 +72,7 @@ public class PreviewSystem : MonoBehaviour
         roadPreviewMaterial.color = c;
     }
 
-    private void MovePreview(Vector3 worldPosition)
+    private void MovePreview(Vector3 worldPosition, Quaternion worldRotation)
     {
         if(buildingPreview.CompareTag("Road"))
         {
@@ -84,6 +84,7 @@ public class PreviewSystem : MonoBehaviour
         else
         {
             buildingPreview.transform.position = new Vector3(worldPosition.x, worldPosition.y + previewYOffset, worldPosition.z);
+            buildingPreview.transform.rotation = worldRotation;
         }
     }
 }

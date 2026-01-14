@@ -30,6 +30,7 @@ public class GridBuildingSystem : MonoBehaviour
     public bool AddingBuilding { get; set; }
     public bool RemovingBuilding { get; set; }
     public bool PlacingRoad { get; set; }
+    public bool IsEndGame { get; set; }
 
     private Vector2Int lastPosition; 
     private void Awake()
@@ -42,6 +43,7 @@ public class GridBuildingSystem : MonoBehaviour
         AddingBuilding = false;
         RemovingBuilding = false;
         PlacingRoad = false;
+        IsEndGame = false;
     }
 
     //public BuildingScriptableObject GetBuildingByIdx(int idx) {  return buildingSOList[idx]; }
@@ -120,10 +122,8 @@ public class GridBuildingSystem : MonoBehaviour
             Debug.Log("Can't build");
             SoundFXManager.Instance.PlaySoundFXClip(errorSound, transform, errorVolume);
         }
-        Debug.Log("built sth");
         if (isTutorial)
         {
-            Debug.Log("Play tutorial");
             TimelineManager.Instance.Play();
         }
 
@@ -270,7 +270,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     public void RotateObject()
     {
-        if (buildingSO.modular) return;
+        if (buildingSO.modular || buildingSO.module) return;
         previewSystem.StopPlacementPreview();
         buildingSO.Direction = BuildingScriptableObject.GetNextDir(buildingSO.Direction);
         Debug.Log("Rotation updated: " + buildingSO.Direction);
@@ -282,7 +282,7 @@ public class GridBuildingSystem : MonoBehaviour
         grid.GetXYZ(UtilitiesClass.GetMouseWorldPositionXZ(), out int x, out int y, out int z);
         Vector2Int newPosition = new Vector2Int(x, z);
         //Debug.Log($"Updating Preview: {(AddingBuilding || PlacingRoad)}, {newPosition != lastPosition}, {buildingSO != null}");
-        if ( (AddingBuilding || PlacingRoad) && newPosition != lastPosition && buildingSO != null)
+        if ( (AddingBuilding || PlacingRoad) && newPosition != lastPosition && buildingSO != null && !IsEndGame)
         {
             lastPosition = newPosition;
             List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
@@ -290,7 +290,13 @@ public class GridBuildingSystem : MonoBehaviour
 
             Debug.Log($"Preview: Location = {x}, {z}, CanPlace = {CanPlace(gridPositionList)}, CanSub = {CanSubstitute(gridPositionList) && buildingSO.module}");
 
-            previewSystem.UpdatePreview(rotatedObjWorldPosition, CanPlace(gridPositionList), CanSubstitute(gridPositionList) && buildingSO.module);
+            //if (buildingSO != null)
+            //{
+                if (CanSubstitute(gridPositionList))
+                    previewSystem.UpdatePreview(GetPosition(gridPositionList, rotatedObjWorldPosition), GetRotation(gridPositionList), CanPlace(gridPositionList), true && buildingSO.module);
+                else
+                    previewSystem.UpdatePreview(rotatedObjWorldPosition, Quaternion.identity, CanPlace(gridPositionList), false && buildingSO.module);
+            //}
         }
 
 
@@ -306,6 +312,46 @@ public class GridBuildingSystem : MonoBehaviour
             RotateObject();
         }
 
+    }
+
+    private Vector3 GetPosition(List<Vector2Int> gridPositionList, Vector3 worldPos)
+    {
+        Vector3 pos = worldPos;
+        foreach (Vector2Int position in gridPositionList)
+        {
+            GridObject gridObject = grid.GetGridObj(position.x, position.y);
+            if (gridObject == null)
+            {
+                break;
+            }
+            else
+            {
+                if (gridObject.GetPlacedObject() == null)
+                    break;
+                pos = gridObject.GetPlacedObject().worldPosition;
+            }
+        }
+        return pos;
+    }
+
+    private Quaternion GetRotation(List<Vector2Int> gridPositionList)
+    {
+        Quaternion rot = Quaternion.identity;
+        foreach (Vector2Int position in gridPositionList)
+        {
+            GridObject gridObject = grid.GetGridObj(position.x, position.y);
+            if (gridObject == null)
+            {
+                break;
+            }
+            else
+            {
+                if (gridObject.GetPlacedObject() == null)
+                    break;
+                rot = gridObject.GetPlacedObject().worldRotation;
+            }
+        }
+        return rot;
     }
 
     public List<PlacedObject> GetBuildingsOfType(string buildingType)

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Slaapzaal
   m_EditorClassIdentifier: 
   name: Slaapzaal
-  prefab: {fileID: 1460527531912246447, guid: 8f3da6818081fa24ea6cc9e2702bdecb, type: 3}
-  modulePrefab: {fileID: 1460527531912246447, guid: 8f3da6818081fa24ea6cc9e2702bdecb, type: 3}
+  prefab: {fileID: 5824402874899886257, guid: 0a46d4ed0938e4445acb14bbb06a5d17, type: 3}
+  modulePrefab: {fileID: 5824402874899886257, guid: 0a46d4ed0938e4445acb14bbb06a5d17, type: 3}
   coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
