@@ -6658,7 +6658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewMaterialPrefab: {fileID: 2100000, guid: 13a817883fee33d498b6add06b265c69, type: 2}
-  roadPreviewMaterial: {fileID: 2100000, guid: 13a817883fee33d498b6add06b265c69, type: 2}
+  roadPreviewMaterialPrefab: {fileID: 2100000, guid: 6a5d39b6f7a6a194a818cf60b9d466de, type: 2}
   roadManager: {fileID: 94027756}
   gridSystem: {fileID: 1434945243}
 --- !u!4 &763488386

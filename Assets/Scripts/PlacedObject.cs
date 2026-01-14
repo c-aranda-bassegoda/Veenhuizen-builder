@@ -450,7 +450,19 @@ public class PlacedObject : MonoBehaviour
 
     public BuildingScriptableObject Destructor()
     {
-        //Debug.Log($"Object Destructor: {name}");
+        if(name == "Akker")
+        {
+            List<PlacedObject> connectedFarms = RoadManager.instance.GetConnectedFarms(this);
+
+            foreach(PlacedObject obj in connectedFarms)
+            {
+                if(obj.adjacentFarmlandWorked.ContainsKey(this))
+                {
+                    Debug.Log($"Removing farm from farmland list");
+                    obj.adjacentFarmlandWorked.Remove(this);
+                }
+            }
+        }
 
         if (isModule && parent != null)
         {
