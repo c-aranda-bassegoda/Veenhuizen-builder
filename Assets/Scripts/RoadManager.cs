@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class RoadManager : MonoBehaviour
 {
-    [SerializeField] GameObject roadStraight, roadTurn, roadCrossroad, roadIntsct3;
-    public Dictionary<Vector2Int, GameObject> placedRoads = new();
+    [SerializeField] Mesh roadStraight, roadTurn, roadCrossroad, roadIntsct3;
+    public Dictionary<Vector2Int, MeshFilter> placedRoads = new();
     [SerializeField] GameObject roadPrefab;
     [SerializeField] LayerMask roadTestLayer;
     [SerializeField] GridBuildingSystem gridBuildingSystem;
@@ -25,7 +25,7 @@ public class RoadManager : MonoBehaviour
     public void Update()
     {
         //Debug stuff
-        if(Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             Debug.Log($"Connected Objects:");
             foreach (List<PlacedObject> objGroup in connectedObjectGroups)
@@ -36,14 +36,22 @@ public class RoadManager : MonoBehaviour
                     Debug.Log($"Connected Objects: {obj.name}:");
                 }
             }
+
+            //Grid<GridObject> grid = gridBuildingSystem.GetGrid();
+            //List<PlacedObject> directlyConnectedObjects = new();
+
+            //GridObject currentGridObject = grid.GetGridObj(2, 2);
+            //PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
+
+            //Debug.Log($"test1: {currentPlacedObject.gameObject.name}");
         }
     }
 
-    public void PlaceRoad(Vector2Int roadPos, GameObject newRoadObj)
+    public void PlaceRoad(Vector2Int roadPos, MeshFilter newRoadMesh)
     {
         if (!placedRoads.ContainsKey(roadPos))
         {
-            placedRoads.Add(roadPos, newRoadObj);
+            placedRoads.Add(roadPos, newRoadMesh);
             UpdateConnections(roadPos);
         }
     }
@@ -60,7 +68,7 @@ public class RoadManager : MonoBehaviour
 
     public void UpdatePreviewRoad(GameObject previewRoad, Vector2Int newPosition)
     {
-        GameObject roadToUpdate = previewRoad;
+        MeshFilter roadToUpdate = previewRoad.transform.GetChild(0).gameObject.GetComponent<MeshFilter>();
         List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(newPosition);
         List<bool> isRoadThere = FindAdjacentObjects(adjacentRoadPositions, newPosition);
         string roadConfig = CheckAdjacentRoads(isRoadThere);
@@ -76,7 +84,7 @@ public class RoadManager : MonoBehaviour
 
         foreach (Vector2Int pos in roadsToUpdate)
         {
-            GameObject roadToUpdate = GetPlacedRoad(pos);
+            MeshFilter roadToUpdate = GetPlacedRoad(pos);
             if (roadToUpdate == null) continue;
 
             Debug.Log($"Checking adjacent positions for {pos.x}, {pos.y}");
@@ -137,9 +145,9 @@ public class RoadManager : MonoBehaviour
         int oldListAmount = connectedObjectGroups.Count;
         List<PlacedObject> oldObjGroup = null;
 
-        foreach(List<PlacedObject> objGroup in connectedObjectGroups)
+        foreach (List<PlacedObject> objGroup in connectedObjectGroups)
         {
-            if(objGroup.Contains(currentPlacedObject))
+            if (objGroup.Contains(currentPlacedObject))
             {
                 oldObjectCount = objGroup.Count;
                 objGroup.Remove(currentPlacedObject);
@@ -204,7 +212,7 @@ public class RoadManager : MonoBehaviour
                         {
                             //positionsWithObjects.Add(uncheckedPos);
 
-                            if(adjObjectPositions.Contains(uncheckedPos))
+                            if (adjObjectPositions.Contains(uncheckedPos))
                             {
                                 foundAdjPositions++;
                                 //Debug.Log($"Found adjacent position: {uncheckedPos}");
@@ -219,9 +227,9 @@ public class RoadManager : MonoBehaviour
                             objectsInNewGroup.Add(placedObject);
 
                             List<Vector2Int> newAdjacentPositions = GetAdjacentRoadPositions(uncheckedPos);
-                            foreach(Vector2Int newAdjPos in newAdjacentPositions)
+                            foreach (Vector2Int newAdjPos in newAdjacentPositions)
                             {
-                                if(!checkedPositions.Contains(newAdjPos) && (pos != newAdjPos)) newPositionsTempList.Add(newAdjPos);
+                                if (!checkedPositions.Contains(newAdjPos) && (pos != newAdjPos)) newPositionsTempList.Add(newAdjPos);
                             }
                         }
                     }
@@ -235,7 +243,7 @@ public class RoadManager : MonoBehaviour
 
                 foreach (Vector2Int tempPos in newPositionsTempList)
                 {
-                    if(adjPositionsToCheck.Contains(tempPos)) uncheckedPositions.Insert(0, tempPos);
+                    if (adjPositionsToCheck.Contains(tempPos)) uncheckedPositions.Insert(0, tempPos);
                     else uncheckedPositions.Add(tempPos);
                 }
             }
@@ -253,10 +261,10 @@ public class RoadManager : MonoBehaviour
                 Debug.Log($"DisconnectObject: new list: {newObjectList.Count}");
                 foreach (PlacedObject obj in newObjectList)
                 {
-                    foreach(List<PlacedObject> objList in connectedObjectGroups)
+                    foreach (List<PlacedObject> objList in connectedObjectGroups)
                     {
-                        if((objList != newObjectList) && (objList.Contains(obj)))
-                        { 
+                        if ((objList != newObjectList) && (objList.Contains(obj)))
+                        {
                             listsToRemove.Add(objList);
                         }
                     }
@@ -270,12 +278,12 @@ public class RoadManager : MonoBehaviour
 
         if (foundAllPositions)
         {
-            if(connectedObjectGroups.Count > oldListAmount)
-            { 
+            if (connectedObjectGroups.Count > oldListAmount)
+            {
                 connectedObjectGroups.RemoveRange(oldListAmount, connectedObjectGroups.Count - oldListAmount);
             }
 
-            foreach(PlacedObject obj in oldObjGroup)
+            foreach (PlacedObject obj in oldObjGroup)
             {
                 UpdateObjectNotConnectedWarning(obj, oldObjGroup);
             }
@@ -302,7 +310,7 @@ public class RoadManager : MonoBehaviour
         GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
         PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
 
-        if(currentPlacedObject.inInstitution) currentPlacedObject = currentPlacedObject.parent;
+        if (currentPlacedObject.inInstitution) currentPlacedObject = currentPlacedObject.parent;
         List<Vector2Int> adjacentRoadPositions = null;
         if (currentPlacedObject.name == "Gesticht")
         {
@@ -322,13 +330,13 @@ public class RoadManager : MonoBehaviour
                 PlacedObject placedObject = gridObject.GetPlacedObject();
                 if (placedObject != null)
                 {
-                    if(placedObject.inInstitution)
+                    if (placedObject.inInstitution)
                     {
-                        if(!directlyConnectedObjects.Contains(placedObject.parent)) directlyConnectedObjects.Add(placedObject.parent);
+                        if (!directlyConnectedObjects.Contains(placedObject.parent)) directlyConnectedObjects.Add(placedObject.parent);
                     }
-                    else if(placedObject.name == "Gesticht")
+                    else if (placedObject.name == "Gesticht")
                     {
-                        if(!directlyConnectedObjects.Contains(placedObject)) directlyConnectedObjects.Add(placedObject);
+                        if (!directlyConnectedObjects.Contains(placedObject)) directlyConnectedObjects.Add(placedObject);
                     }
                     else directlyConnectedObjects.Add(placedObject);
                 }
@@ -351,9 +359,9 @@ public class RoadManager : MonoBehaviour
                         if (!groupsToMerge.Contains(firstObjGroup)) groupsToMerge.Add(firstObjGroup);
                     }
 
-                    if(placedObjGroup != firstObjGroup)
+                    if (placedObjGroup != firstObjGroup)
                     {
-                        if(!groupsToMerge.Contains(placedObjGroup)) groupsToMerge.Add(placedObjGroup);
+                        if (!groupsToMerge.Contains(placedObjGroup)) groupsToMerge.Add(placedObjGroup);
 
                         debugthingy = true;
                     }
@@ -381,7 +389,7 @@ public class RoadManager : MonoBehaviour
         else if (groupsToMerge.Count == 1)
         {
             groupsToMerge[0].Add(currentPlacedObject);
-            foreach(PlacedObject placedObject in groupsToMerge[0])
+            foreach (PlacedObject placedObject in groupsToMerge[0])
             {
                 UpdateObjectNotConnectedWarning(placedObject, groupsToMerge[0]);
             }
@@ -415,7 +423,7 @@ public class RoadManager : MonoBehaviour
             uncheckedPositions.Remove(newPos);
             checkedPositions.Add(newPos);
 
-            foreach(Vector2Int newAdjPos in newAdjacentPositions)
+            foreach (Vector2Int newAdjPos in newAdjacentPositions)
             {
                 if (checkedPositions.Contains(newAdjPos)) continue;
                 checkedPositions.Add(newAdjPos);
@@ -423,9 +431,9 @@ public class RoadManager : MonoBehaviour
                 GridObject adjGridObject = grid.GetGridObj(newAdjPos.x, newAdjPos.y);
                 if (adjGridObject == null) continue;
                 PlacedObject adjPlacedObject = adjGridObject.GetPlacedObject();
-                if(adjPlacedObject == null) continue;
+                if (adjPlacedObject == null) continue;
 
-                if(findFarmland)
+                if (findFarmland)
                 {
                     if (adjPlacedObject.name == "Boerderij")
                     {
@@ -464,9 +472,9 @@ public class RoadManager : MonoBehaviour
             if (objGroup.Contains(originBuilding)) targetObjectGroup = objGroup;
         }
         List<PlacedObject> connectedFarms = new();
-        foreach(PlacedObject obj in targetObjectGroup)
+        foreach (PlacedObject obj in targetObjectGroup)
         {
-            if(obj != null)
+            if (obj != null)
             {
                 Debug.Log($"Object in {originBuilding.name} object group: {obj.name}");
                 if (obj.name == "Boerderij") connectedFarms.Add(obj);
@@ -481,23 +489,23 @@ public class RoadManager : MonoBehaviour
         GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
         PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
 
-        foreach(List<PlacedObject> objGroup in connectedObjectGroups)
+        foreach (List<PlacedObject> objGroup in connectedObjectGroups)
         {
-            if(objGroup.Contains(currentPlacedObject)) return objGroup;
+            if (objGroup.Contains(currentPlacedObject)) return objGroup;
         }
         throw new Exception("Object not in any group");
     }
 
     public void UpdateObjectNotConnectedWarning(PlacedObject obj, List<PlacedObject> objGroup)
     {
-        if(obj == null) return;
+        if (obj == null) return;
         BuildingScriptableObject buildingSO = obj.GetScriptableObject();
         int connectedBuildingCount = 0;
 
         foreach (PlacedObject connectedObj in objGroup)
         {
             //Custom logic depending on object ideally
-            if(connectedObj != null)
+            if (connectedObj != null)
             {
                 if (!connectedObj.gameObject.CompareTag("Road")) connectedBuildingCount++;
             }
@@ -512,7 +520,16 @@ public class RoadManager : MonoBehaviour
                 if (obj.gameObject.CompareTag("Farmland"))
                 {
                     List<PlacedObject> connectedFarms = GetConnectedFarms(obj);
+
+                    //foreach(PlacedObject farm in connectedFarms)
+                    //{
+                    //    StartCoroutine(DelayedWarningUpdate(farm, obj));
+                    //}
                     StartCoroutine(DelayedWarningUpdate(obj, connectedFarms));
+
+                    //if (connectedFarms.Count > 0) obj.exclamationMark.SetActive(false);
+                    //else obj.exclamationMark.SetActive(true);
+
                 }
                 else obj.exclamationMark.SetActive(false);
             }
@@ -523,12 +540,27 @@ public class RoadManager : MonoBehaviour
         {
             Debug.Log($"Found no buildings connected to {obj.name}");
             if (obj.exclamationMark != null) obj.exclamationMark.SetActive(true);
-            if(buildingSO != null) economyManager.HandleDisconnectedBuilding(buildingSO, obj);
+            if (buildingSO != null) economyManager.HandleDisconnectedBuilding(buildingSO, obj);
         }
     }
 
     IEnumerator DelayedWarningUpdate(PlacedObject farmland, List<PlacedObject> connectedFarms)
     {
+        //int initialFarmlandCount = farm.adjacentFarmlandWorked.Count;
+        //int framesWaited = 0;
+        //while (framesWaited < 5)
+        //{
+        //    yield return null;
+        //    if (!farmland.exclamationMark.activeSelf) break;
+
+        //    framesWaited++;
+        //    if(framesWaited == 5)
+        //    {
+        //        Debug.LogWarning("Broke out of delayed warning update");
+        //        break;
+        //    }
+        //}
+
         yield return new WaitForEndOfFrame();
 
         if (connectedFarms.Count > 0) farmland.exclamationMark.SetActive(false);
@@ -536,83 +568,84 @@ public class RoadManager : MonoBehaviour
     }
 
 
-    void UpdateRoad(GameObject road, string config)
+    void UpdateRoad(MeshFilter road, string config)
     {
         //4 way intersection
-        if(config == "crossroad" || config == "zero")
+        if (config == "crossroad" || config == "zero")
         {
-            Instantiate(roadCrossroad, road.transform.position, Quaternion.identity);
-            Destroy(road);
+            road.mesh = roadCrossroad;
+            road.transform.rotation = Quaternion.Euler(270, 0, 0);
+
         }
 
         //straight road vertical
-        else if(config == "oneUp" || config == "oneDown" || config == "upDown")
+        else if (config == "oneUp" || config == "oneDown" || config == "upDown")
         {
-            Instantiate(roadStraight, road.transform.position, Quaternion.identity);
-            Destroy(road);
+            road.mesh = roadStraight;
+            road.transform.rotation = Quaternion.Euler(270, 0, 0);
         }
 
         //straight road horizontal
-        else if(config == "oneLeft" || config == "oneRight" || config == "rightLeft")
+        else if (config == "oneLeft" || config == "oneRight" || config == "rightLeft")
         {
-            Instantiate(roadStraight, road.transform.position, Quaternion.Euler(0, 90, 0));
-            Destroy(road);
+            road.mesh = roadStraight;
+            road.transform.rotation = Quaternion.Euler(270, 90, 0);
         }
 
         //turn: ^ >
-        else if(config == "downRight")
+        else if (config == "downRight")
         {
-            Instantiate(roadTurn, road.transform.position, Quaternion.Euler(0, 180, 0));
-            Destroy(road);
+            road.mesh = roadTurn;
+            road.transform.rotation = Quaternion.Euler(270, 180, 0);
         }
 
         //turn ^ <
-        else if(config == "downLeft")
+        else if (config == "downLeft")
         {
-            Instantiate(roadTurn, road.transform.position, Quaternion.Euler(0, 270, 0));
-            Destroy(road);
+            road.mesh = roadTurn;
+            road.transform.rotation = Quaternion.Euler(270, 270, 0);
         }
 
         //turn: > ^ 
-        else if(config == "upLeft")
+        else if (config == "upLeft")
         {
-            Instantiate(roadTurn, road.transform.position, Quaternion.identity);
-            Destroy(road);
+            road.mesh = roadTurn;
+            road.transform.rotation = Quaternion.Euler(270, 0, 0);
         }
 
         //turn: < ^ 
-        else if(config == "upRight")
+        else if (config == "upRight")
         {
-            Instantiate(roadTurn, road.transform.position, Quaternion.Euler(0, 90, 0));
-            Destroy(road);
+            road.mesh = roadTurn;
+            road.transform.rotation = Quaternion.Euler(270, 90, 0);
         }
 
         //3 way, not up
-        else if(config == "notUp")
+        else if (config == "notUp")
         {
-            Instantiate(roadIntsct3, road.transform.position, Quaternion.Euler(0, 270, 0));
-            Destroy(road);
+            road.mesh = roadIntsct3;
+            road.transform.rotation = Quaternion.Euler(270, 180, 0);
         }
 
         //3 way, not down
-        else if(config == "notDown")
+        else if (config == "notDown")
         {
-            Instantiate(roadIntsct3, road.transform.position, Quaternion.Euler(0, 90, 0));
-            Destroy(road);
+            road.mesh = roadIntsct3;
+            road.transform.rotation = Quaternion.Euler(270, 0, 0);
         }
 
         //3 way, not right
-        else if(config == "notRight")
+        else if (config == "notRight")
         {
-            Instantiate(roadIntsct3, road.transform.position, Quaternion.identity);
-            Destroy(road);
+            road.mesh = roadIntsct3;
+            road.transform.rotation = Quaternion.Euler(270, 270, 0);
         }
 
         //3 way, not left
-        else if(config == "notLeft")
+        else if (config == "notLeft")
         {
-            Instantiate(roadIntsct3, road.transform.position, Quaternion.Euler(0, 180, 0));
-            Destroy(road);
+            road.mesh = roadIntsct3;
+            road.transform.rotation = Quaternion.Euler(270, 90, 0);
         }
     }
 
@@ -626,52 +659,52 @@ public class RoadManager : MonoBehaviour
         bool isRoadLeft = isObjectThere[3];
 
         //No surrounding roads, crossroads
-        if(!isRoadUp && !isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "zero";
+        if (!isRoadUp && !isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "zero";
 
         //1 surrounding road (up), keep straight
-        else if(isRoadUp && !isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "oneUp";
+        else if (isRoadUp && !isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "oneUp";
 
         //1 surrounding road (down), keep straight
-        else if(!isRoadUp && isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "oneDown";
+        else if (!isRoadUp && isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "oneDown";
 
         //1 surrounding road (right)
-        else if(!isRoadUp && !isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "oneRight";
+        else if (!isRoadUp && !isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "oneRight";
 
         //1 surrounding road (left)
-        else if(!isRoadUp && !isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "oneLeft";
+        else if (!isRoadUp && !isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "oneLeft";
 
         //2 surrounding roads (up, down)
-        else if(isRoadUp && isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "upDown";
+        else if (isRoadUp && isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "upDown";
 
         //2 surrounding roads (up, right)
-        else if(isRoadUp && !isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "upRight";
+        else if (isRoadUp && !isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "upRight";
 
         //2 surrounding roads (up, left)
-        else if(isRoadUp && !isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "upLeft";
+        else if (isRoadUp && !isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "upLeft";
 
         //2 surrounding roads (down, right)
-        else if(!isRoadUp && isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "downRight";
+        else if (!isRoadUp && isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "downRight";
 
         //2 surrounding roads (down, left)
-        else if(!isRoadUp && isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "downLeft";
+        else if (!isRoadUp && isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "downLeft";
 
         //2 surrounding roads (left, right)
-        else if(!isRoadUp && !isRoadDown && isRoadRight && isRoadLeft) roadConfig = "rightLeft";
+        else if (!isRoadUp && !isRoadDown && isRoadRight && isRoadLeft) roadConfig = "rightLeft";
 
         //3 surrounding roads (not up)
-        else if(!isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "notUp";
+        else if (!isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "notUp";
 
         //3 surrounding roads (not down)
-        else if(isRoadUp && !isRoadDown && isRoadRight && isRoadLeft) roadConfig = "notDown";
+        else if (isRoadUp && !isRoadDown && isRoadRight && isRoadLeft) roadConfig = "notDown";
 
         //3 surrounding roads (not right)
-        else if(isRoadUp && isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "notRight";
+        else if (isRoadUp && isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "notRight";
 
         //3 surrounding roads (not left)
-        else if(isRoadUp && isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "notLeft";
+        else if (isRoadUp && isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "notLeft";
 
         //4 surrounding roads, crossroads
-        else if(isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "crossroad";
+        else if (isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "crossroad";
 
         Debug.Log($"Config for road: {roadConfig} ({isRoadUp}, {isRoadDown}, {isRoadRight}, {isRoadLeft}");
 
@@ -764,9 +797,9 @@ public class RoadManager : MonoBehaviour
         return adjacentRoads;
     }
 
-    GameObject GetPlacedRoad(Vector2Int roadPos)
+    MeshFilter GetPlacedRoad(Vector2Int roadPos)
     {
-        if(placedRoads.ContainsKey(roadPos))
+        if (placedRoads.ContainsKey(roadPos))
         {
             return placedRoads[roadPos];
         }

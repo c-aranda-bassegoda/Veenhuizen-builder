@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Zandweg
   prefab: {fileID: 6600959261270428487, guid: d8be45d8e8347e54186826e1797a6daf, type: 3}
   modulePrefab: {fileID: 0}
+  coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
   height: 1
@@ -26,6 +27,9 @@ MonoBehaviour:
   yearlyCost: 1
   yearlyEarnings: 0
   maxPlacements: 100
+  description: 
+  possibleNpcTypes: []
+  nonWorkingPopulation: 0
   module: 0
   modular: 0
   moduleOnly: 0
