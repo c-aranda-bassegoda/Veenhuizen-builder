@@ -20633,6 +20633,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Badhuis
       objectReference: {fileID: 0}
+    - target: {fileID: 8230784132453110784, guid: 4decc37c9a07d2e45b74cad823409eed, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -150,6 +150,8 @@ public class RoadManager : MonoBehaviour
             {
                 oldObjectCount = objGroup.Count;
                 objGroup.Remove(currentPlacedObject);
+                if(objGroup.Count == 0) connectedObjectGroups.Remove(objGroup);
+                break;
             }
         }
 
@@ -174,8 +176,7 @@ public class RoadManager : MonoBehaviour
             }
         }
 
-        //List<Vector2Int> positionsWithObjects = new();
-
+        List<List<PlacedObject>> listsToRemove = new();
         bool foundAllPositions = false;
 
         foreach (Vector2Int adjPosToCheck in adjPositionsToCheck)
@@ -212,13 +213,13 @@ public class RoadManager : MonoBehaviour
                             if(adjObjectPositions.Contains(uncheckedPos))
                             {
                                 foundAdjPositions++;
-                                Debug.Log($"Found adjacent position: {uncheckedPos}");
+                                //Debug.Log($"Found adjacent position: {uncheckedPos}");
                                 if (foundAdjPositions == adjObjectPositions.Count) foundAllPositions = true;
                             }
 
                             if (foundAllPositions)
                             {
-                                Debug.Log($"Found all positions, restoring groups to old");
+                                //Debug.Log($"Found all positions, restoring groups to old");
                                 break;
                             }
                             objectsInNewGroup.Add(placedObject);
@@ -258,6 +259,13 @@ public class RoadManager : MonoBehaviour
                 Debug.Log($"DisconnectObject: new list: {newObjectList.Count}");
                 foreach (PlacedObject obj in newObjectList)
                 {
+                    foreach(List<PlacedObject> objList in connectedObjectGroups)
+                    {
+                        if((objList != newObjectList) && (objList.Contains(obj)))
+                        { 
+                            listsToRemove.Add(objList);
+                        }
+                    }
                     Debug.Log($"DisconnectObject: new object: {obj.name}");
                     UpdateObjectNotConnectedWarning(obj, newObjectList);
                 }
@@ -275,24 +283,24 @@ public class RoadManager : MonoBehaviour
         }
         else
         {
-            List<List<PlacedObject>> listsToRemove = new();
+            //List<List<PlacedObject>> listsToRemove = new();
 
-            foreach (PlacedObject adjObj in adjObjects)
-            {
-                //Debug.Log($"DisconnectObject: Checking {adjObj}");
-                foreach (List<PlacedObject> objGroup in connectedObjectGroups)
-                {
-                    if (objGroup.Contains(adjObj))
-                    {
-                        if (adjObjects.IndexOf(adjObj) == 0) oldObjectCount = objGroup.Count;
-                        if (!listsToRemove.Contains(objGroup))
-                        {
-                            listsToRemove.Add(objGroup);
-                            break;
-                        }
-                    }
-                }
-            }
+            //foreach (PlacedObject adjObj in adjObjects)
+            //{
+            //    //Debug.Log($"DisconnectObject: Checking {adjObj}");
+            //    foreach (List<PlacedObject> objGroup in connectedObjectGroups)
+            //    {
+            //        if (objGroup.Contains(adjObj))
+            //        {
+            //            if (adjObjects.IndexOf(adjObj) == 0) oldObjectCount = objGroup.Count;
+            //            if (!listsToRemove.Contains(objGroup))
+            //            {
+            //                listsToRemove.Add(objGroup);
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
 
             foreach (List<PlacedObject> listToRemove in listsToRemove)
             {
