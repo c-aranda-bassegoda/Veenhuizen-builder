@@ -182,6 +182,7 @@ public class UIController : MonoBehaviour
 
     public void HideSidebarFold(Transform layout, Transform button)
     {
+        Debug.Log($"Hiding Sidebar: {layout.gameObject.name}");
         //Disable all building options
         layout.gameObject.SetActive(false);
         //Enable the expand icon
@@ -192,8 +193,9 @@ public class UIController : MonoBehaviour
     {
         foreach(Transform layout in expandMenus)
         {
-            if(!button.IsChildOf(layout))
+            if(!button.IsChildOf(layout.transform.parent))
             {
+                //Debug.Log($"Hiding sidebar {layout.gameObject.name}, {button.gameObject.name} not a child");
                 HideSidebarFold(layout, layout.transform.parent.GetChild(0));
             }
         }
@@ -201,11 +203,10 @@ public class UIController : MonoBehaviour
 
     public void ToggleSidebarFold(Transform button)
     {
-        HideOtherSidebars(button);
 
         Transform layout = button.transform.parent.GetChild(1);
 
-        Debug.Log($"Toggling Sidebar: {layout.gameObject.name}");
+        Debug.Log($"Toggling Sidebar: {layout.gameObject.name}, {!layout.gameObject.activeSelf}");
         //menu is unfolded
         if (layout.gameObject.activeSelf)
         {
@@ -220,5 +221,6 @@ public class UIController : MonoBehaviour
             //Disable the expand icon
             button.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
         }
+        HideOtherSidebars(button);
     }
 }
