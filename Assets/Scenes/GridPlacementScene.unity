@@ -16834,7 +16834,7 @@ MonoBehaviour:
   timePaused: 0
   placedBuildingsSOs: []
   connectedObjects: []
-  secondsPerSeason: 9
+  secondsPerSeason: 90
   floatingTextPrefab: {fileID: 7209457536475564471, guid: ff4f4344309db7c44b1d164c6e7bd63d, type: 3}
   seasonManager: {fileID: 1737797959}
   currentSeason: 0
