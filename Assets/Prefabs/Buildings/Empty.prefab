@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
+  worldRotation: {x: 0, y: 0, z: 0, w: 0}
   exclamationMark: {fileID: 4068086397857411656}
   modules: []
   isModule: 0
@@ -425,23 +427,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7925080663009856600, guid: 22c45862c372d29439630af0b22457d8, type: 3}
       propertyPath: m_LocalScale.x
-      value: -26.7
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7925080663009856600, guid: 22c45862c372d29439630af0b22457d8, type: 3}
       propertyPath: m_LocalScale.y
-      value: -43.434082
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 7925080663009856600, guid: 22c45862c372d29439630af0b22457d8, type: 3}
       propertyPath: m_LocalScale.z
-      value: -263.07248
+      value: -255
       objectReference: {fileID: 0}
     - target: {fileID: 7925080663009856600, guid: 22c45862c372d29439630af0b22457d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.225
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7925080663009856600, guid: 22c45862c372d29439630af0b22457d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.75
+      value: 4.66
       objectReference: {fileID: 0}
     - target: {fileID: 7925080663009856600, guid: 22c45862c372d29439630af0b22457d8, type: 3}
       propertyPath: m_LocalPosition.z
