@@ -7,6 +7,7 @@ public class NPCManager : MonoBehaviour
     [SerializeField] EconomyManager economyManager;
     [SerializeField] float controlPerWorkingNPC;
     [SerializeField] List<NavmeshNpc> npcList;
+    List<NavmeshNpc> allNpcs = new();
     Dictionary<string, NavmeshNpc> npcMap;
     public int totalWorkingPeople;
 
@@ -28,6 +29,12 @@ public class NPCManager : MonoBehaviour
         {
             npcMap.Add(npc.name, npc);
         }
+    }
+
+    public void RegisterNpc(NavmeshNpc npc, bool _add)
+    {
+        if(_add) allNpcs.Add(npc);
+        else allNpcs.Remove(npc);
     }
 
     public void RegisterBuilding(PlacedObject newBuilding, bool _add)
@@ -119,8 +126,58 @@ public class NPCManager : MonoBehaviour
         control = _control;
         happy = _happy;
         people = (int)_people;
-
         //UpdateWorkingPeople();
+
+        economyManager.SetNewMorality(CalculateNewMorality(control, happy));
+    }
+
+    public float CalculateNewMorality(float _control, float _happiness)
+    {
+        float currentControl = control, currentHappiness = happy;
+        float morality = 0;
+
+        foreach(NavmeshNpc npc in allNpcs)
+        {
+            bool isWorking = false;
+
+            if(npc.destinationBuilding.name == "Akker")
+            {
+                isWorking = true;
+            }
+
+            if (_happiness >= totalWorkingPeople)
+            {
+                npc.isHappy = true;
+            }
+            else
+            {
+                int currentHappyPeople = 0;
+                foreach (NavmeshNpc _npc in allNpcs)
+                {
+                    if (_npc.isHappy) currentHappyPeople++;
+                }
+                if (_happiness > currentHappyPeople)
+                {
+                    npc.isHappy = true;
+                }
+                else if (_happiness == currentHappyPeople)
+                {
+                    //do nothing
+                }
+                else
+                {
+                    npc.isHappy = false;
+                }
+            }
+
+            npc.CheckHappiness();
+
+            if (npc.isHappy) morality++;
+            if (isWorking) morality++;
+            if (npc.isHappy && isWorking) morality += 2;
+        }
+
+        return morality;
     }
 
     public int GetWorkingPplAmount()

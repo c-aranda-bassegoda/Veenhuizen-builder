@@ -11,6 +11,9 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public string header;
     [TextArea(4, 10)]
     public string body;
+    [SerializeField] int peopleAmount;
+    [SerializeField] int smileyAmount;
+    [SerializeField] int eyeAmount;
 
     [SerializeField]
     public TooltipBuildingData buildingData = null;

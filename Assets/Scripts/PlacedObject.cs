@@ -440,7 +440,11 @@ public class PlacedObject : MonoBehaviour
 
 
                 NavmeshNpc newNpc = Instantiate(person, buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(0, 5, -0)), Quaternion.Euler(0, 0, 0));
-                if(j == 0) associatedWorkingPeople.Add(newNpc);
+                if (j == 0)
+                {
+                    associatedWorkingPeople.Add(newNpc);
+                    NPCManager.instance.RegisterNpc(newNpc, true);
+                }
                 if(j == 1) associatedNonWorkingPeople.Add(newNpc);
                 newNpc.SetOrigin(this);
             }
@@ -499,6 +503,7 @@ public class PlacedObject : MonoBehaviour
         foreach (NavmeshNpc _npc in associatedWorkingPeople)
         {
             Destroy(_npc.gameObject);
+            NPCManager.instance.RegisterNpc(_npc, false);
         }
         foreach (NavmeshNpc _npc in associatedNonWorkingPeople)
         {

@@ -478,6 +478,81 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 0
+--- !u!1 &36889281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 36889282}
+  - component: {fileID: 36889284}
+  - component: {fileID: 36889283}
+  m_Layer: 5
+  m_Name: Handle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &36889282
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36889281}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 647104320}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 20, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &36889283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36889281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &36889284
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36889281}
+  m_CullTransparentMesh: 1
 --- !u!1 &41289875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,11 +1240,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 102c22712cf847a4ca151ad9a28c7cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roadStraight: {fileID: 4300000, guid: e3c71c50de390ec4190b877211ba0717, type: 3}
-  roadTurn: {fileID: 4300000, guid: b38a4b1b87a3b81429916ae40f4a3f6f, type: 3}
-  roadCrossroad: {fileID: 4300000, guid: e99a120d866554343b007e93ab80eb6a, type: 3}
-  roadIntsct3: {fileID: 4300000, guid: 11b7c9a58a603e74caec54e139efb58d, type: 3}
-  roadPrefab: {fileID: 100000, guid: fc15b91b9d4fbad4eb5e12ab0c611f02, type: 3}
+  roadStraight: {fileID: 4579454407841743219, guid: 3c21d5ce6d3f9294ab1652d94732bf82, type: 3}
+  roadTurn: {fileID: 6416302070336371891, guid: 17bb75042a5946c469671ad263a560a6, type: 3}
+  roadCrossroad: {fileID: 4579454407841743219, guid: bc0c46f61b161ec41a7014507ad300e3, type: 3}
+  roadIntsct3: {fileID: -7196802604745430461, guid: a7d5ff56ed6302546a15a54532ba991f, type: 3}
+  roadPrefab: {fileID: 6600959261270428487, guid: d8be45d8e8347e54186826e1797a6daf, type: 3}
   roadTestLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -1254,6 +1329,9 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &97556988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1365,7 +1443,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 4ebb32b95bc68bb46b8f636b91e02617, type: 2}
-  tooltipTrigger: {fileID: 97556987}
 --- !u!1 &97767367
 GameObject:
   m_ObjectHideFlags: 0
@@ -2189,6 +2266,7 @@ GameObject:
   - component: {fileID: 149344565}
   - component: {fileID: 149344567}
   - component: {fileID: 149344568}
+  - component: {fileID: 149344569}
   m_Layer: 5
   m_Name: Akker
   m_TagString: Untagged
@@ -2323,7 +2401,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 66efadb99a9dc274bbe919c350700bda, type: 2}
-  tooltipTrigger: {fileID: 1009937431}
+--- !u!114 &149344569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149344563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Akker
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1001 &165771165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2665,7 +2760,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -2945,7 +3040,6 @@ MonoBehaviour:
   gridBuildingSystem: {fileID: 1434945243}
   controller: {fileID: 916037047}
   economyManager: {fileID: 1754685237}
-  cursorManager: {fileID: 1840507356}
 --- !u!4 &215312192
 Transform:
   m_ObjectHideFlags: 0
@@ -3455,6 +3549,7 @@ RectTransform:
   m_Children:
   - {fileID: 2143500774}
   - {fileID: 283179989}
+  - {fileID: 355287323}
   m_Father: {fileID: 1882448318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -4354,6 +4449,96 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1326754064609311799, guid: 0f3302d6bb1a83142baaae26e19b25e0, type: 3}
   m_PrefabInstance: {fileID: 6976256651075907515}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &355287322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 355287323}
+  - component: {fileID: 355287324}
+  m_Layer: 5
+  m_Name: MoralitySlider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &355287323
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355287322}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.085296, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 590352829}
+  - {fileID: 906090840}
+  - {fileID: 647104320}
+  m_Father: {fileID: 279577484}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 35.2, y: -19}
+  m_SizeDelta: {x: 160, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &355287324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355287322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 0
+  m_TargetGraphic: {fileID: 36889283}
+  m_FillRect: {fileID: 1401403770}
+  m_HandleRect: {fileID: 36889282}
+  m_Direction: 0
+  m_MinValue: 0
+  m_MaxValue: 1
+  m_WholeNumbers: 0
+  m_Value: 0
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &356278420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4910,6 +5095,7 @@ GameObject:
   - component: {fileID: 405714048}
   - component: {fileID: 405714051}
   - component: {fileID: 405714050}
+  - component: {fileID: 405714052}
   m_Layer: 5
   m_Name: Ziekenzaal
   m_TagString: Untagged
@@ -4988,7 +5174,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: ce08b50455db2a7409db11cbe9286c96, type: 2}
-  tooltipTrigger: {fileID: 1922139873}
 --- !u!114 &405714051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5045,6 +5230,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &405714052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 405714046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Ziekenzaal
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1 &413605919
 GameObject:
   m_ObjectHideFlags: 0
@@ -5058,6 +5261,7 @@ GameObject:
   - component: {fileID: 413605921}
   - component: {fileID: 413605923}
   - component: {fileID: 413605924}
+  - component: {fileID: 413605925}
   m_Layer: 5
   m_Name: Gesticht
   m_TagString: Untagged
@@ -5194,7 +5398,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 74306f3267d52e846be24bf616f3e731, type: 2}
-  tooltipTrigger: {fileID: 630482387}
+--- !u!114 &413605925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413605919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Gesticht
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1001 &419766956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5510,6 +5731,9 @@ MonoBehaviour:
   delay: 0
   header: 
   body: "Percentage of hapiness. \nThis needs to be more than 60 to win the game"
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1 &461315608
 GameObject:
   m_ObjectHideFlags: 0
@@ -5706,6 +5930,7 @@ GameObject:
   - component: {fileID: 468779654}
   - component: {fileID: 468779653}
   - component: {fileID: 468779655}
+  - component: {fileID: 468779656}
   m_Layer: 5
   m_Name: Zandweg
   m_TagString: Untagged
@@ -5840,7 +6065,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 6c670bdf9f938de45aa5c6ea90603faf, type: 2}
-  tooltipTrigger: {fileID: 1466140198}
 --- !u!114 &468779655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5856,6 +6080,24 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 0
+--- !u!114 &468779656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468779649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Zandweg
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1001 &486960808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6353,6 +6595,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 564153446}
+  m_CullTransparentMesh: 1
+--- !u!1 &590352828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 590352829}
+  - component: {fileID: 590352831}
+  - component: {fileID: 590352830}
+  m_Layer: 5
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &590352829
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590352828}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 355287323}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.25}
+  m_AnchorMax: {x: 1, y: 0.75}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &590352830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590352828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &590352831
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590352828}
   m_CullTransparentMesh: 1
 --- !u!1001 &593350983
 PrefabInstance:
@@ -6884,6 +7201,9 @@ MonoBehaviour:
     1440
 
     Opbrengst/jaar: 2700'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &630482388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6995,7 +7315,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 74306f3267d52e846be24bf616f3e731, type: 2}
-  tooltipTrigger: {fileID: 630482387}
+--- !u!1 &647104319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 647104320}
+  m_Layer: 5
+  m_Name: Handle Slide Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &647104320
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647104319}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 36889282}
+  m_Father: {fileID: 355287323}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -20, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &648340502
 GameObject:
   m_ObjectHideFlags: 0
@@ -7088,6 +7443,9 @@ MonoBehaviour:
   delay: 0
   header: 
   body: "Percentage of hapiness. \nThis needs to be more than 60 to win the game"
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1001 &664883216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7650,7 +8008,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewMaterialPrefab: {fileID: 2100000, guid: 13a817883fee33d498b6add06b265c69, type: 2}
-  roadPreviewMaterial: {fileID: 2100000, guid: 13a817883fee33d498b6add06b265c69, type: 2}
+  roadPreviewMaterialPrefab: {fileID: 2100000, guid: 6a5d39b6f7a6a194a818cf60b9d466de, type: 2}
   roadManager: {fileID: 94027756}
   gridSystem: {fileID: 1434945243}
 --- !u!4 &763488386
@@ -8767,6 +9125,42 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 905674972}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &906090839
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 906090840}
+  m_Layer: 5
+  m_Name: Fill Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &906090840
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 906090839}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1401403770}
+  m_Father: {fileID: 355287323}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.25}
+  m_AnchorMax: {x: 1, y: 0.75}
+  m_AnchoredPosition: {x: -5, y: 0}
+  m_SizeDelta: {x: -20, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &916037042
 GameObject:
   m_ObjectHideFlags: 0
@@ -8904,6 +9298,7 @@ MonoBehaviour:
   helpMenu: {fileID: 1657226263}
   errorCloseButton: {fileID: 1093454161}
   errorMessage: {fileID: 1212771366}
+  cursorManager: {fileID: 1840507356}
   expandMenus:
   - {fileID: 385947833}
   - {fileID: 737355410}
@@ -9381,6 +9776,9 @@ MonoBehaviour:
   delay: 0
   header: Control
   body: Rate of control in the colony
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1 &985390353
 GameObject:
   m_ObjectHideFlags: 0
@@ -9685,6 +10083,9 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &1009937432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9796,7 +10197,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 66efadb99a9dc274bbe919c350700bda, type: 2}
-  tooltipTrigger: {fileID: 1009937431}
 --- !u!1001 &1012111196
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10231,6 +10631,9 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &1021944916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10342,7 +10745,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 291270e82a7a3524496f145854ad1df0, type: 2}
-  tooltipTrigger: {fileID: 1021944915}
 --- !u!1 &1023728666
 GameObject:
   m_ObjectHideFlags: 0
@@ -10356,6 +10758,7 @@ GameObject:
   - component: {fileID: 1023728668}
   - component: {fileID: 1023728671}
   - component: {fileID: 1023728670}
+  - component: {fileID: 1023728672}
   m_Layer: 5
   m_Name: School
   m_TagString: Untagged
@@ -10434,7 +10837,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 8ae7f22080169254e9b5edff03987756, type: 2}
-  tooltipTrigger: {fileID: 1108551716}
 --- !u!114 &1023728671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10491,6 +10893,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1023728672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023728666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: School
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1001 &1032111328
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11705,6 +12125,9 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &1108551717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11816,7 +12239,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 8ae7f22080169254e9b5edff03987756, type: 2}
-  tooltipTrigger: {fileID: 1108551716}
 --- !u!1 &1113469057
 GameObject:
   m_ObjectHideFlags: 0
@@ -12215,6 +12637,7 @@ GameObject:
   - component: {fileID: 1145222507}
   - component: {fileID: 1145222509}
   - component: {fileID: 1145222510}
+  - component: {fileID: 1145222511}
   m_Layer: 5
   m_Name: Boerderij
   m_TagString: Untagged
@@ -12351,7 +12774,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 69c4bf55c6421a3468524f42a69b5e94, type: 2}
-  tooltipTrigger: {fileID: 1886321090}
+--- !u!114 &1145222511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145222505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Boerderij
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1 &1154696627
 GameObject:
   m_ObjectHideFlags: 0
@@ -12365,6 +12805,7 @@ GameObject:
   - component: {fileID: 1154696629}
   - component: {fileID: 1154696632}
   - component: {fileID: 1154696631}
+  - component: {fileID: 1154696633}
   m_Layer: 5
   m_Name: Opziener (gestich)
   m_TagString: Untagged
@@ -12443,7 +12884,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 2636e83f41ce30445b9ec5b6169e1be2, type: 2}
-  tooltipTrigger: {fileID: 2042068499}
 --- !u!114 &1154696632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12500,6 +12940,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1154696633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154696627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Opzienerswoning
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1 &1166583210
 GameObject:
   m_ObjectHideFlags: 0
@@ -12830,6 +13288,7 @@ GameObject:
   - component: {fileID: 1211762241}
   - component: {fileID: 1211762243}
   - component: {fileID: 1211762244}
+  - component: {fileID: 1211762245}
   m_Layer: 5
   m_Name: Opziener (los)
   m_TagString: Untagged
@@ -12964,7 +13423,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: e27d6fe44c8b3124a87cda9e3f97a679, type: 2}
-  tooltipTrigger: {fileID: 2042068499}
+--- !u!114 &1211762245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211762239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Wachthuisje
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1 &1212771364
 GameObject:
   m_ObjectHideFlags: 0
@@ -14675,6 +15151,9 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &1384811429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14786,7 +15265,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 5ac7c31622ab6ce4c80df31ef1fb11ba, type: 2}
-  tooltipTrigger: {fileID: 1384811428}
 --- !u!1 &1389645797
 GameObject:
   m_ObjectHideFlags: 0
@@ -15005,6 +15483,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1397282231}
+  m_CullTransparentMesh: 1
+--- !u!1 &1401403769
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1401403770}
+  - component: {fileID: 1401403772}
+  - component: {fileID: 1401403771}
+  m_Layer: 5
+  m_Name: Fill
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1401403770
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401403769}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 906090840}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 10, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1401403771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401403769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1401403772
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401403769}
   m_CullTransparentMesh: 1
 --- !u!1 &1401546947
 GameObject:
@@ -16016,6 +16569,9 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &1466140199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16127,7 +16683,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 6c670bdf9f938de45aa5c6ea90603faf, type: 2}
-  tooltipTrigger: {fileID: 1466140198}
 --- !u!1 &1497873557
 GameObject:
   m_ObjectHideFlags: 0
@@ -16313,6 +16868,7 @@ GameObject:
   - component: {fileID: 1519124794}
   - component: {fileID: 1519124797}
   - component: {fileID: 1519124796}
+  - component: {fileID: 1519124798}
   m_Layer: 5
   m_Name: Werkplaats
   m_TagString: Untagged
@@ -16391,7 +16947,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 5ac7c31622ab6ce4c80df31ef1fb11ba, type: 2}
-  tooltipTrigger: {fileID: 1384811428}
 --- !u!114 &1519124797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16448,6 +17003,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1519124798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519124792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Werkplaats
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1 &1524319312
 GameObject:
   m_ObjectHideFlags: 0
@@ -17954,6 +18527,7 @@ GameObject:
   - component: {fileID: 1671754498}
   - component: {fileID: 1671754501}
   - component: {fileID: 1671754500}
+  - component: {fileID: 1671754502}
   m_Layer: 5
   m_Name: Slaapzaal
   m_TagString: Untagged
@@ -18032,7 +18606,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 291270e82a7a3524496f145854ad1df0, type: 2}
-  tooltipTrigger: {fileID: 1021944915}
 --- !u!114 &1671754501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18089,6 +18662,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1671754502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671754496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Slaapzaal
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1001 &1678835291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18526,10 +19117,11 @@ MonoBehaviour:
   money: 400000
   food: 0
   ppl: 0
+  morality: 0
   timePaused: 0
   placedBuildingsSOs: []
   connectedObjects: []
-  secondsPerSeason: 5
+  secondsPerSeason: 90
   floatingTextPrefab: {fileID: 7209457536475564471, guid: ff4f4344309db7c44b1d164c6e7bd63d, type: 3}
   seasonManager: {fileID: 1737797959}
   currentSeason: 0
@@ -19193,6 +19785,9 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &1886321091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19304,7 +19899,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 69c4bf55c6421a3468524f42a69b5e94, type: 2}
-  tooltipTrigger: {fileID: 1886321090}
 --- !u!4 &1890714017 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3577890276593558044, guid: 6ac2875c48ef48145a069b9ea236b189, type: 3}
@@ -19678,6 +20272,9 @@ MonoBehaviour:
   delay: 0
   header: Happiness
   body: Rate of happiness in the colony
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1 &1916440478
 GameObject:
   m_ObjectHideFlags: 0
@@ -19877,6 +20474,9 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &1922139874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19988,7 +20588,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: ce08b50455db2a7409db11cbe9286c96, type: 2}
-  tooltipTrigger: {fileID: 1922139873}
 --- !u!1 &1937935799
 GameObject:
   m_ObjectHideFlags: 0
@@ -20002,6 +20601,7 @@ GameObject:
   - component: {fileID: 1937935801}
   - component: {fileID: 1937935804}
   - component: {fileID: 1937935803}
+  - component: {fileID: 1937935805}
   m_Layer: 5
   m_Name: Badhuis
   m_TagString: Untagged
@@ -20080,7 +20680,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 4ebb32b95bc68bb46b8f636b91e02617, type: 2}
-  tooltipTrigger: {fileID: 97556987}
 --- !u!114 &1937935804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20137,6 +20736,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1937935805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937935799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Badhuis
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1 &1954575931
 GameObject:
   m_ObjectHideFlags: 0
@@ -20150,6 +20767,7 @@ GameObject:
   - component: {fileID: 1954575933}
   - component: {fileID: 1954575935}
   - component: {fileID: 1954575936}
+  - component: {fileID: 1954575937}
   m_Layer: 5
   m_Name: Kerk
   m_TagString: Untagged
@@ -20284,7 +20902,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 2b6c817f2e55d6047936f1b213a87a2b, type: 2}
-  tooltipTrigger: {fileID: 2110306862}
+--- !u!114 &1954575937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954575931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  header: Kerk
+  body: 
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!1 &1972718143
 GameObject:
   m_ObjectHideFlags: 0
@@ -20993,6 +21628,9 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &2042068500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21104,7 +21742,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: e27d6fe44c8b3124a87cda9e3f97a679, type: 2}
-  tooltipTrigger: {fileID: 2042068499}
 --- !u!1 &2043701502
 GameObject:
   m_ObjectHideFlags: 0
@@ -22277,6 +22914,9 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
+  peopleAmount: 0
+  smileyAmount: 0
+  eyeAmount: 0
 --- !u!114 &2110306863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22388,7 +23028,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiController: {fileID: 916037047}
   buildingSO: {fileID: 11400000, guid: 2b6c817f2e55d6047936f1b213a87a2b, type: 2}
-  tooltipTrigger: {fileID: 2110306862}
 --- !u!4 &2115242355 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3577890276593558044, guid: 6ac2875c48ef48145a069b9ea236b189, type: 3}

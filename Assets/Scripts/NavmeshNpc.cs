@@ -16,6 +16,8 @@ public class NavmeshNpc : MonoBehaviour
     string desiredBuilding, currentTargetBuilding;
     bool movingToTarget;
 
+    float startSpeed, startBobSpeed;
+
     float startY;
     [SerializeField] Image charImage;
     [SerializeField] float yBobTarget;
@@ -25,6 +27,7 @@ public class NavmeshNpc : MonoBehaviour
     bool hasTarget;
     bool stopCoroutine;
     bool isHome;
+    public bool isHappy;
 
     int frameCount;
 
@@ -33,6 +36,10 @@ public class NavmeshNpc : MonoBehaviour
         isHome = true;
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
+
+        startSpeed = agent.speed;
+        startBobSpeed = bobSpeed;
+
     }
 
     private void Update()
@@ -91,6 +98,20 @@ public class NavmeshNpc : MonoBehaviour
                 originBuilding.SendNpcBack(this, false);
                 SetNavmeshTarget(originBuilding.transform.GetChild(0).position, originBuilding);
             }
+        }
+    }
+
+    public void CheckHappiness()
+    {
+        if(isHappy)
+        {
+            agent.speed = startSpeed * 2;
+            bobSpeed = startBobSpeed * 2;
+        }
+        else
+        {
+            agent.speed = startSpeed;
+            bobSpeed = startBobSpeed;
         }
     }
 

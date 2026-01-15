@@ -23,7 +23,7 @@ public class EconomyManager : MonoBehaviour
         else { Debug.Log("No building " + name); return -1; } 
     }
 
-    public float happy, control, money, food, ppl;
+    public float happy, control, money, food, ppl, morality;
     [SerializeField] private bool timePaused = false;
     //[SerializeField] private List<BuildingScriptableObject> buildings;
     [SerializeField] private List<BuildingScriptableObject> placedBuildingsSOs;
@@ -146,6 +146,11 @@ public class EconomyManager : MonoBehaviour
         //}
         
         return true;
+    }
+
+    public void SetNewMorality(float _morality)
+    {
+
     }
 
     public void HandleNewPlacedBuilding(BuildingScriptableObject newObject)
