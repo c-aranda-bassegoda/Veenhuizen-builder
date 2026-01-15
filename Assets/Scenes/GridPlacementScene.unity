@@ -1846,6 +1846,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -179.677
       objectReference: {fileID: 0}
+    - target: {fileID: -3556707391582841708, guid: 8b697dffd434b1441aca90fffeae7b80, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3528438773629105021, guid: 8b697dffd434b1441aca90fffeae7b80, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 339576226930458350, guid: 8b697dffd434b1441aca90fffeae7b80, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5638255
@@ -1897,6 +1905,10 @@ PrefabInstance:
     - target: {fileID: 339576226930458350, guid: 8b697dffd434b1441aca90fffeae7b80, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -180.626
+      objectReference: {fileID: 0}
+    - target: {fileID: 339576226930458350, guid: 8b697dffd434b1441aca90fffeae7b80, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8b697dffd434b1441aca90fffeae7b80, type: 3}
       propertyPath: m_Name
@@ -1957,6 +1969,10 @@ PrefabInstance:
     - target: {fileID: 3964005334421062799, guid: 8b697dffd434b1441aca90fffeae7b80, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 15.035
+      objectReference: {fileID: 0}
+    - target: {fileID: 4919156584839989993, guid: 8b697dffd434b1441aca90fffeae7b80, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6413066316606532505, guid: 8b697dffd434b1441aca90fffeae7b80, type: 3}
       propertyPath: m_LocalScale.x
@@ -2463,6 +2479,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: winter1C
       objectReference: {fileID: 0}
+    - target: {fileID: 3532759058236303701, guid: 45a0624e68bd50244ba51d6ff17e9840, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8589060488787446231, guid: 45a0624e68bd50244ba51d6ff17e9840, type: 3}
       propertyPath: m_LocalScale.x
       value: 60.91
@@ -2925,6 +2945,7 @@ MonoBehaviour:
   gridBuildingSystem: {fileID: 1434945243}
   controller: {fileID: 916037047}
   economyManager: {fileID: 1754685237}
+  cursorManager: {fileID: 1840507356}
 --- !u!4 &215312192
 Transform:
   m_ObjectHideFlags: 0
@@ -3490,6 +3511,10 @@ PrefabInstance:
     - target: {fileID: 3774001889600452600, guid: dd37544a6ad970e4f9e4dbe2d41ed382, type: 3}
       propertyPath: m_Name
       value: Fall1C
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774001889600452600, guid: dd37544a6ad970e4f9e4dbe2d41ed382, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7053164711326966298, guid: dd37544a6ad970e4f9e4dbe2d41ed382, type: 3}
       propertyPath: m_LocalScale.x
@@ -6393,6 +6418,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Winter2C
       objectReference: {fileID: 0}
+    - target: {fileID: 8872812844674958672, guid: 9373008fce0883e41bb541fdf3688c76, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6724,6 +6753,10 @@ PrefabInstance:
     - target: {fileID: 4525894084039547793, guid: 9236c68cb902a2c4fbc3ca2550bd3a28, type: 3}
       propertyPath: m_Name
       value: Winter3C
+      objectReference: {fileID: 0}
+    - target: {fileID: 4525894084039547793, guid: 9236c68cb902a2c4fbc3ca2550bd3a28, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6848831207592351996, guid: 9236c68cb902a2c4fbc3ca2550bd3a28, type: 3}
       propertyPath: m_LocalScale.x
@@ -8460,7 +8493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &851676574
 Transform:
   m_ObjectHideFlags: 0
@@ -9117,6 +9150,10 @@ PrefabInstance:
     - target: {fileID: 6675357294075689937, guid: d12ffb2ccd3c90540ae27e30c2d2ceaf, type: 3}
       propertyPath: m_Name
       value: Fall3C
+      objectReference: {fileID: 0}
+    - target: {fileID: 6675357294075689937, guid: d12ffb2ccd3c90540ae27e30c2d2ceaf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11044,7 +11081,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1080261116
 Transform:
   m_ObjectHideFlags: 0
@@ -12040,6 +12077,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1434945243}
+        m_TargetAssemblyTypeName: GridBuildingSystem, Assembly-CSharp
+        m_MethodName: set_IsEndGame
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1137047264
 MonoBehaviour:
@@ -16876,6 +16925,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fall2C
       objectReference: {fileID: 0}
+    - target: {fileID: 7957053198957269063, guid: 94fe20c250d692a409a84d38b4ecac64, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8783737162899376126, guid: 94fe20c250d692a409a84d38b4ecac64, type: 3}
       propertyPath: m_LocalScale.x
       value: 31.167465
@@ -18834,6 +18887,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6782586431524431099, guid: 765021bc4d144074ba94337117599e02, type: 3}
   m_PrefabInstance: {fileID: 1831009666}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1840507355
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1840507357}
+  - component: {fileID: 1840507356}
+  m_Layer: 0
+  m_Name: Cursor Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1840507356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840507355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b2547584b429445a4fe3eb3597226a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorTexture1: {fileID: 2800000, guid: 437ed1d2e339a0344a7b0293eed56b5d, type: 3}
+  cursorTexture2: {fileID: 2800000, guid: f5bb3d95b49b1574e986073cfc72738e, type: 3}
+--- !u!4 &1840507357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840507355}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 297.06073, y: 312.5358, z: -105.1891}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1872382599 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3577890276593558044, guid: 6ac2875c48ef48145a069b9ea236b189, type: 3}
@@ -22835,3 +22934,4 @@ SceneRoots:
   - {fileID: 1730525702}
   - {fileID: 1737797958}
   - {fileID: 1738052265}
+  - {fileID: 1840507357}

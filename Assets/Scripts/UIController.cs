@@ -19,6 +19,7 @@ public class UIController : MonoBehaviour
     public GameObject helpMenu;
     public Button errorCloseButton; 
     public TextMeshProUGUI errorMessage;
+    public CursorManager cursorManager;
 
     [SerializeField] List<Transform> expandMenus;
 
@@ -31,6 +32,7 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
+        cursorManager.ChangeCursorTexture1();
         buttons = new List<Button> {deleteButton, rotateButton, reportCloseButton, errorCloseButton};
         buildingButtons = new List<Button>();
         foreach (Button button in buildMenu.GetComponentsInChildren<Button>())
@@ -55,6 +57,7 @@ public class UIController : MonoBehaviour
 
         deleteButton.onClick.AddListener(() =>
         {
+            cursorManager.ChangeCursorTexture2();
             SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             rotateButton.interactable = false;
             ResetButtonColor();
@@ -64,6 +67,7 @@ public class UIController : MonoBehaviour
         });
         rotateButton.onClick.AddListener(() =>
         {
+            cursorManager.ChangeCursorTexture1();
             SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             OnRotate?.Invoke();
             //HideHousingPanel();
@@ -112,12 +116,15 @@ public class UIController : MonoBehaviour
 
     private void ShowProgressReportPanel()
     {
+        cursorManager.ChangeCursorTexture1();
         progressReport.SetActive(true);
         interruptionPanel.SetActive(true);
     }
 
+
     public void ShowEndGameReportPanel()
     {
+        cursorManager.ChangeCursorTexture1();
         progressReport.SetActive(true);
         gameOverMssg.SetActive(true);
         SeeVillageButtom.SetActive(true);
