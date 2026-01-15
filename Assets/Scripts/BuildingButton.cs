@@ -5,12 +5,13 @@ public class BuildingButton : MonoBehaviour
 {
     [SerializeField] UIController uiController;
     [SerializeField] BuildingScriptableObject buildingSO;
-    [SerializeField] TooltipTrigger tooltipTrigger;
+    TooltipTrigger tooltipTrigger;
     Button button;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        tooltipTrigger = GetComponent<TooltipTrigger>();
         button = GetComponent<Button>();
         button.onClick.AddListener(() => {
             uiController.cursorManager.ChangeCursorTexture1();
