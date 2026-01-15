@@ -5,7 +5,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public enum Season
 {
@@ -33,6 +32,7 @@ public class EconomyManager : MonoBehaviour
     //[SerializeField] int daysPerSeason;
     [SerializeField] GameObject floatingTextPrefab;
     [SerializeField] SeasonManager seasonManager;
+    [SerializeField] Slider moralitySlider;
 
     public Season currentSeason;
     int seasonsPassed;
@@ -150,7 +150,10 @@ public class EconomyManager : MonoBehaviour
 
     public void SetNewMorality(float _morality)
     {
-
+        morality = _morality;
+        
+        moralitySlider.maxValue = NPCManager.instance.people * 4;
+        moralitySlider.value = morality;
     }
 
     public void HandleNewPlacedBuilding(BuildingScriptableObject newObject)

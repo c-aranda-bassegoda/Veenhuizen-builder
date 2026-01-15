@@ -14,7 +14,7 @@ public class NPCManager : MonoBehaviour
     public static NPCManager instance;
 
     [SerializeField] float control, happy;
-    int people;
+    public int people;
 
     List<PlacedObject> placedObjects = new();
 
@@ -140,12 +140,15 @@ public class NPCManager : MonoBehaviour
         {
             bool isWorking = false;
 
-            if(npc.destinationBuilding.name == "Akker")
+            if(npc.destinationBuilding != null)
             {
-                isWorking = true;
+                if(npc.destinationBuilding.name == "Akker")
+                {
+                    isWorking = true;
+                }
             }
 
-            if (_happiness >= totalWorkingPeople)
+            if (_happiness >= people)
             {
                 npc.isHappy = true;
             }
