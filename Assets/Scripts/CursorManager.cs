@@ -14,7 +14,7 @@ public class CursorManager : MonoBehaviour
     void Start()
     {
         previousTexture = cursorTexture1;
-        previousHotspot = new Vector2(cursorTexture1.width / 2, 0);
+        previousHotspot = new Vector2(0, 0);
     }
 
     public void ChangeCursorTexture2()
@@ -27,7 +27,7 @@ public class CursorManager : MonoBehaviour
     public void ChangeCursorTexture1()
     {
         SaveCurrentCursor();
-        cursorHotspot = new Vector2(cursorTexture1.width / 2, 0);
+        cursorHotspot = new Vector2(0, 0);
         SetCursor(cursorTexture1, cursorHotspot, CursorMode.Auto);
     }
 
