@@ -18982,6 +18982,7 @@ MonoBehaviour:
   totalWorkingPeople: 0
   control: 0
   happy: 0
+  people: 0
 --- !u!4 &1730525702
 Transform:
   m_ObjectHideFlags: 0
@@ -19173,6 +19174,7 @@ MonoBehaviour:
   secondsPerSeason: 90
   floatingTextPrefab: {fileID: 7209457536475564471, guid: ff4f4344309db7c44b1d164c6e7bd63d, type: 3}
   seasonManager: {fileID: 1737797959}
+  moralitySlider: {fileID: 355287324}
   currentSeason: 0
 --- !u!1 &1797195066
 GameObject:
