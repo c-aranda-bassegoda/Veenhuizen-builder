@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 961035343096543692}
   - component: {fileID: 5987084713354597350}
   - component: {fileID: 6089196817037667451}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,6 +413,7 @@ MonoBehaviour:
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
+  farm: {fileID: 0}
 --- !u!1001 &5344588763196228166
 PrefabInstance:
   m_ObjectHideFlags: 0

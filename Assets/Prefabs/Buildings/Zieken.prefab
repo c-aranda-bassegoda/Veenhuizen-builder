@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3707392187578739026}
   - component: {fileID: 4209224333949883787}
   - component: {fileID: 6680370432153188798}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -399,6 +399,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
+  worldRotation: {x: 0, y: 0, z: 0, w: 0}
   exclamationMark: {fileID: 0}
   modules: []
   isModule: 0
@@ -411,6 +413,7 @@ MonoBehaviour:
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
+  farm: {fileID: 0}
 --- !u!1001 &1184123491663312139
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -44,7 +44,7 @@ public class MainMenu : MonoBehaviour
 
     IEnumerator EnableSkipButton()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(8);
         skipButton.SetActive(true);
     }
 }
