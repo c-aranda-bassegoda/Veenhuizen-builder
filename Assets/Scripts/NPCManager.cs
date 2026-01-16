@@ -45,6 +45,12 @@ public class NPCManager : MonoBehaviour
             if (_add) placedObjects.Insert(0, newBuilding);
             else if (placedObjects.Contains(newBuilding)) placedObjects.Remove(newBuilding);
         }
+        StartCoroutine(DelayedUpdateWorkingPeople());
+    }
+
+    IEnumerator DelayedUpdateWorkingPeople()
+    {
+        yield return new WaitForEndOfFrame();
         UpdateWorkingPeople();
     }
 
@@ -130,6 +136,7 @@ public class NPCManager : MonoBehaviour
 
     public void ChangeValues(float _control, float _happy, float _people)
     {
+        Debug.Log($"Changing values NPC Manager");
         control = _control;
         happy = _happy;
         people = (int)_people;

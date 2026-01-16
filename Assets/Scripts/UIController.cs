@@ -20,6 +20,9 @@ public class UIController : MonoBehaviour
     public Button errorCloseButton; 
     public TextMeshProUGUI errorMessage;
     public CursorManager cursorManager;
+    [SerializeField] TextMeshProUGUI prWorkingText;
+    [SerializeField] Slider prMoralitySlider;
+    [SerializeField] EconomyManager economyManager;
 
     [SerializeField] List<Transform> expandMenus;
 
@@ -117,6 +120,12 @@ public class UIController : MonoBehaviour
     private void ShowProgressReportPanel()
     {
         cursorManager.ChangeCursorTexture1();
+
+        prMoralitySlider.maxValue = economyManager.moralitySlider.maxValue;
+        prMoralitySlider.value = economyManager.moralitySlider.value; ;
+
+        prWorkingText.text = NPCManager.instance.totalWorkingPeople.ToString() + " / " + NPCManager.instance.people.ToString();
+
         progressReport.SetActive(true);
         interruptionPanel.SetActive(true);
     }

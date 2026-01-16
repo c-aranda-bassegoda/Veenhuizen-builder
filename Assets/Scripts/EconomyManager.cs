@@ -32,7 +32,7 @@ public class EconomyManager : MonoBehaviour
     //[SerializeField] int daysPerSeason;
     [SerializeField] GameObject floatingTextPrefab;
     [SerializeField] SeasonManager seasonManager;
-    [SerializeField] Slider moralitySlider;
+    [SerializeField] public Slider moralitySlider;
 
     public Season currentSeason;
     int seasonsPassed;

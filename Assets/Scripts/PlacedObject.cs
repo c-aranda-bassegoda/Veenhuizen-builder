@@ -256,6 +256,7 @@ public class PlacedObject : MonoBehaviour
         }
         CacheRenderers();
 
+        Debug.Log($"Registering building: {name}");
         NPCManager.instance.RegisterBuilding(this, true);
     } 
 
