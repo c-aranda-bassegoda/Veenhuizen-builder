@@ -22033,7 +22033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 271108951}
   gridBuildingSystem: {fileID: 1434945243}
-  delay: 0.5
+  delay: 0.25
 --- !u!4 &1715427655
 Transform:
   m_ObjectHideFlags: 0
