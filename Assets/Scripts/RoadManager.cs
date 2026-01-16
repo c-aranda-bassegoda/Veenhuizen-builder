@@ -284,10 +284,14 @@ public class RoadManager : MonoBehaviour
                 connectedObjectGroups.RemoveRange(oldListAmount, connectedObjectGroups.Count - oldListAmount);
             }
 
-            foreach (PlacedObject obj in oldObjGroup)
+            if(oldObjGroup != null)
             {
-                if(obj != null) UpdateObjectNotConnectedWarning(obj, oldObjGroup);
+                foreach (PlacedObject obj in oldObjGroup)
+                {
+                    if(obj != null) UpdateObjectNotConnectedWarning(obj, oldObjGroup);
+                }
             }
+
         }
         else
         {

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class NPCManager : MonoBehaviour
     [SerializeField] EconomyManager economyManager;
     [SerializeField] float controlPerWorkingNPC;
     [SerializeField] List<NavmeshNpc> npcList;
-    List<NavmeshNpc> allNpcs = new();
+    [SerializeField] List<NavmeshNpc> allNpcs = new(), workingNpcs = new();
     Dictionary<string, NavmeshNpc> npcMap;
     public int totalWorkingPeople;
 
@@ -72,6 +73,12 @@ public class NPCManager : MonoBehaviour
 
     }
 
+    public void ChangeNpcStatus(NavmeshNpc npc, bool _working)
+    {
+        if(_working) workingNpcs.Add(npc);
+        else workingNpcs.Remove(npc);
+    }
+
     void UpdateWorkingPeople()
     {
         int newTotalWorkingPeople = GetWorkingPplAmount();
@@ -128,59 +135,118 @@ public class NPCManager : MonoBehaviour
         people = (int)_people;
         //UpdateWorkingPeople();
 
+        StartCoroutine(HandleNewValues());
+    }
+
+    IEnumerator HandleNewValues()
+    {
+        yield return new WaitForEndOfFrame();
         economyManager.SetNewMorality(CalculateNewMorality(control, happy));
     }
 
     public float CalculateNewMorality(float _control, float _happiness)
     {
         float currentControl = control, currentHappiness = happy;
+        int currentHappyPeople = 0;
+
+        foreach (NavmeshNpc _npc in allNpcs)
+        {
+            if (_npc.isHappy)
+            {
+                if (workingNpcs.Contains(_npc)) currentHappyPeople++;
+                else _npc.isHappy = false;
+            }
+        }
+
+        HandleNPCsHappiness(false, _happiness, currentHappyPeople);
+        return HandleNPCsHappiness(true, _happiness, currentHappyPeople);
+
+        //foreach(NavmeshNpc npc in workingNpcs)
+        //{
+        //    bool isHappy = npc.isHappy;
+        //    if (HandleHappiness(npc, _happiness, currentHappyPeople))
+        //    {
+        //        if (!isHappy) currentHappyPeople++;
+        //    }
+        //    else
+        //    {
+        //        if (isHappy) currentHappyPeople--;
+        //    }
+        //}
+    }
+
+    public float HandleNPCsHappiness(bool includeAllNpcs, float _happiness, int currentHappyPeople)
+    {
         float morality = 0;
 
-        foreach(NavmeshNpc npc in allNpcs)
+        if (includeAllNpcs)
         {
-            bool isWorking = false;
-
-            if(npc.destinationBuilding != null)
+            foreach (NavmeshNpc npc in allNpcs)
             {
-                if(npc.destinationBuilding.name == "Akker")
+                bool isWorking = workingNpcs.Contains(npc);
+                if (!isWorking)
                 {
-                    isWorking = true;
+                    bool isHappy = npc.isHappy;
+                    if (HandleHappiness(npc, _happiness, currentHappyPeople))
+                    {
+                        if (!isHappy) currentHappyPeople++;
+                    }
+                    else
+                    {
+                        if (isHappy) currentHappyPeople--;
+                    }
                 }
+
+                if (npc.isHappy) morality++;
+                if (isWorking) morality++;
+                if (npc.isHappy && isWorking) morality += 2;
             }
 
-            if (_happiness >= people)
+            return morality;
+        }
+        else
+        {
+            foreach (NavmeshNpc npc in workingNpcs)
             {
-                npc.isHappy = true;
-            }
-            else
-            {
-                int currentHappyPeople = 0;
-                foreach (NavmeshNpc _npc in allNpcs)
+                bool isHappy = npc.isHappy;
+                if (HandleHappiness(npc, _happiness, currentHappyPeople))
                 {
-                    if (_npc.isHappy) currentHappyPeople++;
-                }
-                if (_happiness > currentHappyPeople)
-                {
-                    npc.isHappy = true;
-                }
-                else if (_happiness == currentHappyPeople)
-                {
-                    //do nothing
+                    if (!isHappy) currentHappyPeople++;
                 }
                 else
                 {
-                    npc.isHappy = false;
+                    if (isHappy) currentHappyPeople--;
                 }
             }
 
-            npc.CheckHappiness();
+            return -1;
+        }
+    }
 
-            if (npc.isHappy) morality++;
-            if (isWorking) morality++;
-            if (npc.isHappy && isWorking) morality += 2;
+    public bool HandleHappiness(NavmeshNpc npc, float _happiness, int currentHappyPeople)
+    {
+        if (_happiness >= people)
+        {
+            npc.isHappy = true;
+        }
+        else
+        {
+            if (_happiness > currentHappyPeople)
+            {
+                npc.isHappy = true;
+            }
+            else if (_happiness == currentHappyPeople)
+            {
+                //do nothing
+            }
+            else
+            {
+                npc.isHappy = false;
+            }
         }
 
-        return morality;
+        npc.CheckHappiness();
+        return npc.isHappy;
     }
 
     public int GetWorkingPplAmount()

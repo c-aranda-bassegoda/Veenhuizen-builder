@@ -21968,6 +21968,8 @@ MonoBehaviour:
   - {fileID: -6640963970777890239, guid: e756b3a8dbc28ca429e17f158ae44527, type: 3}
   - {fileID: -6640963970777890239, guid: 2df56764c9b76684788a7da83ebb6b74, type: 3}
   - {fileID: -6640963970777890239, guid: e21cace45c624734c98524bf6e306dd7, type: 3}
+  allNpcs: []
+  workingNpcs: []
   totalWorkingPeople: 0
   control: 0
   happy: 0

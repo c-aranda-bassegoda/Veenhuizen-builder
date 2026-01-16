@@ -358,6 +358,7 @@ public class PlacedObject : MonoBehaviour
                 Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
                 targetFarm.adjacentFarmlandWorked[targetFarmland] = true;
                 npc.SetNavmeshTarget(targetFarmland.transform.position, targetFarmland, targetFarm);
+                NPCManager.instance.ChangeNpcStatus(npc, true);
                 workingPeople.Add(npc);
                 sentPeople++;
             }
@@ -371,6 +372,7 @@ public class PlacedObject : MonoBehaviour
     {
         //Get people out of working people list and back to the building
         int peopleSentBack = 0;
+        List<NavmeshNpc> peopleSentBackList = new();
         Debug.Log($"Sending People Back: {_amount}");
 
         foreach(NavmeshNpc npc in workingPeople)
@@ -378,11 +380,17 @@ public class PlacedObject : MonoBehaviour
             if (peopleSentBack < _amount)
             {
                 npc.ReturnHome();
-                workingPeople.Remove(npc);
+                NPCManager.instance.ChangeNpcStatus(npc, false);
+                peopleSentBackList.Add(npc);
                 Debug.Log($"Sending people back: {npc.name} Back");
                 peopleSentBack++;
             }
             else break;
+        }
+
+        foreach(NavmeshNpc npc in peopleSentBackList)
+        {
+            workingPeople.Remove(npc);
         }
 
         //Return amount of people that stopped working
