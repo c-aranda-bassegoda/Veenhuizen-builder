@@ -200,6 +200,13 @@ public class NavmeshNpc : MonoBehaviour
         agent.ResetPath();
         hasTarget = false;
         isHome = true;
+        if(targetFarm != null)
+        {
+            if(targetFarm.adjacentFarmlandWorked != null)
+            {
+                if (targetFarm.adjacentFarmlandWorked.ContainsKey(destinationBuilding)) targetFarm.adjacentFarmlandWorked[destinationBuilding] = false;
+            }
+        }
         targetFarm = null;
         Debug.Log($"Sending agent back to {originBuilding.transform.GetChild(0).position}");
         agent.Warp(originBuilding.transform.GetChild(0).position);
