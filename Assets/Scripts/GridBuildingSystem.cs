@@ -5,7 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Testing;
-using static UnityEditor.PlayerSettings;
 
 public class GridBuildingSystem : MonoBehaviour
 {

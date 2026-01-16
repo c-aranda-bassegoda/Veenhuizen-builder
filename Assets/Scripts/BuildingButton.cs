@@ -13,10 +13,14 @@ public class BuildingButton : MonoBehaviour
     {
         tooltipTrigger = GetComponent<TooltipTrigger>();
         button = GetComponent<Button>();
-        button.onClick.AddListener(() => {
-            uiController.cursorManager.ChangeCursorTexture1();
-            OnButtonClick();
+        if (uiController.cursorManager != null)
+        {
+            button.onClick.AddListener(() =>
+            {
+                uiController.cursorManager.ChangeCursorTexture1();
+                OnButtonClick();
             });
+        }
 
         // Create tooltip data from the buildingSO and assign it
         if (buildingSO != null && tooltipTrigger != null)

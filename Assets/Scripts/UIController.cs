@@ -35,7 +35,7 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        cursorManager.ChangeCursorTexture1();
+        if(cursorManager != null) cursorManager.ChangeCursorTexture1();
         buttons = new List<Button> {deleteButton, rotateButton, reportCloseButton, errorCloseButton};
         buildingButtons = new List<Button>();
         foreach (Button button in buildMenu.GetComponentsInChildren<Button>())
