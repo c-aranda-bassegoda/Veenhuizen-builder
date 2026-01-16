@@ -18,8 +18,11 @@ EditorBuildSettings:
     path: Assets/Scenes/GridPlacementScene.unity
     guid: 57acb858e6671524e9880a2e274d3d35
   - enabled: 1
-    path: Assets/Scenes/TutorialScene.unity
+    path: Assets/Scenes/TutorialSceneDepr.unity
     guid: f7f6ea25680f2524e808a6c9ef6b1abd
+  - enabled: 1
+    path: Assets/Scenes/TutorialScene.unity
+    guid: 2b41fc21d144f134eb4738da6b214ba9
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
