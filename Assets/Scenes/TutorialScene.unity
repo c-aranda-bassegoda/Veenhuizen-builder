@@ -9988,7 +9988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewMaterialPrefab: {fileID: 2100000, guid: 13a817883fee33d498b6add06b265c69, type: 2}
-  roadPreviewMaterialPrefab: {fileID: 0}
+  roadPreviewMaterialPrefab: {fileID: 2100000, guid: 6a5d39b6f7a6a194a818cf60b9d466de, type: 2}
   roadManager: {fileID: 94027756}
   gridSystem: {fileID: 1434945243}
 --- !u!4 &763488386
@@ -11913,6 +11913,9 @@ MonoBehaviour:
   errorCloseButton: {fileID: 1093454161}
   errorMessage: {fileID: 1212771366}
   cursorManager: {fileID: 0}
+  prWorkingText: {fileID: 0}
+  prMoralitySlider: {fileID: 0}
+  economyManager: {fileID: 0}
   expandMenus:
   - {fileID: 385947833}
   - {fileID: 737355410}
@@ -23846,24 +23849,27 @@ MonoBehaviour:
   npcList:
   - {fileID: -6640963970777890239, guid: 6f3a9e5f267424a48aa8ab8475036747, type: 3}
   - {fileID: -6640963970777890239, guid: 0c61ed9f79e14514cade6c3185ccb4c6, type: 3}
-  - {fileID: -6640963970777890239, guid: 0534bd47880bb374d85f198576c62ae5, type: 3}
   - {fileID: -6640963970777890239, guid: 8ccae72d2112aaa49997120da8315d52, type: 3}
   - {fileID: -6640963970777890239, guid: a50ce4b6c8609684a8f0e9aac3998aed, type: 3}
-  - {fileID: -6640963970777890239, guid: 7fd65250b72b13349bae925e3774c2f2, type: 3}
   - {fileID: -6640963970777890239, guid: 56e86049aa1e5c44ca15c1fc759a1bfa, type: 3}
   - {fileID: -6640963970777890239, guid: 8a43cf89dc8ae6044a16912690164b72, type: 3}
   - {fileID: -6640963970777890239, guid: 03509c7b27dbb11499f9a4c9f0bb2adf, type: 3}
   - {fileID: -6640963970777890239, guid: 1c6299b814d7a3e429c56c981a62a654, type: 3}
   - {fileID: -6640963970777890239, guid: cbaff0052c6cd1f4689643608793302b, type: 3}
+  - {fileID: -6640963970777890239, guid: 38e2e4f55eba7254c8f0199b4f84fae2, type: 3}
   - {fileID: -6640963970777890239, guid: c89a2be8b5bc1e3478e9f66b67f1f13b, type: 3}
   - {fileID: -6640963970777890239, guid: 62215feee48defe408af45b4649086e6, type: 3}
   - {fileID: -6640963970777890239, guid: d4a6c190ef2a66f40b1b77fec09a28d8, type: 3}
   - {fileID: -6640963970777890239, guid: e756b3a8dbc28ca429e17f158ae44527, type: 3}
   - {fileID: -6640963970777890239, guid: 2df56764c9b76684788a7da83ebb6b74, type: 3}
   - {fileID: -6640963970777890239, guid: e21cace45c624734c98524bf6e306dd7, type: 3}
+  - {fileID: -6640963970777890239, guid: 53553146420cda44b98ecee1ed9d4d38, type: 3}
+  allNpcs: []
+  workingNpcs: []
   totalWorkingPeople: 0
   control: 0
   happy: 0
+  people: 0
 --- !u!4 &1730525702
 Transform:
   m_ObjectHideFlags: 0
@@ -24092,6 +24098,7 @@ MonoBehaviour:
   secondsPerSeason: 90
   floatingTextPrefab: {fileID: 7209457536475564471, guid: ff4f4344309db7c44b1d164c6e7bd63d, type: 3}
   seasonManager: {fileID: 0}
+  moralitySlider: {fileID: 0}
   currentSeason: 0
 --- !u!1 &1772888647
 GameObject:
