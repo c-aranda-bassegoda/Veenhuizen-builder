@@ -379,7 +379,7 @@ public class PlacedObject : MonoBehaviour
         {
             if (peopleSentBack < _amount)
             {
-                npc.ReturnHome();
+                npc.ReturnHome(false);
                 NPCManager.instance.ChangeNpcStatus(npc, false);
                 peopleSentBackList.Add(npc);
                 Debug.Log($"Sending people back: {npc.name} Back");
@@ -403,7 +403,7 @@ public class PlacedObject : MonoBehaviour
         if (npc.destinationBuilding.name == "Akker") FreeFarmland(npc.targetFarm, npc.destinationBuilding);
         npc.destinationBuilding = null;
         workingPeople.Remove(npc);
-        if(teleport) npc.ReturnHome();
+        if(teleport) npc.ReturnHome(teleport);
     }
 
     public void FreeFarmland(PlacedObject farm, PlacedObject farmland)

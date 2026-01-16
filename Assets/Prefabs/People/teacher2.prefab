@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 27697239f8e256541a1eea19eeb1a5b3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e0560fdfb2d063642b188610181cca68, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -246,9 +246,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 143f1bc7250391c4e9c0ca25dcb08f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destinationBuilding: {fileID: 0}
+  targetFarm: {fileID: 0}
+  navmeshDestination: {x: 0, y: 0, z: 0}
   charImage: {fileID: 7655569852120085863}
-  yBobTarget: 1
+  yBobTarget: 15
   bobSpeed: 2
+  isHappy: 0
 --- !u!54 &5173809219066261808
 Rigidbody:
   m_ObjectHideFlags: 0

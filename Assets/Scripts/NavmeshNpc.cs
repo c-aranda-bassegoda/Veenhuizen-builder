@@ -37,6 +37,7 @@ public class NavmeshNpc : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
 
+        startY = charImage.transform.localPosition.y;
         startSpeed = agent.speed;
         startBobSpeed = bobSpeed;
 
@@ -73,12 +74,12 @@ public class NavmeshNpc : MonoBehaviour
     {
         if(goingUp)
         {
-            if (charImage.transform.position.y < startY + yBobTarget) charImage.transform.position += new Vector3(0, bobSpeed * Time.deltaTime, 0);
+            if (charImage.transform.localPosition.y < startY + yBobTarget) charImage.transform.position += new Vector3(0, bobSpeed * Time.deltaTime, 0);
             else goingUp = false;
         }
         else
         {
-            if (charImage.transform.position.y > startY) charImage.transform.position += new Vector3(0, -bobSpeed * Time.deltaTime, 0);
+            if (charImage.transform.localPosition.y > startY) charImage.transform.position += new Vector3(0, -bobSpeed * Time.deltaTime, 0);
             else goingUp = true;
         }
     }
@@ -184,7 +185,7 @@ public class NavmeshNpc : MonoBehaviour
 
     public void SetNavmeshTarget(Vector3 targetPos, PlacedObject building, PlacedObject _targetFarm = null)
     {
-        startY = charImage.transform.position.y;
+        //startY = charImage.transform.position.y;
         agent.SetDestination(targetPos);
         destinationBuilding = building;
         navmeshDestination = targetPos;
@@ -194,7 +195,7 @@ public class NavmeshNpc : MonoBehaviour
         agent.isStopped = false;
     }
 
-    public void ReturnHome()
+    public void ReturnHome(bool teleport)
     {
         agent.isStopped = true;
         agent.ResetPath();
@@ -209,7 +210,8 @@ public class NavmeshNpc : MonoBehaviour
         }
         targetFarm = null;
         Debug.Log($"Sending agent back to {originBuilding.transform.GetChild(0).position}");
-        agent.Warp(originBuilding.transform.GetChild(0).position);
+        if(teleport) agent.Warp(originBuilding.transform.GetChild(0).position);
+        else SetNavmeshTarget(originBuilding.transform.GetChild(0).position, originBuilding);
     }
 
     public PlacedObject GetClosestObjectFromList(List<PlacedObject> objects)
