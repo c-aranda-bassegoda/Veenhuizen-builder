@@ -451,13 +451,19 @@ public class PlacedObject : MonoBehaviour
                 }
 
 
-                NavmeshNpc newNpc = Instantiate(person, buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(0, 5, -0)), Quaternion.Euler(0, 0, 0));
+                NavmeshNpc newNpc = null;
                 if (j == 0)
                 {
+                    newNpc = Instantiate(person, buildingOrigin.position + buildingOrigin.TransformDirection(new Vector3(0, 5, -0)), Quaternion.Euler(0, 0, 0));
                     associatedWorkingPeople.Add(newNpc);
                     NPCManager.instance.RegisterNpc(newNpc, true);
                 }
-                if(j == 1) associatedNonWorkingPeople.Add(newNpc);
+                if (j == 1)
+                {
+                    newNpc = Instantiate(person, buildingOrigin.parent.position, Quaternion.Euler(0, 0, 0));
+                    associatedNonWorkingPeople.Add(newNpc);
+                    newNpc.shouldRotate = true;
+                }
                 newNpc.SetOrigin(this);
             }
         }

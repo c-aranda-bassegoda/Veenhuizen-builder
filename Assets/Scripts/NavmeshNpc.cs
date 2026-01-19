@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
@@ -22,12 +23,14 @@ public class NavmeshNpc : MonoBehaviour
     [SerializeField] Image charImage;
     [SerializeField] float yBobTarget;
     [SerializeField] float bobSpeed;
+    [SerializeField] float rotateSpeed;
     bool goingUp;
     bool isFindingTarget;
     bool hasTarget;
     bool stopCoroutine;
     bool isHome;
-    public bool isHappy;
+    public bool isHappy, shouldRotate;
+    Transform rotationPivot;
 
     int frameCount;
 
@@ -45,28 +48,49 @@ public class NavmeshNpc : MonoBehaviour
 
     private void Update()
     {
-        if (!agent.pathPending) // Make sure the agent has a path
+        if(agent.enabled)
         {
-            if(agent.remainingDistance > 2)
+            if (!agent.pathPending) // Make sure the agent has a path
             {
-                //if(!isFindingTarget)
-                //{
-                //    StartCoroutine(TryFindTarget(true));
-                //}
-            }
-            else if (hasTarget)
-            {
-                Debug.Log("Found target");
-                stopCoroutine = true;
-                hasTarget = false;
-                isFindingTarget = false;
+                if(agent.remainingDistance > 2)
+                {
+                    //if(!isFindingTarget)
+                    //{
+                    //    StartCoroutine(TryFindTarget(true));
+                    //}
+                }
+                else if (hasTarget)
+                {
+                    Debug.Log("Found target");
+                    stopCoroutine = true;
+                    hasTarget = false;
+                    isFindingTarget = false;
+                }
             }
         }
 
-        if(!isHome)
+        RotateAroundOrigin();
+
+        if (!isHome)
         {
             MoveAnimations();
             CheckConnection();
+        }
+    }
+
+    public void RotateAroundOrigin()
+    {
+        if (shouldRotate && originBuilding != null)
+        {
+            if (agent.enabled) agent.enabled = false;
+            MoveAnimations();
+
+            Vector3 offset = transform.position - rotationPivot.position;
+            Quaternion rotation = Quaternion.AngleAxis(rotateSpeed * Time.deltaTime, Vector3.up);
+
+            offset = rotation * offset;
+
+            transform.position = rotationPivot.position + offset;
         }
     }
 
@@ -142,6 +166,7 @@ public class NavmeshNpc : MonoBehaviour
     public void SetOrigin(PlacedObject _building)
     {
         originBuilding = _building;
+        rotationPivot = _building.transform.GetChild(0);
         SetDesiredBuilding("Akker");
         //Debug.Log($"Set {gameObject.name} target to Farm");
         //StartCoroutine(TryFindTarget(false));

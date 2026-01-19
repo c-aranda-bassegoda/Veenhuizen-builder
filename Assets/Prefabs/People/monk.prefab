@@ -252,7 +252,9 @@ MonoBehaviour:
   charImage: {fileID: 7655569852120085863}
   yBobTarget: 15
   bobSpeed: 2
+  rotateSpeed: 48
   isHappy: 0
+  shouldRotate: 0
 --- !u!54 &5173809219066261808
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -275,7 +277,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
