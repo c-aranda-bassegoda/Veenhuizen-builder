@@ -11,7 +11,8 @@ public class TimelineManager : MonoBehaviour
     {
         Instance = this;
         Debug.Log($"TimelineManager Awake on {gameObject.name}", this);
-        buildingSystem.isTutorial = true;
+        if (buildingSystem != null) buildingSystem.isTutorial = true;
+        else Debug.LogWarning("building system null");
 
         if (director == null)
             Debug.LogError($"Director NOT assigned on {gameObject.name}", this);

@@ -247,6 +247,11 @@ public class UIController : MonoBehaviour
         SceneManager.LoadSceneAsync("MainMenu");
     }
 
+    public void RestartTutorial()
+    {
+        SceneManager.LoadSceneAsync("TutorialScene");
+    }
+
     public void HideSidebarFold(Transform layout, Transform button)
     {
         Debug.Log($"Hiding Sidebar: {layout.gameObject.name}");
