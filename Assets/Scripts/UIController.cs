@@ -32,9 +32,11 @@ public class UIController : MonoBehaviour
     public Color outlineColor;
     List<Button> buttons;
     List<Button> buildingButtons;
+    GridBuildingSystem gridBuildingSystem;
 
     private void Start()
     {
+        gridBuildingSystem = GridBuildingSystem.instance;
         if(cursorManager != null) cursorManager.ChangeCursorTexture1();
         buttons = new List<Button> {deleteButton, rotateButton, reportCloseButton, errorCloseButton};
         buildingButtons = new List<Button>();
@@ -63,8 +65,8 @@ public class UIController : MonoBehaviour
             cursorManager.ChangeCursorTexture2();
             SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
             rotateButton.interactable = false;
-            ResetButtonColor();
-            ModifyOutline(deleteButton);
+            //ResetButtonColor();
+            //ModifyOutline(deleteButton);
             OnDelete?.Invoke();
             //HideHousingPanel();
         });
@@ -89,6 +91,21 @@ public class UIController : MonoBehaviour
             interruptionPanel.SetActive(false);
             GameEvents.OnResumeTime?.Invoke();
         });
+    }
+
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            cursorManager.ChangeCursorTexture1();
+            SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);
+            rotateButton.interactable = false;
+
+            gridBuildingSystem.RemovingBuilding = false;
+            gridBuildingSystem.AddingBuilding = false;
+            gridBuildingSystem.PlacingRoad = false;
+            gridBuildingSystem.StopPlacementPreview();
+        }
     }
 
     private void OnEnable()
