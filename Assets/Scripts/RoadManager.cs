@@ -139,8 +139,12 @@ public class RoadManager : MonoBehaviour
     public void DisconnectObject(Vector2Int pos)
     {
         Grid<GridObject> grid = gridBuildingSystem.GetGrid();
-        GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
-        PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
+
+        GridObject currentGridObject = null;
+        PlacedObject currentPlacedObject = null;
+
+        if (grid != null) currentGridObject = grid.GetGridObj(pos.x, pos.y);
+        if(currentGridObject != null) currentPlacedObject = currentGridObject.GetPlacedObject();
 
         int oldObjectCount = 0;
         int oldListAmount = connectedObjectGroups.Count;

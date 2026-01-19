@@ -106,12 +106,12 @@ public class NavmeshNpc : MonoBehaviour
     {
         if(isHappy)
         {
-            agent.speed = startSpeed * 2;
+            if(agent != null) agent.speed = startSpeed * 2;
             bobSpeed = startBobSpeed * 2;
         }
         else
         {
-            agent.speed = startSpeed;
+            if (agent != null) agent.speed = startSpeed;
             bobSpeed = startBobSpeed;
         }
     }
@@ -226,7 +226,8 @@ public class NavmeshNpc : MonoBehaviour
         foreach (PlacedObject obj in objects)
         {
             float distanceToObj = GetPathDistance(obj.transform.GetChild(0).position);
-            objectDict.Add(obj, distanceToObj);
+            if (!objectDict.ContainsKey(obj)) objectDict.Add(obj, distanceToObj);
+            else Debug.LogWarning($"Object {obj.GetOrigin()} in {name} list more than once");
             
         }
         Debug.Log($"Object dict count: {objectDict.Count}");

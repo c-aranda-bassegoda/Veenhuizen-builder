@@ -19,8 +19,6 @@ public class NPCManager : MonoBehaviour
 
     List<PlacedObject> placedObjects = new();
 
-    Dictionary<PlacedObject, int> workingPeoplePerBuilding = new();
-
     private void Awake()
     {
         instance = this;
@@ -34,8 +32,14 @@ public class NPCManager : MonoBehaviour
 
     public void RegisterNpc(NavmeshNpc npc, bool _add)
     {
-        if(_add) allNpcs.Add(npc);
-        else allNpcs.Remove(npc);
+        if (_add) allNpcs.Add(npc);
+        else
+        {
+            allNpcs.Remove(npc);
+            if(workingNpcs.Contains(npc)) workingNpcs.Remove(npc);
+        }
+
+        people = allNpcs.Count;
     }
 
     public void RegisterBuilding(PlacedObject newBuilding, bool _add)
@@ -131,6 +135,12 @@ public class NPCManager : MonoBehaviour
             }
         }
 
+        foreach(NavmeshNpc npc in workingNpcs)
+        {
+            if(npc == null) workingNpcs.Remove(npc);
+        }
+        totalWorkingPeople = workingNpcs.Count;
+        economyManager.SetNewMorality(CalculateNewMorality(control, happy));
         GameEvents.OnWorkingChanged?.Invoke(totalWorkingPeople);
     }
 

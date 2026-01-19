@@ -401,7 +401,10 @@ public class PlacedObject : MonoBehaviour
     public void SendNpcBack(NavmeshNpc npc, bool teleport)
     {
         NPCManager.instance.totalWorkingPeople--;
-        if (npc.destinationBuilding.name == "Akker") FreeFarmland(npc.targetFarm, npc.destinationBuilding);
+        if(npc.destinationBuilding != null)
+        {
+            if (npc.destinationBuilding.name == "Akker" && npc.destinationBuilding != null) FreeFarmland(npc.targetFarm, npc.destinationBuilding);
+        }
         npc.destinationBuilding = null;
         workingPeople.Remove(npc);
         if(teleport) npc.ReturnHome(teleport);
