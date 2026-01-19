@@ -178,7 +178,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: e1b3189fbe3195242a6a010f5a989d8c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -269,6 +269,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
+  worldRotation: {x: 0, y: 0, z: 0, w: 0}
   exclamationMark: {fileID: 0}
   modules: []
   isModule: 0
@@ -281,6 +283,7 @@ MonoBehaviour:
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
+  farm: {fileID: 0}
 --- !u!1001 &2859991712100736628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -379,6 +382,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
+  worldRotation: {x: 0, y: 0, z: 0, w: 0}
   exclamationMark: {fileID: 0}
   modules: []
   isModule: 0
@@ -391,6 +396,7 @@ MonoBehaviour:
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
+  farm: {fileID: 0}
 --- !u!4 &7693558451822697617 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5581571725718176485, guid: e6ff2e0ea49389d4d89f9719abd7b1b1, type: 3}
@@ -560,6 +566,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
+  worldRotation: {x: 0, y: 0, z: 0, w: 0}
   exclamationMark: {fileID: 0}
   modules: []
   isModule: 0
@@ -572,6 +580,7 @@ MonoBehaviour:
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
+  farm: {fileID: 0}
 --- !u!4 &2093504437398460378 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5581571725718176485, guid: e6ff2e0ea49389d4d89f9719abd7b1b1, type: 3}
@@ -680,6 +689,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
+  worldRotation: {x: 0, y: 0, z: 0, w: 0}
   exclamationMark: {fileID: 0}
   modules: []
   isModule: 0
@@ -692,6 +703,7 @@ MonoBehaviour:
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
+  farm: {fileID: 0}
 --- !u!1001 &7703251354291732928
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -901,6 +913,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
+  worldRotation: {x: 0, y: 0, z: 0, w: 0}
   exclamationMark: {fileID: 0}
   modules: []
   isModule: 0
@@ -913,3 +927,4 @@ MonoBehaviour:
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
+  farm: {fileID: 0}

@@ -29,6 +29,7 @@ public class MainMenu : MonoBehaviour
 
     public void SkipIntro()
     {
+        videoPlayer.Pause();
         SceneManager.LoadSceneAsync("TutorialScene");
     }
 

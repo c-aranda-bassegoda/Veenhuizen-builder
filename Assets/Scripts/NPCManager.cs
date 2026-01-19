@@ -61,12 +61,12 @@ public class NPCManager : MonoBehaviour
             int i = Random.Range(0, npcList.Count);
             return npcList[i];
         }
-        else if (_type == "man" || _type == "woman" || _type == "boy" || _type == "girl")
+        else if (_type == "man" || _type == "woman")
         {
             int i = Random.Range(1, 4);
             return npcMap[_type + i.ToString()];
         }
-        else if (_type == "guard" || _type == "teacher")
+        else if (_type == "guard" || _type == "teacher" || _type == "boy" || _type == "girl")
         {
             int i = Random.Range(1, 3);
             return npcMap[_type + i.ToString()];

@@ -133,12 +133,12 @@ public class UIController : MonoBehaviour
 
     public void ShowEndGameReportPanel()
     {
-        cursorManager.ChangeCursorTexture1();
-        progressReport.SetActive(true);
-        gameOverMssg.SetActive(true);
-        SeeVillageButtom.SetActive(true);
-        reportCloseButton.gameObject.SetActive(false);
-        interruptionPanel.SetActive(true);
+        if(cursorManager != null) cursorManager.ChangeCursorTexture1();
+        if(progressReport != null) progressReport.SetActive(true);
+        if(gameOverMssg != null) gameOverMssg.SetActive(true);
+        if(SeeVillageButtom != null) SeeVillageButtom.SetActive(true);
+        if(reportCloseButton != null) reportCloseButton.gameObject.SetActive(false);
+        if(interruptionPanel != null) interruptionPanel.SetActive(true);
     }
 
     public void ShowVillage()
