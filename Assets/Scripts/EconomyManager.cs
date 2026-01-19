@@ -81,6 +81,7 @@ public class EconomyManager : MonoBehaviour
                 }
                 else
                 {
+                    //CursorManager.instance.ChangeCursorTexture1();
                     GameEvents.OnShowProgressReport?.Invoke();
                 }
             }
