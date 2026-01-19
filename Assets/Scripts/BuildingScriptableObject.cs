@@ -50,6 +50,8 @@ public class BuildingScriptableObject : ScriptableObject
     [DoNotSerialize] public bool module;
     public bool modular;
     public bool moduleOnly;
+    public int happinessSymbolCount;
+    public int controlSymbolCount;
     public float GetControl() { return control; }
     public float GetHapiness() { return hapiness; }
     public Dir Direction { get; set; }

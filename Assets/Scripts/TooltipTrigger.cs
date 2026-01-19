@@ -11,9 +11,6 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public string header;
     [TextArea(4, 10)]
     public string body;
-    [SerializeField] int peopleAmount;
-    [SerializeField] int smileyAmount;
-    [SerializeField] int eyeAmount;
 
     [SerializeField]
     public TooltipBuildingData buildingData = null;
@@ -30,7 +27,7 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             body = buildingData.GetBody();
             header = buildingData.GetHeader();
         }
-        TooltipSystem.Show(body, header);
+        TooltipSystem.instance.Show(body, buildingData.happinessCount, buildingData.controlCount, buildingData.peopleCount, header);
     }
 
     public void OnPointerExit(PointerEventData eventData)

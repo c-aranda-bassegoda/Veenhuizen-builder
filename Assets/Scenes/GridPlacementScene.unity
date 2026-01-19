@@ -1064,6 +1064,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 56176506}
   m_CullTransparentMesh: 1
+--- !u!1 &84378140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 84378141}
+  - component: {fileID: 84378142}
+  m_Layer: 5
+  m_Name: Happiness
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &84378141
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84378140}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1106767902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2, y: -20.01}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &84378142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84378140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: -44
+    m_Right: -34
+    m_Top: -43
+    m_Bottom: -44
+  m_ChildAlignment: 0
+  m_Spacing: -102.9
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &89447569
 GameObject:
   m_ObjectHideFlags: 0
@@ -1428,9 +1490,6 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &97556988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2601,9 +2660,6 @@ MonoBehaviour:
   delay: 0.5
   header: Akker
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1001 &165771165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2673,6 +2729,81 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ac2875c48ef48145a069b9ea236b189, type: 3}
+--- !u!1 &167173515
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 167173516}
+  - component: {fileID: 167173518}
+  - component: {fileID: 167173517}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &167173516
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167173515}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.11187641, y: 0.11187641, z: 0.11187641}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2002267564}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 11.7, y: 3.5}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &167173517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167173515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: e2a0bb8f9085bbb4589c03600a4b7ec1, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &167173518
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167173515}
+  m_CullTransparentMesh: 1
 --- !u!4 &176321478 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8450152261891947943, guid: 4a8a37920fbefde46b8b1776fb52d84b, type: 3}
@@ -5764,7 +5895,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &381875450
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6178,9 +6309,6 @@ MonoBehaviour:
   delay: 0.5
   header: Ziekenzaal
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &413605919
 GameObject:
   m_ObjectHideFlags: 0
@@ -6346,9 +6474,6 @@ MonoBehaviour:
   delay: 0.5
   header: Gesticht
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &418641789
 GameObject:
   m_ObjectHideFlags: 0
@@ -6750,9 +6875,6 @@ MonoBehaviour:
   delay: 0
   header: 
   body: "Percentage of hapiness. \nThis needs to be more than 60 to win the game"
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &461315608
 GameObject:
   m_ObjectHideFlags: 0
@@ -7114,9 +7236,6 @@ MonoBehaviour:
   delay: 0.5
   header: Zandweg
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1001 &474499560
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8473,9 +8592,6 @@ MonoBehaviour:
     1440
 
     Opbrengst/jaar: 2700'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &630482388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8679,9 +8795,6 @@ MonoBehaviour:
   delay: 0
   header: 
   body: "Percentage of hapiness. \nThis needs to be more than 60 to win the game"
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1001 &654455819
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12034,9 +12147,6 @@ MonoBehaviour:
   delay: 0
   header: Control
   body: Rate of control in the colony
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &985390353
 GameObject:
   m_ObjectHideFlags: 0
@@ -12341,9 +12451,6 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &1009937432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12889,9 +12996,6 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &1021944916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13166,9 +13270,6 @@ MonoBehaviour:
   delay: 0.5
   header: School
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1001 &1032111328
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14086,6 +14187,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tooltip: {fileID: 1106767903}
+  happinessImage: {fileID: 2884876181314840623, guid: 0cd4eef3586e89744bbce307eac68586, type: 3}
+  controlImage: {fileID: 8349859249623397983, guid: a417d78ae21494d4f9cde040cdb59f5a, type: 3}
 --- !u!1 &1085211195
 GameObject:
   m_ObjectHideFlags: 0
@@ -14439,18 +14542,21 @@ RectTransform:
   m_GameObject: {fileID: 1106767901}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1296513897}
+  - {fileID: 84378141}
+  - {fileID: 1342636966}
+  - {fileID: 2002267564}
   - {fileID: 381875450}
   m_Father: {fileID: 1083683236}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2100.8403, y: -194.95796}
-  m_SizeDelta: {x: 50.93, y: 40.02}
-  m_Pivot: {x: -2.1260505, y: 0.25194523}
+  m_AnchoredPosition: {x: 79.740036, y: 306.19266}
+  m_SizeDelta: {x: 139.155, y: 76.9714}
+  m_Pivot: {x: 0.54759175, y: 1.3656133}
 --- !u!114 &1106767903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14467,6 +14573,9 @@ MonoBehaviour:
   bodyField: {fileID: 381875451}
   layoutElement: {fileID: 1106767904}
   characterWrapLimit: 24
+  happinessHeader: {fileID: 84378140}
+  controlHeader: {fileID: 1342636965}
+  peopleText: {fileID: 2002267565}
   rectTransform: {fileID: 1106767902}
   offset: 200
 --- !u!114 &1106767904
@@ -14496,7 +14605,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1106767901}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
@@ -14516,7 +14625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 2
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
@@ -14705,9 +14814,6 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &1108551717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15455,9 +15561,6 @@ MonoBehaviour:
   delay: 0.5
   header: Boerderij
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &1146105913
 GameObject:
   m_ObjectHideFlags: 0
@@ -15707,9 +15810,6 @@ MonoBehaviour:
   delay: 0.5
   header: Opzienerswoning
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &1166583210
 GameObject:
   m_ObjectHideFlags: 0
@@ -16374,9 +16474,6 @@ MonoBehaviour:
   delay: 0.5
   header: Wachthuisje
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &1212771364
 GameObject:
   m_ObjectHideFlags: 0
@@ -17626,7 +17723,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25.465, y: -10.005}
+  m_AnchoredPosition: {x: 27.465, y: -10.005}
   m_SizeDelta: {x: 50.93, y: 20.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1296513898
@@ -17714,7 +17811,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -32.085567, w: 0}
+  m_margin: {x: 0, y: 0, z: -32.085567, w: -11.383801}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -18047,6 +18144,68 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ac2875c48ef48145a069b9ea236b189, type: 3}
+--- !u!1 &1342636965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1342636966}
+  - component: {fileID: 1342636967}
+  m_Layer: 5
+  m_Name: Control
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1342636966
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1342636965}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1106767902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2, y: -20.01}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1342636967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1342636965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: -44
+    m_Right: -35
+    m_Top: -43
+    m_Bottom: -44
+  m_ChildAlignment: 0
+  m_Spacing: -102.9
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1348488598
 GameObject:
   m_ObjectHideFlags: 0
@@ -18345,9 +18504,6 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &1384811429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19737,9 +19893,6 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &1466140199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20186,9 +20339,6 @@ MonoBehaviour:
   delay: 0.5
   header: Werkplaats
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &1524319312
 GameObject:
   m_ObjectHideFlags: 0
@@ -21845,9 +21995,6 @@ MonoBehaviour:
   delay: 0.5
   header: Slaapzaal
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1001 &1678835291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23043,9 +23190,6 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &1886321091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23530,9 +23674,6 @@ MonoBehaviour:
   delay: 0
   header: Happiness
   body: Rate of happiness in the colony
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &1915233454
 GameObject:
   m_ObjectHideFlags: 0
@@ -23818,9 +23959,6 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &1922139874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24095,9 +24233,6 @@ MonoBehaviour:
   delay: 0.5
   header: Badhuis
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &1954575931
 GameObject:
   m_ObjectHideFlags: 0
@@ -24261,9 +24396,6 @@ MonoBehaviour:
   delay: 0.5
   header: Kerk
   body: 
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!1 &1972718143
 GameObject:
   m_ObjectHideFlags: 0
@@ -24584,6 +24716,143 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2001964044}
   m_Mesh: {fileID: 7347519072928922217, guid: 40f40971ecdf0c949829acfa0dbc3aab, type: 3}
+--- !u!1 &2002267563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2002267564}
+  - component: {fileID: 2002267566}
+  - component: {fileID: 2002267565}
+  m_Layer: 5
+  m_Name: PeopleText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2002267564
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002267563}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.3889, y: 1.3889, z: 1.3889}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 167173516}
+  m_Father: {fileID: 1106767902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 7.17, y: -27.945}
+  m_SizeDelta: {x: 10.34, y: 15.87}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2002267565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002267563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 12
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: b5eb0cc2289fab14284326eeb574c079, type: 2}
+  m_sharedMaterial: {fileID: -6753723746149418804, guid: b5eb0cc2289fab14284326eeb574c079, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 12.28
+  m_fontSizeBase: 12.28
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 2.6993597, y: -1.1916037, z: -22.907757, w: 3.5829213}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &2002267566
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002267563}
+  m_CullTransparentMesh: 1
 --- !u!1 &2005006849
 GameObject:
   m_ObjectHideFlags: 0
@@ -25058,9 +25327,6 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &2042068500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26570,9 +26836,6 @@ MonoBehaviour:
     Max Placements: 5
 
     Remaining: 5'
-  peopleAmount: 0
-  smileyAmount: 0
-  eyeAmount: 0
 --- !u!114 &2110306863
 MonoBehaviour:
   m_ObjectHideFlags: 0

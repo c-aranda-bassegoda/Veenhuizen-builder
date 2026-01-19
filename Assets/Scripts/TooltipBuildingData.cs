@@ -9,6 +9,7 @@ public class TooltipBuildingData
     //[SerializeField]
     //private EconomyManager economyManager;
     private string body = "";
+    public int happinessCount, controlCount, peopleCount;
     public TooltipBuildingData(BuildingScriptableObject buildingSO)
     {
         this.buildingSO = buildingSO;
@@ -16,6 +17,10 @@ public class TooltipBuildingData
         body += "Happiness: " + buildingSO.hapiness + "\n";
         body += "Control: " + buildingSO.control + "\n";
         body += "Building Cost: " + buildingSO.buildCost + "\n";
+
+        happinessCount = buildingSO.happinessSymbolCount;
+        controlCount = buildingSO.controlSymbolCount;
+        peopleCount = (int)buildingSO.population;
     }
 
     internal string GetBody()

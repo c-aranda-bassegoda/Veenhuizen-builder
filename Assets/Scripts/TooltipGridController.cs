@@ -60,7 +60,7 @@ public class TooltipGridController : MonoBehaviour
     private IEnumerator ShowAfterDelay()
     {
         yield return new WaitForSeconds(delay);
-        TooltipSystem.Show(currentData.GetBody(), currentData.GetHeader());
+        TooltipSystem.instance.Show(currentData.GetBody(), currentData.happinessCount, currentData.controlCount, currentData.peopleCount, currentData.GetHeader());
     }
 
     private void HandleExit()

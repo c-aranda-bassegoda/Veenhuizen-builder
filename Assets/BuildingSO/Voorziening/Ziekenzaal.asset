@@ -33,3 +33,5 @@ MonoBehaviour:
   module: 1
   modular: 0
   moduleOnly: 1
+  happinessSymbolCount: 2
+  controlSymbolCount: 0
