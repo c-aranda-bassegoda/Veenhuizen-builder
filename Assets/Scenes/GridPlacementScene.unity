@@ -998,7 +998,7 @@ GameObject:
   - component: {fileID: 56176512}
   - component: {fileID: 56176511}
   m_Layer: 5
-  m_Name: MoralityPanel
+  m_Name: TipPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1018,7 +1018,6 @@ RectTransform:
   m_Children:
   - {fileID: 1497873558}
   - {fileID: 1241370997}
-  - {fileID: 474499561}
   m_Father: {fileID: 22922068}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -1162,7 +1161,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142, y: -95.24337}
+  m_AnchoredPosition: {x: 142, y: -73}
   m_SizeDelta: {x: 300, y: 137.11}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &89447571
@@ -1185,7 +1184,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Another season passed! This is what veenhuizen looks like:'
+  m_text: 'Weer een seizoen verder! Dit is hoe je Veenhuizen er nu uit ziet:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -7242,7 +7241,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 56176507}
+    m_TransformParent: {fileID: 1415716220}
     m_Modifications:
     - target: {fileID: 953262766532332090, guid: 3c61e848a56cec947b3af3a8417069a6, type: 3}
       propertyPath: m_Pivot.x
@@ -7278,15 +7277,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 953262766532332090, guid: 3c61e848a56cec947b3af3a8417069a6, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3.9591248
+      value: 3.9591246
       objectReference: {fileID: 0}
     - target: {fileID: 953262766532332090, guid: 3c61e848a56cec947b3af3a8417069a6, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.0472205
+      value: 1.9797869
       objectReference: {fileID: 0}
     - target: {fileID: 953262766532332090, guid: 3c61e848a56cec947b3af3a8417069a6, type: 3}
       propertyPath: m_LocalScale.z
-      value: 4.4013186
+      value: 4.4013176
       objectReference: {fileID: 0}
     - target: {fileID: 953262766532332090, guid: 3c61e848a56cec947b3af3a8417069a6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7318,11 +7317,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 953262766532332090, guid: 3c61e848a56cec947b3af3a8417069a6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 116
+      value: 118.09999
       objectReference: {fileID: 0}
     - target: {fileID: 953262766532332090, guid: 3c61e848a56cec947b3af3a8417069a6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -29.651367
+      value: -35.12068
       objectReference: {fileID: 0}
     - target: {fileID: 953262766532332090, guid: 3c61e848a56cec947b3af3a8417069a6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11503,6 +11502,12 @@ MonoBehaviour:
   - {fileID: 737355410}
   clickSound: {fileID: 8300000, guid: 24b30e665c6db4d448017d9a8e254d38, type: 3}
   outlineColor: {r: 0.059807636, g: 0.29221556, b: 0.9056604, a: 1}
+  happinessTip: happiness tip
+  controlTip: control tip
+  morePeopleTip: more people tip
+  moreFarmsTip: more farms tip
+  tipText: {fileID: 1241370998}
+  tipObj: {fileID: 56176506}
 --- !u!1 &927349601
 GameObject:
   m_ObjectHideFlags: 0
@@ -16673,14 +16678,14 @@ RectTransform:
   m_GameObject: {fileID: 1221303276}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.71825004, y: 0.71825004, z: 0.71825004}
+  m_LocalScale: {x: 0.71825004, y: 0.32308093, z: 0.71825004}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1415716220}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 71.825005, y: -59.600388}
+  m_AnchoredPosition: {x: 71.825005, y: -27.318878}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1221303278
@@ -16949,12 +16954,12 @@ GameObject:
   - component: {fileID: 1241370999}
   - component: {fileID: 1241370998}
   m_Layer: 5
-  m_Name: Morality
+  m_Name: Tip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1241370997
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16964,14 +16969,14 @@ RectTransform:
   m_GameObject: {fileID: 1241370996}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.71825004, y: 0.71825004, z: 0.71825004}
+  m_LocalScale: {x: 1.2308522, y: 0.6738119, z: 0.6738119}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 56176507}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 71.825005, y: -53.86875}
+  m_AnchoredPosition: {x: 131.9, y: -14.7}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1241370998
@@ -16994,7 +16999,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -17021,14 +17026,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.3
-  m_fontSizeBase: 36.3
+  m_fontSize: 19.88
+  m_fontSizeBase: 19.88
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -17059,7 +17064,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -16.169613, w: 0}
+  m_margin: {x: -5.365074, y: 19.953375, z: 4.9505377, w: -22.739902}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -17102,14 +17107,14 @@ RectTransform:
   m_GameObject: {fileID: 1255798640}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.71825004, y: 0.71825004, z: 0.71825004}
+  m_LocalScale: {x: 0.71825004, y: 0.32308093, z: 0.71825004}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1415716220}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 107.7375, y: -20.82207}
+  m_AnchoredPosition: {x: 107.7375, y: -9.875763}
   m_SizeDelta: {x: 300, y: 57.98}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1255798642
@@ -17132,7 +17137,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Amount of people working:'
+  m_text: 'Mensen aan het werk:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -18881,7 +18886,6 @@ GameObject:
   - component: {fileID: 1415716220}
   - component: {fileID: 1415716225}
   - component: {fileID: 1415716224}
-  - component: {fileID: 1415716223}
   - component: {fileID: 1415716222}
   - component: {fileID: 1415716221}
   m_Layer: 5
@@ -18900,17 +18904,18 @@ RectTransform:
   m_GameObject: {fileID: 1415716219}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 2.2231274, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1255798641}
   - {fileID: 1221303277}
+  - {fileID: 474499561}
   m_Father: {fileID: 22922068}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -184}
-  m_SizeDelta: {x: 250, y: 77.55664}
+  m_AnchoredPosition: {x: 150, y: -166.4}
+  m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1415716221
 MonoBehaviour:
@@ -18946,32 +18951,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!114 &1415716223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1415716219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 1
-  m_ChildScaleHeight: 1
-  m_ReverseArrangement: 0
 --- !u!114 &1415716224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20018,7 +19997,7 @@ GameObject:
   - component: {fileID: 1497873562}
   - component: {fileID: 1497873561}
   m_Layer: 5
-  m_Name: Happy Label
+  m_Name: TipLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20040,7 +20019,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 115, y: -8.352134}
+  m_AnchoredPosition: {x: 115, y: -10.4}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1497873559
@@ -20063,7 +20042,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Morality:'
+  m_text: 'Tip:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -20128,7 +20107,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -1.3968658, y: 0, z: -28.119091, w: 21.67534}
+  m_margin: {x: -5.047531, y: 0, z: -31.023907, w: 21.67534}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

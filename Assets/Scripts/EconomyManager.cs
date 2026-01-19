@@ -13,6 +13,16 @@ public enum Season
     Autumn,
     Winter
 }
+
+public enum GameTip
+{
+    MorePeople,
+    MoreHappy,
+    MoreControl,
+    MoreFarms,
+    NoTip
+
+}
 public class EconomyManager : MonoBehaviour
 {
     private Dictionary<string, int> buildingCount;
@@ -55,6 +65,35 @@ public class EconomyManager : MonoBehaviour
         StartCoroutine(Economy());
     }
 
+    public GameTip GetGameTip()
+    {
+        if((happy >= ppl) && (control >= ppl))
+        {
+            if (NPCManager.instance.totalWorkingPeople < ppl)
+            {
+                return GameTip.MoreFarms;
+            }
+            else return GameTip.MorePeople;
+        }
+
+        //More people than happiness, less happiness than control
+        if (happy < ppl)
+        {
+            if(happy <= control)
+            {
+                return GameTip.MoreHappy;
+            }
+        }
+
+        //More people than control, less control than happiness
+        if(control < ppl)
+        {
+            return GameTip.MoreControl;
+        }
+
+        return GameTip.NoTip;
+    }
+
     IEnumerator Economy()
     {
         seasonsPassed = 0;
@@ -82,7 +121,7 @@ public class EconomyManager : MonoBehaviour
                 else
                 {
                     //CursorManager.instance.ChangeCursorTexture1();
-                    GameEvents.OnShowProgressReport?.Invoke();
+                    GameEvents.OnShowProgressReport?.Invoke(GetGameTip());
                 }
             }
 

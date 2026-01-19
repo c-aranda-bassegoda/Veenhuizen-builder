@@ -123,7 +123,7 @@ public static class GameEvents
     public static Action<float, float, float> OnStatsChanged;
     public static Action<float> OnMoneyChanged;
     public static Action<Season, float, float> OnCalendarChanged; 
-    public static Action OnShowProgressReport;
+    public static Action<GameTip> OnShowProgressReport;
     public static Action OnResumeTime;
     public static Action<string> OnErrorMessage;
     public static Action<int> OnWorkingChanged;

@@ -34,6 +34,10 @@ public class UIController : MonoBehaviour
     List<Button> buildingButtons;
     GridBuildingSystem gridBuildingSystem;
 
+    [SerializeField] string happinessTip, controlTip, morePeopleTip, moreFarmsTip;
+    [SerializeField] TextMeshProUGUI tipText;
+    [SerializeField] GameObject tipObj;
+
     private void Start()
     {
         gridBuildingSystem = GridBuildingSystem.instance;
@@ -134,7 +138,7 @@ public class UIController : MonoBehaviour
         SceneManager.LoadSceneAsync("GridPlacementScene");
     }
 
-    private void ShowProgressReportPanel()
+    private void ShowProgressReportPanel(GameTip tip)
     {
         cursorManager.ChangeCursorTexture1();
 
@@ -142,6 +146,26 @@ public class UIController : MonoBehaviour
         prMoralitySlider.value = economyManager.moralitySlider.value; ;
 
         prWorkingText.text = NPCManager.instance.totalWorkingPeople.ToString() + " / " + NPCManager.instance.people.ToString();
+
+        tipText.gameObject.SetActive(true);
+        switch(tip)
+        {
+            case GameTip.MorePeople:
+                tipText.text = morePeopleTip;
+                break;
+            case GameTip.MoreHappy:
+                tipText.text = happinessTip;
+                break;
+            case GameTip.MoreControl:
+                tipText.text = controlTip;
+                break;
+            case GameTip.MoreFarms:
+                tipText.text = moreFarmsTip;
+                break;
+            case GameTip.NoTip:
+                tipObj.SetActive(false);
+                break;
+        }
 
         progressReport.SetActive(true);
         interruptionPanel.SetActive(true);
