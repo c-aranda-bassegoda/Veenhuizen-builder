@@ -407,7 +407,7 @@ public class PlacedObject : MonoBehaviour
         }
         npc.destinationBuilding = null;
         workingPeople.Remove(npc);
-        if(teleport) npc.ReturnHome(teleport);
+        npc.ReturnHome(teleport);
     }
 
     public void FreeFarmland(PlacedObject farm, PlacedObject farmland)

@@ -8,7 +8,7 @@ public class NPCManager : MonoBehaviour
     [SerializeField] EconomyManager economyManager;
     [SerializeField] float controlPerWorkingNPC;
     [SerializeField] List<NavmeshNpc> npcList;
-    [SerializeField] List<NavmeshNpc> allNpcs = new(), workingNpcs = new();
+    [SerializeField] public List<NavmeshNpc> allNpcs = new(), workingNpcs = new();
     Dictionary<string, NavmeshNpc> npcMap;
     public int totalWorkingPeople;
 

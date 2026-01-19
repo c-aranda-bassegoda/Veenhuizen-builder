@@ -184,6 +184,14 @@ public class NavmeshNpc : MonoBehaviour
                 returningToGesticht = true;
             }
         }
+
+        if(destinationBuilding != null)
+        {
+            if(destinationBuilding.name == "Akker")
+            {
+                if (destinationBuilding.farm == null) ReturnHome(false);
+            }
+        }
     }
 
     public void CheckHappiness()
@@ -288,11 +296,12 @@ public class NavmeshNpc : MonoBehaviour
         agent.ResetPath();
         hasTarget = false;
         isHome = true;
+        if(NPCManager.instance.workingNpcs.Contains(this)) NPCManager.instance.workingNpcs.Remove(this);
         if(targetFarm != null)
         {
             if(targetFarm.adjacentFarmlandWorked != null)
             {
-                if(desiredBuilding != null)
+                if(destinationBuilding != null)
                 {
                     if (targetFarm.adjacentFarmlandWorked.ContainsKey(destinationBuilding)) targetFarm.adjacentFarmlandWorked[destinationBuilding] = false;
                 }
