@@ -253,8 +253,12 @@ MonoBehaviour:
   yBobTarget: 15
   bobSpeed: 2
   rotateSpeed: 48
+  idleSpeed: 3
   isHappy: 0
   shouldRotate: 0
+  shouldIdleInGesticht: 0
+  planeSize: {x: 10, y: 10}
+  idleWaitTime: 1
 --- !u!54 &5173809219066261808
 Rigidbody:
   m_ObjectHideFlags: 0

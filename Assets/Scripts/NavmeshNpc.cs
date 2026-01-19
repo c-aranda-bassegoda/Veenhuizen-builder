@@ -23,16 +23,22 @@ public class NavmeshNpc : MonoBehaviour
     [SerializeField] Image charImage;
     [SerializeField] float yBobTarget;
     [SerializeField] float bobSpeed;
-    [SerializeField] float rotateSpeed;
+    [SerializeField] float rotateSpeed, idleSpeed;
     bool goingUp;
     bool isFindingTarget;
     bool hasTarget;
     bool stopCoroutine;
     bool isHome;
-    public bool isHappy, shouldRotate;
+    public bool isHappy, shouldRotate, shouldIdleInGesticht;
     Transform rotationPivot;
+    public Vector2 planeSize = new Vector2(10, 10);
+    Vector3 idleTarget;
+    [SerializeField] float idleWaitTime;
+    float idleWaitTimer;
+    float randomWaitTime;
 
     int frameCount;
+    [SerializeField] bool returningToGesticht;
 
     void Start()
     {
@@ -44,6 +50,8 @@ public class NavmeshNpc : MonoBehaviour
         startSpeed = agent.speed;
         startBobSpeed = bobSpeed;
 
+        randomWaitTime = Random.Range((idleWaitTime - (idleWaitTime / 2)), (idleWaitTime + (idleWaitTime / 2)));
+
     }
 
     private void Update()
@@ -52,12 +60,18 @@ public class NavmeshNpc : MonoBehaviour
         {
             if (!agent.pathPending) // Make sure the agent has a path
             {
-                if(agent.remainingDistance > 2)
+                if(agent.remainingDistance < 2)
                 {
-                    //if(!isFindingTarget)
-                    //{
-                    //    StartCoroutine(TryFindTarget(true));
-                    //}
+                    if(returningToGesticht)
+                    {
+                        Debug.Log("Agent returned to gesticht");
+                        returningToGesticht = false;
+                        shouldIdleInGesticht = true;
+                        agent.isStopped = true;
+                        agent.ResetPath();
+                        hasTarget = false;
+                        isHome = true;
+                    }
                 }
                 else if (hasTarget)
                 {
@@ -69,7 +83,7 @@ public class NavmeshNpc : MonoBehaviour
             }
         }
 
-        RotateAroundOrigin();
+        IdleMovemement();
 
         if (!isHome)
         {
@@ -78,7 +92,7 @@ public class NavmeshNpc : MonoBehaviour
         }
     }
 
-    public void RotateAroundOrigin()
+    public void IdleMovemement()
     {
         if (shouldRotate && originBuilding != null)
         {
@@ -92,6 +106,51 @@ public class NavmeshNpc : MonoBehaviour
 
             transform.position = rotationPivot.position + offset;
         }
+        if(shouldIdleInGesticht && originBuilding != null)
+        {
+
+            if (idleTarget != Vector3.zero)
+            {
+                if (Vector3.Distance(transform.position, idleTarget) < 0.1f)
+                {
+                    idleWaitTimer += Time.deltaTime;
+                    if (idleWaitTimer >= randomWaitTime)
+                    {
+                        PickNewTarget();
+                        idleWaitTimer = 0f;
+                    }
+                    return;
+                }
+                MoveAnimations();
+                transform.position = Vector3.MoveTowards(
+                    transform.position,
+                    idleTarget,
+                    idleSpeed * Time.deltaTime
+                );
+            }
+            else PickNewTarget();
+        }
+    }
+
+    void PickNewTarget()
+    {
+        float x = Random.Range(-planeSize.x / 2f, planeSize.x / 2f);
+        float z = Random.Range(-planeSize.y / 2f, planeSize.y / 2f);
+
+        if(originBuilding.isModule)
+        {
+            x = originBuilding.parent.transform.GetChild(0).position.x + x;
+            z = originBuilding.parent.transform.GetChild(0).position.z + z;
+        }
+        else
+        {
+            x = originBuilding.transform.GetChild(0).position.x + x;
+            z = originBuilding.transform.GetChild(0).position.z + z;
+        }
+
+        randomWaitTime = Random.Range((idleWaitTime - (idleWaitTime / 2)), (idleWaitTime + (idleWaitTime / 2)));
+
+        idleTarget = new Vector3(x, transform.position.y, z);
     }
 
     void MoveAnimations()
@@ -122,6 +181,7 @@ public class NavmeshNpc : MonoBehaviour
             {
                 originBuilding.SendNpcBack(this, false);
                 SetNavmeshTarget(originBuilding.transform.GetChild(0).position, originBuilding);
+                returningToGesticht = true;
             }
         }
     }
@@ -210,6 +270,8 @@ public class NavmeshNpc : MonoBehaviour
 
     public void SetNavmeshTarget(Vector3 targetPos, PlacedObject building, PlacedObject _targetFarm = null)
     {
+        if(building.gameObject.name != "Gesticht") returningToGesticht = false;
+        shouldIdleInGesticht = false;
         //startY = charImage.transform.position.y;
         agent.SetDestination(targetPos);
         destinationBuilding = building;
@@ -230,13 +292,25 @@ public class NavmeshNpc : MonoBehaviour
         {
             if(targetFarm.adjacentFarmlandWorked != null)
             {
-                if (targetFarm.adjacentFarmlandWorked.ContainsKey(destinationBuilding)) targetFarm.adjacentFarmlandWorked[destinationBuilding] = false;
+                if(desiredBuilding != null)
+                {
+                    if (targetFarm.adjacentFarmlandWorked.ContainsKey(destinationBuilding)) targetFarm.adjacentFarmlandWorked[destinationBuilding] = false;
+                }
             }
         }
         targetFarm = null;
-        Debug.Log($"Sending agent back to {originBuilding.transform.GetChild(0).position}");
-        if(teleport) agent.Warp(originBuilding.transform.GetChild(0).position);
-        else SetNavmeshTarget(originBuilding.transform.GetChild(0).position, originBuilding);
+      
+        if (teleport)
+        {
+            agent.Warp(originBuilding.transform.GetChild(0).position);
+            shouldIdleInGesticht = true;
+        }
+        else
+        {
+            SetNavmeshTarget(originBuilding.transform.GetChild(0).position, originBuilding);
+            returningToGesticht = true;
+            Debug.Log($"Sending agent back to {originBuilding.transform.GetChild(0).position}: {returningToGesticht}");
+        }
     }
 
     public PlacedObject GetClosestObjectFromList(List<PlacedObject> objects)
