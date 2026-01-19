@@ -273,6 +273,17 @@ public class UIController : MonoBehaviour
         }
     }
 
+    public void ShowSidebarFold(Transform button)
+    {
+        Transform layout = button.transform.parent.GetChild(1);
+        //Enable the building options
+        layout.gameObject.SetActive(true);
+
+        //Disable the expand icon
+        button.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+
+        HideOtherSidebars(button);
+    }
     public void ToggleSidebarFold(Transform button)
     {
 
