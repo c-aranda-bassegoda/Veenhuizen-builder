@@ -41,6 +41,8 @@ public class EconomyManager : MonoBehaviour
     [SerializeField] float secondsPerSeason;
     //[SerializeField] int daysPerSeason;
     [SerializeField] GameObject floatingTextPrefab;
+    [SerializeField] GameObject controlSymbolPrefab;
+    [SerializeField] GameObject happySymbolPrefab;
     [SerializeField] SeasonManager seasonManager;
     [SerializeField] public Slider moralitySlider;
 
@@ -293,7 +295,7 @@ public class EconomyManager : MonoBehaviour
 
 
     // Displays cost with floating text
-    internal void ShowTransaction(Vector3 position, Transform transform, BuildingScriptableObject placedObject, bool paid, bool replaced, BuildingScriptableObject replacedObject = null)
+    internal void ShowTransaction(Vector3 position, Transform transform, BuildingScriptableObject placedObject, bool paid, bool replaced, Vector3 offset, BuildingScriptableObject replacedObject = null)
     {
         float cost = placedObject.buildCost;
         if (replaced && replacedObject != null)
@@ -304,7 +306,7 @@ public class EconomyManager : MonoBehaviour
 
         if (cost == 0) return; 
 
-        Vector3 offset = new Vector3(0.0f, 9.0f, 0.0f);
+        offset += new Vector3(0.0f, 9.0f, 0.0f);
         var textGO =  Instantiate(floatingTextPrefab, position + offset, Quaternion.identity, transform);
 
 
@@ -312,5 +314,41 @@ public class EconomyManager : MonoBehaviour
 
         textGO.GetComponent<TMP_Text>().color = (cost < 0 ? Color.red: Color.green);
     }
+
+    internal void ShowInfluence(Vector3 position, Transform transform, BuildingScriptableObject placedObject, bool replaced, Vector3 offset, BuildingScriptableObject replacedObject = null)
+    {
+        float happy = placedObject.hapiness;
+        float control = placedObject.control;
+        
+        if (replaced && replacedObject != null)
+        {
+            Debug.Log(placedObject.name + " " + replacedObject.name);
+            control -= replacedObject.control;
+            happy -= replacedObject.hapiness;
+        }
+        offset += new Vector3(0, 9.0f, 0);
+
+        if (control != 0)  
+            StartCoroutine(SpawnInfluenceSymbols(position + offset, transform, (int)control, controlSymbolPrefab));
+
+
+        if (happy != 0)
+            StartCoroutine(SpawnInfluenceSymbols(position + offset, transform, (int)happy, happySymbolPrefab));
+    }
+
+    private IEnumerator SpawnInfluenceSymbols(Vector3 position, Transform transform, int amount, GameObject symbol)
+    {
+        float delay = 0.2f;
+        Vector3 offset;
+
+        for (int i = 0; i < Mathf.Abs(amount); i++)
+        {
+            yield return new WaitForSeconds(delay);
+            offset = new Vector3(UnityEngine.Random.Range(-5, 5), 0, UnityEngine.Random.Range(-5, 5));
+            var obj = Instantiate(symbol, position + offset, Quaternion.identity, transform);
+            obj.GetComponent<SpriteRenderer>().color = (amount < 0 ? Color.red : Color.white);
+        }
+    }
+
 }
 

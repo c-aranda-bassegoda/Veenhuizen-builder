@@ -27,6 +27,8 @@ public class GridBuildingSystem : MonoBehaviour
 
     [SerializeField] private List<PlacedObject> placedObjects;
 
+    public float GridCellSize { get; set; }
+
     private PlacedObject highlightedObject;
 
     public static GridBuildingSystem instance;
@@ -41,8 +43,8 @@ public class GridBuildingSystem : MonoBehaviour
         instance = this;
         int gridWidth = 10;
         int gridHeight = 10;
-        float cellSize = 10f;
-        grid = new Grid<GridObject>(gridHeight, gridWidth, cellSize, (Grid<GridObject> g, int i, int j) => new GridObject(g, i, j));
+        GridCellSize = 10f;
+        grid = new Grid<GridObject>(gridHeight, gridWidth, GridCellSize, (Grid<GridObject> g, int i, int j) => new GridObject(g, i, j));
         AddingBuilding = false;
         RemovingBuilding = false;
         PlacingRoad = false;
@@ -105,7 +107,10 @@ public class GridBuildingSystem : MonoBehaviour
             placedObjects.Add(placedObj);
             roadManager.UpdateConnections(gridPos, false);
             economyManager.HandleNewPlacedBuilding(buildingSO);
-            economyManager.ShowTransaction(placedObj.transform.position, placedObj.transform, placedObj.GetScriptableObject(), true, false);
+            BuildingScriptableObject placedSO = placedObj.GetScriptableObject();
+            Vector3 graphicsOffset = new Vector3(placedSO.width * GridCellSize / 2, 0, placedSO.height * GridCellSize / 2);
+            economyManager.ShowTransaction(placedObj.transform.position, placedObj.transform, placedSO, true, false, graphicsOffset);
+            economyManager.ShowInfluence(placedObj.transform.position, placedObj.transform, placedSO, false, graphicsOffset);
             placedObj.OnPlace();
 
             SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, placeObjVolume);
@@ -116,7 +121,10 @@ public class GridBuildingSystem : MonoBehaviour
             BuildingScriptableObject oldSO = oldObject.GetPlacedObject().GetScriptableObject();
             economyManager.HandleRemovedBuilding(oldObject.GetPlacedObject().GetScriptableObject(), oldObject.GetPlacedObject());
             PlacedObject placedObj = ReplaceModule(worldPosition);
-            economyManager.ShowTransaction(placedObj.transform.position, placedObj.transform, placedObj.GetScriptableObject(), true, true, oldSO);
+            BuildingScriptableObject placedSO = placedObj.GetScriptableObject();
+            Vector3 graphicsOffset = new Vector3(placedSO.width * GridCellSize / 2, 0, placedSO.height * GridCellSize / 2);
+            economyManager.ShowTransaction(placedObj.transform.position, placedObj.transform, placedSO, true, true, graphicsOffset, oldSO);
+            economyManager.ShowInfluence(placedObj.transform.position, placedObj.transform, placedSO, true, graphicsOffset, oldSO);
             economyManager.HandleNewPlacedBuilding(buildingSO); // Should be handle replaced building?
         }
         else
@@ -205,7 +213,8 @@ public class GridBuildingSystem : MonoBehaviour
             economyManager.HandleRemovedBuilding(placedObject.GetScriptableObject(), placedObject);
 
             BuildingScriptableObject objSO = placedObject.Destructor();
-            economyManager.ShowTransaction(objPosition, null, objSO, false, false);
+            Vector3 graphicsOffset = new Vector3(objSO.width * GridCellSize / 2, 0, objSO.height * GridCellSize / 2);
+            economyManager.ShowTransaction(objPosition, null, objSO, false, false, graphicsOffset);
             placedObjects.Remove(placedObject);
 
             //If object is a road, make sure to remove it from road list
