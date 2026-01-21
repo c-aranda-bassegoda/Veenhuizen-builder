@@ -4,23 +4,41 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class TooltipTrigger : MonoBehaviour, IPointerMoveHandler
 {
     private Coroutine hoverCoroutine;
     [SerializeField] public float delay = 0.5f;
     public string header;
     [TextArea(4, 10)]
     public string body;
+    bool isHovered;
 
     [SerializeField]
     public TooltipBuildingData buildingData = null;
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (eventData.pointerEnter != gameObject)
-            return;
+    //public void OnPointerEnter(PointerEventData eventData)
+    //{
+    //    if (eventData.pointerEnter != gameObject)
+    //        return;
 
+    //    hoverCoroutine = StartCoroutine(ExecuteAfterDelay());
+    //    Debug.Log($"Hovering over: {gameObject.name}");
+    //}
+
+    void ShowTooltip()
+    {
         hoverCoroutine = StartCoroutine(ExecuteAfterDelay());
         Debug.Log($"Hovering over: {gameObject.name}");
+    }
+
+    void HideTooltip()
+    {
+        Debug.Log("pointer exit");
+        if (hoverCoroutine != null)
+        {
+            StopCoroutine(hoverCoroutine);
+            hoverCoroutine = null;
+        }
+        TooltipSystem.Hide();
     }
 
     private IEnumerator ExecuteAfterDelay()
@@ -34,15 +52,31 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         TooltipSystem.instance.Show(body, buildingData.happinessCount, buildingData.controlCount, buildingData.peopleCount, buildingData.cost, header);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void OnPointerMove(PointerEventData eventData)
     {
-        Debug.Log("pointer exit");
-        if (hoverCoroutine != null)
+        bool directlyHovered = eventData.pointerCurrentRaycast.gameObject == gameObject;
+
+        if (directlyHovered && !isHovered)
         {
-            StopCoroutine(hoverCoroutine);
-            hoverCoroutine = null;
+            isHovered = true;
+            ShowTooltip();
         }
-        TooltipSystem.Hide();
+        else if (!directlyHovered && isHovered)
+        {
+            isHovered = false;
+            HideTooltip();
+        }
     }
+
+    //public void OnPointerExit(PointerEventData eventData)
+    //{
+    //    Debug.Log("pointer exit");
+    //    if (hoverCoroutine != null)
+    //    {
+    //        StopCoroutine(hoverCoroutine);
+    //        hoverCoroutine = null;
+    //    }
+    //    TooltipSystem.Hide();
+    //}
     
 }
