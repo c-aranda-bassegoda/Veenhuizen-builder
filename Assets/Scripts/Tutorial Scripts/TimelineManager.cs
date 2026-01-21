@@ -20,6 +20,7 @@ public class TimelineManager : MonoBehaviour
 
     public void Play()
     {
+        Debug.Log("Play Director");
         director.Play();
     }
 

@@ -69,6 +69,7 @@ public class NavmeshNpc : MonoBehaviour
                         shouldIdleInGesticht = true;
                         agent.isStopped = true;
                         agent.ResetPath();
+                        agent.enabled = false;
                         hasTarget = false;
                         isHome = true;
                     }
@@ -189,7 +190,11 @@ public class NavmeshNpc : MonoBehaviour
         {
             if(destinationBuilding.name == "Akker")
             {
-                if (destinationBuilding.farm == null) ReturnHome(false);
+                if (destinationBuilding.farm == null)
+                {
+                    Debug.Log($"NPC WORK UPDATE: BROKEN CONNECTION");
+                    originBuilding.SendNpcBack(this, false);
+                }
             }
         }
     }
@@ -304,7 +309,7 @@ public class NavmeshNpc : MonoBehaviour
             {
                 if(destinationBuilding != null)
                 {
-                    if (targetFarm.adjacentFarmlandWorked.ContainsKey(destinationBuilding)) targetFarm.adjacentFarmlandWorked[destinationBuilding] = false;
+                    if (targetFarm.adjacentFarmlandWorked.ContainsKey(destinationBuilding)) targetFarm.adjacentFarmlandWorked[destinationBuilding] = null;
                 }
             }
         }

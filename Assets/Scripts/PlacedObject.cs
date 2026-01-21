@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -173,10 +174,10 @@ public class PlacedObject : MonoBehaviour
     [HideInInspector] public float personAmount;
     [SerializeField] float timeBetweenSpawns;
     [SerializeField] List<NavmeshNpc> associatedWorkingPeople, associatedNonWorkingPeople;
-    List<NavmeshNpc> workingPeople;
+    [SerializeField] List<NavmeshNpc> workingPeople;
     [SerializeField] Transform buildingOrigin;
     [SerializeField] TextMeshProUGUI farmlandCount;
-    public Dictionary<PlacedObject, bool> adjacentFarmlandWorked;
+    public Dictionary<PlacedObject, NavmeshNpc> adjacentFarmlandWorked;
     public bool isConnectedFarmland;
     bool spawnedPeople;
     int connectedFarmlandCountInText;
@@ -227,7 +228,7 @@ public class PlacedObject : MonoBehaviour
         NPCManager.instance.RegisterBuilding(this, true);
     } 
 
-    public void ConnectFarmland(bool createNewList)
+    public List<PlacedObject> ConnectFarmland(bool createNewList)
     {
         if(createNewList) adjacentFarmlandWorked = new();
         List<PlacedObject> newFarmland = RoadManager.instance.FindConnectedFarmsOrFarmland(origin, true);
@@ -240,19 +241,21 @@ public class PlacedObject : MonoBehaviour
             {
                 farmland.isConnectedFarmland = true;
                 farmland.farm = this;
-                adjacentFarmlandWorked.Add(farmland, false);
+                adjacentFarmlandWorked.Add(farmland, null);
                 farmland.exclamationMark.SetActive(false);
             }
         }
 
         Debug.Log($"Created farmland list for {gameObject.name}: {adjacentFarmlandWorked.Count}");
+        return adjacentFarmlandWorked.Keys.ToList();
+
     }
 
     public PlacedObject GetFreeFarmland()
     {
-        foreach(KeyValuePair<PlacedObject, bool> kvp in adjacentFarmlandWorked)
+        foreach(KeyValuePair<PlacedObject, NavmeshNpc> kvp in adjacentFarmlandWorked)
         {
-            if (!kvp.Value) return kvp.Key;
+            if (kvp.Value == null) return kvp.Key;
         }
 
         return null;
@@ -321,8 +324,8 @@ public class PlacedObject : MonoBehaviour
 
             if (targetFarm.adjacentFarmlandWorked.ContainsKey(targetFarmland))
             {
-                Debug.Log($"Sending npc to {targetFarmland.GetOrigin()}, worked = {targetFarm.adjacentFarmlandWorked[targetFarmland]}");
-                targetFarm.adjacentFarmlandWorked[targetFarmland] = true;
+                Debug.Log("NPC WORK UPDATE: ADD");
+                targetFarm.adjacentFarmlandWorked[targetFarmland] = npc;
                 npc.SetNavmeshTarget(targetFarmland.transform.position, targetFarmland, targetFarm);
                 NPCManager.instance.ChangeNpcStatus(npc, true);
                 workingPeople.Add(npc);
@@ -345,10 +348,7 @@ public class PlacedObject : MonoBehaviour
         {
             if (peopleSentBack < _amount)
             {
-                npc.ReturnHome(false);
-                NPCManager.instance.ChangeNpcStatus(npc, false);
                 peopleSentBackList.Add(npc);
-                Debug.Log($"Sending people back: {npc.name} Back");
                 peopleSentBack++;
             }
             else break;
@@ -356,7 +356,7 @@ public class PlacedObject : MonoBehaviour
 
         foreach(NavmeshNpc npc in peopleSentBackList)
         {
-            workingPeople.Remove(npc);
+            SendNpcBack(npc, false);
         }
 
         //Return amount of people that stopped working
@@ -365,19 +365,22 @@ public class PlacedObject : MonoBehaviour
 
     public void SendNpcBack(NavmeshNpc npc, bool teleport)
     {
-        NPCManager.instance.totalWorkingPeople--;
-        if(npc.destinationBuilding != null)
+        if (npc == null) return;
+        workingPeople.Remove(npc);
+        NPCManager.instance.ChangeNpcStatus(npc, false);
+
+        if (npc.destinationBuilding != null)
         {
             if (npc.destinationBuilding.name == "Akker" && npc.destinationBuilding != null) FreeFarmland(npc.targetFarm, npc.destinationBuilding);
         }
         npc.destinationBuilding = null;
-        workingPeople.Remove(npc);
+        Debug.Log("NPC WORK UPDATE: REMOVE");
         npc.ReturnHome(teleport);
     }
 
     public void FreeFarmland(PlacedObject farm, PlacedObject farmland)
     {
-        farm.adjacentFarmlandWorked[farmland] = false;
+        farm.adjacentFarmlandWorked[farmland] = null;
     }
 
     void SpawnPeople()
@@ -464,7 +467,7 @@ public class PlacedObject : MonoBehaviour
 
         if(name == "Boerderij")
         {
-            foreach(KeyValuePair<PlacedObject, bool> kvp in adjacentFarmlandWorked)
+            foreach(KeyValuePair<PlacedObject, NavmeshNpc> kvp in adjacentFarmlandWorked)
             {
                 kvp.Key.farm = null;
                 kvp.Key.isConnectedFarmland = false;

@@ -158,10 +158,6 @@ public class GridBuildingSystem : MonoBehaviour
         roadManager.UpdateConnections(gridPos, false);
 
         BuildingScriptableObject oldBuildingSO = placedObject.GetScriptableObject();
-        //if (oldBuildingSO != buildingSO)
-        //{
-        //    economyManager.HandleRemovedBuilding(placedObject.GetScriptableObject(), placedObject);
-        //}
 
         SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, placeObjVolume);
 

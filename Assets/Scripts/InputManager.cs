@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 //TODO: Refactoring :(
 public class InputManager : MonoBehaviour
 {
     public event Action<Vector3> OnClicked, OnMouseHold, OnHover;
     public event Action OnMouseUp, OnExit, OnHoverExit;
     private Vector2 cameraMovementVector;
+    Vector2 lastCursorPosition;
     private Vector3? lastHoverPosition; //can be null
+    bool unlockedMouse;
 
     [SerializeField] Camera mainCamera;
     [SerializeField] private float hoverExitDistanceThreshold = 0.05f;
@@ -17,6 +20,29 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+        if(TimelineManager.Instance != null)
+        {
+            if(TimelineManager.Instance.director.state != UnityEngine.Playables.PlayState.Paused)
+            {
+                if(unlockedMouse)
+                {
+                    lastCursorPosition = Input.mousePosition;
+                    Cursor.lockState = CursorLockMode.Locked;
+                    unlockedMouse = false;
+                }
+                return;
+            }
+            else
+            {
+                if (!unlockedMouse)
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Mouse.current.WarpCursorPosition(lastCursorPosition);
+                    Debug.Log($"Warping mouse to {lastCursorPosition}");
+                    unlockedMouse = true;
+                }
+            }
+        }
         CheckClickDownEvent();
         CheckClickUpEvent();
         CheckClickHoldEvent();
