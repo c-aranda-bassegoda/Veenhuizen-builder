@@ -13,7 +13,7 @@ public class UIController : MonoBehaviour
     public Button  deleteButton, rotateButton;
     public Button reportCloseButton;
     public GameObject panelHousing, interruptionPanel;
-    public GameObject progressReport, gameOverMssg, SeeVillageButtom, backToMenuButton;
+    public GameObject progressReport, gameOverMssg, endYearReportMsg, SeeVillageButtom, backToMenuButton;
     public GameObject errorPopUp;
     public GameObject buildMenu;
     public GameObject helpMenu;
@@ -176,7 +176,11 @@ public class UIController : MonoBehaviour
     {
         if(cursorManager != null) cursorManager.ChangeCursorTexture1();
         if(progressReport != null) progressReport.SetActive(true);
-        if(gameOverMssg != null) gameOverMssg.SetActive(true);
+        if (gameOverMssg != null)
+        {
+            gameOverMssg.SetActive(false);
+            endYearReportMsg.SetActive(true);
+        }
         if(SeeVillageButtom != null) SeeVillageButtom.SetActive(true);
         if(reportCloseButton != null) reportCloseButton.gameObject.SetActive(false);
         if(interruptionPanel != null) interruptionPanel.SetActive(true);

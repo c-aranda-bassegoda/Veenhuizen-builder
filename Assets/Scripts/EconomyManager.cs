@@ -32,7 +32,7 @@ public class EconomyManager : MonoBehaviour
         else { Debug.Log("No building " + name); return -1; } 
     }
 
-    public float happy, control, money, food, ppl, morality;
+    public float happy, control, money, extraMoneyEachSeason, food, ppl, morality;
     [SerializeField] private bool timePaused = false;
     //[SerializeField] private List<BuildingScriptableObject> buildings;
     [SerializeField] private List<BuildingScriptableObject> placedBuildingsSOs;
@@ -123,6 +123,8 @@ public class EconomyManager : MonoBehaviour
                 else
                 {
                     //CursorManager.instance.ChangeCursorTexture1();
+                    money += extraMoneyEachSeason;
+                    GameEvents.OnMoneyChanged?.Invoke(money);
                     GameEvents.OnShowProgressReport?.Invoke(GetGameTip());
                 }
             }
