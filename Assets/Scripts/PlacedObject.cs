@@ -320,14 +320,12 @@ public class PlacedObject : MonoBehaviour
         if (inInstitution) objectToCheck = parent;
         else objectToCheck = this;
 
+        if(objectToCheck == null) return 0;
+
         List<PlacedObject> connectedFarms = RoadManager.instance.GetConnectedFarms(objectToCheck);  
 
-        Debug.Log($"Connected farms for {objectToCheck.name}: {connectedFarms.Count}");
-
         if(connectedFarms.Count < 1) return 0;
-
-        Debug.Log($"Sending people to work from {gameObject.name}");    
-
+  
         //implement this on npc
 
         foreach (NavmeshNpc npc in associatedWorkingPeople)
@@ -506,17 +504,18 @@ public class PlacedObject : MonoBehaviour
             }
         }
 
-        if (isModule && parent != null)
-        {
-            return parent.Destructor();
-        }
+        //if (isModule && parent != null)
+        //{
+        //    return parent.Destructor();
+        //}
         int associatedPeopleAmt = 0;
         if (associatedWorkingPeople != null) associatedPeopleAmt = associatedWorkingPeople.Count;
         if (modules != null)
         {
             foreach (PlacedObject module in modules)
             {
-                Destroy(module.gameObject);
+                GridBuildingSystem.instance.RemoveModule(module);
+                Debug.Log("Destroying module");
             }
         }
 

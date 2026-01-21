@@ -168,26 +168,40 @@ public class GridBuildingSystem : MonoBehaviour
         return placedObj;
     }
 
+    public void RemoveModule(PlacedObject module)
+    {
+        if(module != null)
+        {
+            BuildingScriptableObject objSO = module.Destructor();
+            Vector3 objPosition = module.transform.position;
+            Vector3 graphicsOffset = new Vector3(objSO.width * GridCellSize / 2, 0, objSO.height * GridCellSize / 2);
+            economyManager.HandleRemovedBuilding(objSO, module);
+            economyManager.ShowTransaction(objPosition, null, objSO, false, false, graphicsOffset);
+            if(placedObjects.Contains(module)) placedObjects.Remove(module);
+        }
+    }
+
     public PlacedObject RemoveObject(Vector3 worldPosition)
     {
+        PlacedObject placedObject = null;
+
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
         roadManager.DisconnectObject(new Vector2Int(x, z));
 
         if (buildingSO == null) return null;
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
 
+   
         GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
-
-        PlacedObject placedObject = gridObject.GetPlacedObject();
-
-        if (placedObject.isModule)
-        {
-            placedObject = placedObject.parent;
-            Debug.Log("Deleting gesticht over module");
-        }
+        placedObject = gridObject.GetPlacedObject();
 
         if (placedObject != null)
         {
+            if (placedObject.isModule)
+            {
+                placedObject = placedObject.parent;
+                Debug.Log("Deleting gesticht over module");
+            }
             Vector3 objPosition = placedObject.transform.position;
             //BuildingScriptableObject objSO = placedObject.GetScriptableObject();
             economyManager.HandleRemovedBuilding(placedObject.GetScriptableObject(), placedObject);

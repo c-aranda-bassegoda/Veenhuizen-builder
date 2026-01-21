@@ -23206,7 +23206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   happy: 0
   control: 0
-  money: 100000
+  money: 1000000
   extraMoneyEachSeason: 100000
   food: 0
   ppl: 0
