@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     //[SerializeField] TextMeshProUGUI yearNumberText;
     [SerializeField] Transform sliderPin;
     private int workingPpl = 0;
+    float _timePassed, _timePerSeason;
+    Season _season;
 
 
 
@@ -58,19 +60,25 @@ public class UIManager : MonoBehaviour
     {
         moneyAmountText.text = ((int)newAmount).ToString();
 
-        if(newAmount < 70000)
+        if(skipToNextSeason != null)
         {
-            skipToNextSeason.SetActive(true);
-        }
-        else
-        {
-            skipToNextSeason.SetActive(false);
+            if((newAmount < 70000) && (_season != Season.Spring || _timePassed >= (_timePerSeason / 2)))
+            {
+                skipToNextSeason.SetActive(true);
+            }
+            else
+            {
+                skipToNextSeason.SetActive(false);
+            }
         }
     }
 
     public void UpdateCalendar(Season season, float timePassed, float timePerSeason)
     {
         //between 90 and -90
+        _timePassed = timePassed;
+        _timePerSeason = timePerSeason;
+        _season = season;
 
         float pinAngle = 90f;
 
