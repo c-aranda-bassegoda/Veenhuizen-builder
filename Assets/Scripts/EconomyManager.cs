@@ -238,11 +238,11 @@ public class EconomyManager : MonoBehaviour
         NPCManager.instance.ChangeValues(control, happy, ppl);
         GameEvents.OnStatsChanged?.Invoke(happy, control, ppl);
 
+        Debug.Log($"Deleted {oldObject.name}");
 
         money += oldObject.buildCost;
         placedBuildingsSOs.Remove(oldObject);
         GameEvents.OnMoneyChanged?.Invoke(money);
-        Debug.Log("Happy: " + happy.ToString() + " Control: " + control.ToString() + "Population: " + ppl.ToString());
     }
 
     internal void HandleDisconnectedBuilding(BuildingScriptableObject oldObject, PlacedObject building)

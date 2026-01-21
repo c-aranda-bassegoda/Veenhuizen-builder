@@ -157,43 +157,16 @@ public class GridBuildingSystem : MonoBehaviour
             grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
         roadManager.UpdateConnections(gridPos, false);
 
-        //if (placedObj.gameObject.name == "Badhuis_module") placedObj.transform.GetChild(0).rotation = Quaternion.Euler(90, placedObj.transform.rotation.y, placedObj.transform.rotation.z);
+        BuildingScriptableObject oldBuildingSO = placedObject.GetScriptableObject();
+        //if (oldBuildingSO != buildingSO)
+        //{
+        //    economyManager.HandleRemovedBuilding(placedObject.GetScriptableObject(), placedObject);
+        //}
 
         SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, placeObjVolume);
 
         return placedObj;
     }
-    private void RemoveModule(Vector3 worldPosition)
-    {
-        RemoveObject(worldPosition); //Placeholder
-    }
-
-    //public BuildingScriptableObject PlaceRoad(Vector3 worldPosition)
-    //{
-    //    grid.GetXYZ(worldPosition, out int x, out int y, out int z);
-    //    List<Vector2Int> gridPositionList = roadSO.GetGridPositionList(new Vector2Int(x, z), roadSO.Direction);
-    //    Vector3 rotatedObjWorldPosition = GetRotatedObjectPositionAt(x, z);
-
-
-    //    if (CanPlace(gridPositionList))
-    //    {
-    //        Debug.Log($"Placing road at {new Vector2Int(x, z)}");
-    //        PlacedObject placedObj = PlacedObject.Create(rotatedObjWorldPosition, new Vector2Int(x, z), roadSO.Direction, roadSO, false);
-    //        foreach (Vector2Int position in gridPositionList)
-    //            grid.GetGridObj(position.x, position.y).SetPlacedObject(placedObj);
-
-    //        roadManager.PlaceRoad(new Vector2Int(x, z), placedObj.gameObject.transform.GetChild(0).GetComponent<MeshFilter>());
-
-    //        SoundFXManager.Instance.PlaySoundFXClip(placeObjectSound, placedObj.transform, 0.2f);
-    //    }
-    //    else
-    //    {
-    //        //TODO: "can't place" pop up message for player
-    //        Debug.Log("Can't build");
-    //        SoundFXManager.Instance.PlaySoundFXClip(errorSound, transform, 1f);
-    //    }
-    //    return roadSO;
-    //}
 
     public PlacedObject RemoveObject(Vector3 worldPosition)
     {
@@ -205,7 +178,14 @@ public class GridBuildingSystem : MonoBehaviour
 
         GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
 
-        PlacedObject placedObject = (gridObject == null ? null : gridObject.GetPlacedObject());
+        PlacedObject placedObject = gridObject.GetPlacedObject();
+
+        if (placedObject.isModule)
+        {
+            placedObject = placedObject.parent;
+            Debug.Log("Deleting gesticht over module");
+        }
+
         if (placedObject != null)
         {
             Vector3 objPosition = placedObject.transform.position;
@@ -236,7 +216,8 @@ public class GridBuildingSystem : MonoBehaviour
             SoundFXManager.Instance.PlaySoundFXClip(deleteSound, placedObject.transform, deleteVolume);
             return placedObject;
         }
-        return null;
+        else Debug.LogWarning("Building you tried to delete is null");
+            return null;
     }
 
     public string ReturnObjectBody(Vector3 worldPosition)
