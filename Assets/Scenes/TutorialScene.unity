@@ -12567,7 +12567,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'Je wilt de mensen blij en aan het werk houden. Verschillende gebouwen
-    dragen hier op een andere manier aan bij. Probeer bijvoorbeeld een kerk of opzienerswoning!
+    dragen hier op een andere manier aan bij. Probeer bijvoorbeeld een kerk of wachthuisje!
 
 
 '
@@ -13855,6 +13855,7 @@ MonoBehaviour:
   interruptionPanel: {fileID: 247244796}
   progressReport: {fileID: 116372943}
   gameOverMssg: {fileID: 89447569}
+  endYearReportMsg: {fileID: 0}
   SeeVillageButtom: {fileID: 1137047261}
   backToMenuButton: {fileID: 0}
   errorPopUp: {fileID: 461315608}
@@ -27545,6 +27546,7 @@ MonoBehaviour:
   happy: 0
   control: 0
   money: 100000
+  extraMoneyEachSeason: 0
   food: 0
   ppl: 0
   morality: 0
