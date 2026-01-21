@@ -60,10 +60,11 @@ public class TooltipGridController : MonoBehaviour
             currentData = null;
             return;
         }
+
         if (data.GetHeader() == "Empty")
         {
             placedObject = placedObject.parent;
-            if(placedObject == null)
+            if (placedObject == null)
             {
                 currentData = null;
                 return;
@@ -80,6 +81,11 @@ public class TooltipGridController : MonoBehaviour
                 currentData = null;
                 return;
             }
+        }
+
+        if(placedObject.name == "Gesticht")
+        {
+            data = GetEntireInstutionData(placedObject, data);
         }
 
         if (IsSameData(data, currentData)) return;
@@ -152,6 +158,27 @@ public class TooltipGridController : MonoBehaviour
 
         return isSameData;
 
+    }
+
+    TooltipBuildingData GetEntireInstutionData(PlacedObject institution, TooltipBuildingData data)
+    {
+        TooltipBuildingData baseData = data;
+
+        foreach(PlacedObject module in institution.modules)
+        {
+            if(module == null) continue;
+            BuildingScriptableObject moduleBSO = module.GetScriptableObject();
+            if(moduleBSO == null) continue;
+            TooltipBuildingData moduleData = moduleBSO.GetData();
+            if(moduleData == null) continue;
+
+            baseData.controlCount += moduleData.controlCount;
+            baseData.peopleCount += moduleData.peopleCount;
+            baseData.happinessCount += moduleData.happinessCount;
+            baseData.cost += moduleData.cost;
+        }
+
+        return baseData;
     }
 }
 

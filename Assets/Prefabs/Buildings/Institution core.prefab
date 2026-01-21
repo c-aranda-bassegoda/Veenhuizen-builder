@@ -280,6 +280,7 @@ MonoBehaviour:
   timeBetweenSpawns: 0
   associatedWorkingPeople: []
   associatedNonWorkingPeople: []
+  workingPeople: []
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
@@ -393,6 +394,7 @@ MonoBehaviour:
   timeBetweenSpawns: 0
   associatedWorkingPeople: []
   associatedNonWorkingPeople: []
+  workingPeople: []
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
@@ -655,6 +657,7 @@ MonoBehaviour:
   timeBetweenSpawns: 0
   associatedWorkingPeople: []
   associatedNonWorkingPeople: []
+  workingPeople: []
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
@@ -778,6 +781,7 @@ MonoBehaviour:
   timeBetweenSpawns: 0
   associatedWorkingPeople: []
   associatedNonWorkingPeople: []
+  workingPeople: []
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
@@ -896,6 +900,7 @@ MonoBehaviour:
   timeBetweenSpawns: 0
   associatedWorkingPeople: []
   associatedNonWorkingPeople: []
+  workingPeople: []
   buildingOrigin: {fileID: 0}
   farmlandCount: {fileID: 0}
   isConnectedFarmland: 0
