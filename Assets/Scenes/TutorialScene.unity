@@ -840,7 +840,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &39313781
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6370,9 +6370,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Ok
-
-'
+  m_text: Volgende
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -8464,8 +8462,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 123.05, y: -163.875}
-  m_SizeDelta: {x: 300, y: 0}
+  m_AnchoredPosition: {x: 123.05, y: -113.9}
+  m_SizeDelta: {x: 300, y: 176.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &522993931
 Animator:
@@ -8543,7 +8541,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Lets build an institution. Click on the institution Icon and place it.
+  m_text: 'Laten we een gesticht bouwen. Klik op het gesticht icoon en plaats het
+    in je kolonie.
 
 '
   m_isRightToLeft: 0
@@ -9433,7 +9432,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 123.05, y: -113.9}
-  m_SizeDelta: {x: 300, y: 216.25}
+  m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &622221306
 Animator:
@@ -9511,8 +9510,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'This is your score. \nIt shows how successful the colony is. A good colony
-    is one where people are happy and work hard.
+  m_text: 'Hier kun je zien hoe het met de mensen in je kolonie gaat. In een goede
+    kolonie zijn de mensen blij en werken ze hard.
 
 '
   m_isRightToLeft: 0
@@ -11702,8 +11701,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 123.05, y: -91.442505}
-  m_SizeDelta: {x: 300, y: 0}
+  m_AnchoredPosition: {x: 123.05, y: -113.9}
+  m_SizeDelta: {x: 300, y: 137.11}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &738421006
 Animator:
@@ -11781,7 +11780,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Here you can see how many people there are in your colony
+  m_text: 'Hier kan je zien hoeveel mensen er wonen in je kolonie.
 
 '
   m_isRightToLeft: 0
@@ -12488,8 +12487,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 123.05, y: -108.125}
-  m_SizeDelta: {x: 300, y: 216.25}
+  m_AnchoredPosition: {x: 123.05, y: -155.06}
+  m_SizeDelta: {x: 300, y: 310.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &773345274
 Animator:
@@ -12567,8 +12566,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Churches and overseers help spread good morals. People with good morals
-    work harder for the colony
+  m_text: 'Je wilt de mensen blij en aan het werk houden. Verschillende gebouwen
+    dragen hier op een andere manier aan bij. Probeer bijvoorbeeld een kerk of opzienerswoning!
+
 
 '
   m_isRightToLeft: 0
@@ -12597,8 +12597,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.3
-  m_fontSizeBase: 36.3
+  m_fontSize: 32.1
+  m_fontSizeBase: 32.1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -12635,7 +12635,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -16.169613, w: 21.67534}
+  m_margin: {x: 0, y: -32.33635, z: -16.169613, w: 103.070244}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -14176,8 +14176,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 120.2, y: -122.7}
-  m_SizeDelta: {x: 300, y: 295.38}
+  m_AnchoredPosition: {x: 123.05, y: -113.9}
+  m_SizeDelta: {x: 300, y: 216.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &946840739
 Animator:
@@ -14255,9 +14255,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Farms need fields. Each farm can handle 10 fields and they need to be connected
-    to farms directly or through other fields. Click on the field icon and place
-    it.
+  m_text: Boerderijen hebben akkers nodig. Elke boerderij heeft plek voor 10 akkers.
+    Klik op het akker icoon en plaats het in je kolonie.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -17298,7 +17297,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 123.05, y: -113.9}
-  m_SizeDelta: {x: 300, y: 0}
+  m_SizeDelta: {x: 300, y: 216.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1086513600
 Animator:
@@ -17376,8 +17375,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "At the end of every season you can see how many people have been working
-    and how good they are. \n"
+  m_text: 'Aan het einde van elk seizoen krijg je een rapport van hoe het met je
+    kolonie gaat. Ook krijg je geld erbij!
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -20855,8 +20856,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 123.05, y: -63.09}
-  m_SizeDelta: {x: 300, y: 0}
+  m_AnchoredPosition: {x: 123.05, y: -113.9}
+  m_SizeDelta: {x: 300, y: 126.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1273477260
 Animator:
@@ -20934,7 +20935,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Welcome to Veenhuizen!
+  m_text: Welkom in Veenhuizen!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -22638,8 +22639,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 123.05, y: -108.125}
-  m_SizeDelta: {x: 300, y: 216.25}
+  m_AnchoredPosition: {x: 123.05, y: -113.9}
+  m_SizeDelta: {x: 300, y: 176.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1396244490
 Animator:
@@ -22717,10 +22718,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Om een gebouw te verwijderen, klik je op de prullenbak.\nYou get money
-    back when you delete a building
-
-'
+  m_text: "Om een gebouw te verwijderen, klik je op de prullenbak. Hier krijg je
+    gewoon je geld terug! \n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -22967,9 +22966,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Skip Tutorial
-
-'
+  m_text: Overslaan
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -23226,7 +23223,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 123.05, y: -113.9}
-  m_SizeDelta: {x: 300, y: 216.25}
+  m_SizeDelta: {x: 300, y: 137.11}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1415857756
 Animator:
@@ -23304,11 +23301,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Buildings that people can''t get to have an exclamation mark. For people
-    to get to work we need roads. \nClick on the rod icon and place it.
-
-
-'
+  m_text: Je hebt wegen nodig zodat mensen naar de boerderij kunnen om te werken.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -24097,7 +24090,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start Game
+  m_text: Start Spel
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -24785,7 +24778,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 123.05, y: -81.552505}
+  m_AnchoredPosition: {x: 123.05, y: -113.9}
   m_SizeDelta: {x: 300, y: 97.55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1512287298
@@ -24864,9 +24857,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Keep an eye on your money or it might run out!
-
-'
+  m_text: Hier kun je je geld zien. Besteed verstandig!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -27683,10 +27674,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'We can improve the institutions by building rooms, schools and more in
-    the empty wings of the institution.
-
-'
+  m_text: "We kunnen het gesticht vullen met meer gebouwen, zoals met scholen en
+    badhuizen, in de lege vleugels van het gesticht. \n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
   m_sharedMaterial: {fileID: -7527418877153827435, guid: 230ff8ca72e7a564cb3a7134fe03a230, type: 2}
@@ -28203,7 +28192,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 123.05, y: -113.9}
-  m_SizeDelta: {x: 300, y: 176.68}
+  m_SizeDelta: {x: 300, y: 176.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1870101765
 Animator:
@@ -28281,8 +28270,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The people of Veenhuizen need a place to work. Lets build a farm. Click
-    on the Farm Icon and place it.
+  m_text: 'De mensen in veenhuizen hebben een plek nodig om te werken. Laten we een
+    boerderij bouwen! Klik op het boerderij iccon en plaats het in je kolonie.
 
 '
   m_isRightToLeft: 0
@@ -28311,8 +28300,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.3
-  m_fontSizeBase: 36.3
+  m_fontSize: 28.9
+  m_fontSizeBase: 28.9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
