@@ -262,7 +262,7 @@ public class UIController : MonoBehaviour
         //Disable all building options
         layout.gameObject.SetActive(false);
         //Enable the expand icon
-        button.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+        button.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
     }
 
     public void HideOtherSidebars(Transform button)
@@ -284,7 +284,7 @@ public class UIController : MonoBehaviour
         layout.gameObject.SetActive(true);
 
         //Disable the expand icon
-        button.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+        button.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
 
         HideOtherSidebars(button);
     }
@@ -306,7 +306,7 @@ public class UIController : MonoBehaviour
             layout.gameObject.SetActive(true);
 
             //Disable the expand icon
-            button.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+            button.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
         }
         HideOtherSidebars(button);
     }
