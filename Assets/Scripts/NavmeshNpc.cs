@@ -278,6 +278,7 @@ public class NavmeshNpc : MonoBehaviour
 
     public void SetNavmeshTarget(Vector3 targetPos, PlacedObject building, PlacedObject _targetFarm = null)
     {
+        if(!agent.enabled) agent.enabled = true;
         if(building.gameObject.name != "Gesticht") returningToGesticht = false;
         shouldIdleInGesticht = false;
         //startY = charImage.transform.position.y;
@@ -416,8 +417,12 @@ public class NavmeshNpc : MonoBehaviour
     public float GetPathDistance(Vector3 targetPosition)
     {
         NavMeshPath path = new NavMeshPath();
-        if (!agent.CalculatePath(targetPosition, path) || path.status != NavMeshPathStatus.PathComplete)
-            return -1f;  // Return -1 if unreachable
+
+        if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
+        {
+            if (!agent.CalculatePath(targetPosition, path) || path.status != NavMeshPathStatus.PathComplete)
+                return -1f;  // Return -1 if unreachable
+        }
 
         float distance = 0f;
 

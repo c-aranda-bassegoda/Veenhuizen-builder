@@ -454,8 +454,8 @@ public class PlacedObject : MonoBehaviour
                 NavmeshNpc newNpc = null;
                 if (j == 0)
                 {
-                    if(isModule) newNpc = Instantiate(person, parent.transform.GetChild(0).position, Quaternion.Euler(0, 0, 0));
-                    else newNpc = Instantiate(person, transform.GetChild(0).position, Quaternion.Euler(0, 0, 0));
+                    if(isModule) newNpc = Instantiate(person, parent.transform.GetChild(0).position + new Vector3(0, 2.2f, 0), Quaternion.Euler(0, 0, 0));
+                    else newNpc = Instantiate(person, transform.GetChild(0).position + new Vector3(0, 2.2f, 0), Quaternion.Euler(0, 0, 0));
 
                     newNpc.shouldIdleInGesticht = true;
                     associatedWorkingPeople.Add(newNpc);
@@ -465,12 +465,12 @@ public class PlacedObject : MonoBehaviour
                 {
                     if (!isModule)
                     {
-                        newNpc = Instantiate(person, buildingOrigin.parent.position, Quaternion.Euler(0, 0, 0));
+                        newNpc = Instantiate(person, buildingOrigin.parent.position + new Vector3(0, 2.2f, 0), Quaternion.Euler(0, 0, 0));
                         newNpc.shouldRotate = true;
                     }
                     else
                     {
-                        newNpc = Instantiate(person, buildingOrigin.parent.GetChild(0).position, Quaternion.Euler(0, 0, 0));
+                        newNpc = Instantiate(person, buildingOrigin.parent.GetChild(0).position + new Vector3(0, 2.2f, 0), Quaternion.Euler(0, 0, 0));
                         newNpc.shouldIdleInGesticht = true;
                     }
                     associatedNonWorkingPeople.Add(newNpc);

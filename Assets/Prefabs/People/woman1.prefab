@@ -219,7 +219,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8048819763237961149}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.05
   m_Speed: 3.5
@@ -259,6 +259,7 @@ MonoBehaviour:
   shouldIdleInGesticht: 0
   planeSize: {x: 10, y: 10}
   idleWaitTime: 1
+  returningToGesticht: 0
 --- !u!54 &5173809219066261808
 Rigidbody:
   m_ObjectHideFlags: 0
