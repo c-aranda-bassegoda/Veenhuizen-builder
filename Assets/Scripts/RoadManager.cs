@@ -229,9 +229,10 @@ public class RoadManager : MonoBehaviour
                                 Debug.Log($"Found all positions, restoring groups to old");
                                 break;
                             }
-                            objectsInNewGroup.Add(placedObject);
+                            if (!objectsInNewGroup.Contains(placedObject)) objectsInNewGroup.Add(placedObject);
+                            else Debug.LogWarning("Positions are being checked more than once");
 
-                            List<Vector2Int> newAdjacentPositions = GetAdjacentRoadPositions(uncheckedPos);
+                                List<Vector2Int> newAdjacentPositions = GetAdjacentRoadPositions(uncheckedPos);
                             foreach (Vector2Int newAdjPos in newAdjacentPositions)
                             {
                                 if (!checkedPositions.Contains(newAdjPos) && (pos != newAdjPos)) newPositionsTempList.Add(newAdjPos);
@@ -442,6 +443,8 @@ public class RoadManager : MonoBehaviour
                 PlacedObject adjPlacedObject = adjGridObject.GetPlacedObject();
                 if (adjPlacedObject == null) continue;
 
+                Debug.Log($"Found adjacent object: {adjPlacedObject.name} at {adjPlacedObject.GetOrigin()}");
+
                 if (findFarmland)
                 {
                     if (adjPlacedObject.name == "Boerderij")
@@ -467,6 +470,11 @@ public class RoadManager : MonoBehaviour
                     }
                 }
             }
+        }
+
+        foreach (PlacedObject obj in directlyConnectedObjects)
+        {
+            Debug.Log($"Directly Connected Object: {obj.name}");
         }
 
         return directlyConnectedObjects;
@@ -530,14 +538,7 @@ public class RoadManager : MonoBehaviour
                 {
                     List<PlacedObject> connectedFarms = GetConnectedFarms(obj);
 
-                    //foreach(PlacedObject farm in connectedFarms)
-                    //{
-                    //    StartCoroutine(DelayedWarningUpdate(farm, obj));
-                    //}
                     StartCoroutine(DelayedWarningUpdate(obj, connectedFarms));
-
-                    //if (connectedFarms.Count > 0) obj.exclamationMark.SetActive(false);
-                    //else obj.exclamationMark.SetActive(true);
 
                 }
                 else obj.exclamationMark.SetActive(false);
@@ -556,26 +557,13 @@ public class RoadManager : MonoBehaviour
     IEnumerator DelayedWarningUpdate(PlacedObject farmland, List<PlacedObject> connectedFarms)
     {
         yield return new WaitForEndOfFrame();
-        bool farmHasFarmland = false;
 
-        //if (connectedFarms.Count > 0)
-        //{
-        //    foreach(PlacedObject farm in connectedFarms)
-        //    {
-        //        if (farm.adjacentFarmlandWorked.ContainsKey(farmland))
-        //        {
-        //            farmHasFarmland = true;
-        //        }
-        //    }
-        //}
-
-        //Debug.Log("111order: second");
         if(farmland != null)
         {
             if (farmland.isConnectedFarmland) farmland.exclamationMark.SetActive(false);
             else
             {
-                List<PlacedObject> newConnectedFarms = GetConnectedFarms(farmland);
+                List<PlacedObject> newConnectedFarms = FindConnectedFarmsOrFarmland(farmland.GetOrigin(), false);
                 Debug.Log($"Finding New Farms: {newConnectedFarms.Count}");
 
                 foreach(PlacedObject farm in newConnectedFarms)

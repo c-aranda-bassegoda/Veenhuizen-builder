@@ -12,7 +12,7 @@ public class TooltipSystem : MonoBehaviour
         current = this;
     }
 
-    public void Show(string body, int happinessCount, int controlCount, int peopleCount, string header = "")
+    public void Show(string body, int happinessCount, int controlCount, int peopleCount, int money, string header = "")
     {
         Debug.Log("Show Tooltip");
         for (int i = 0; i < happinessCount; i++) Instantiate(happinessImage, current.tooltip.happinessHeader.transform);
@@ -25,6 +25,7 @@ public class TooltipSystem : MonoBehaviour
         }
         else current.tooltip.peopleText.gameObject.SetActive(false);
 
+        current.tooltip.moneyText.text = money.ToString();
         current.tooltip.SetText(body, header);
         current.tooltip.gameObject.SetActive(true);
     }

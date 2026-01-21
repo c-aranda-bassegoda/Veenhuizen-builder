@@ -220,40 +220,7 @@ public class PlacedObject : MonoBehaviour
             farmlandCount.gameObject.transform.parent.gameObject.SetActive(true);
             if (adjacentFarmlandWorked == null) ConnectFarmland(true);
         }
-        if(placedSctiptableObject.name == "Akker")
-        {
-            List<PlacedObject> newFarms = RoadManager.instance.FindConnectedFarmsOrFarmland(origin, false);
 
-            foreach(PlacedObject farm in newFarms)
-            {
-                if(farm.adjacentFarmlandWorked.Count < 10)
-                {
-                    //Dictionary<PlacedObject, bool> newAdjacentFarmlandWorked = new();
-                    List<PlacedObject> newFarmland = RoadManager.instance.FindConnectedFarmsOrFarmland(farm.GetOrigin(), true);
-
-                    Debug.Log($"New farmland count: {newFarmland.Count}");
-
-                    foreach (PlacedObject farmland in newFarmland)
-                    {
-                        Debug.Log($"New farmland connected: {farmland.isConnectedFarmland}");
-                        Debug.Log($"New farmland dict count: {farm.adjacentFarmlandWorked.Count}");
-
-                        if (!farm.adjacentFarmlandWorked.ContainsKey(farmland))
-                        {
-                            if ((!farmland.isConnectedFarmland) && (farm.adjacentFarmlandWorked.Count < 10))
-                            {
-                                farmland.isConnectedFarmland = true;
-                                farmland.farm = farm;
-                                farm.adjacentFarmlandWorked.Add(farmland, false);
-                            }
-                        }
-                    }
-
-                    //This dict is always 1
-                    Debug.Log($"Updated farmland list from {gameObject.name} for {farm.gameObject.name}: {farm.adjacentFarmlandWorked.Count}");
-                }
-            }
-        }
         CacheRenderers();
 
         Debug.Log($"Registering building: {name}");

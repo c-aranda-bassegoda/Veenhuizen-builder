@@ -27,7 +27,7 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             body = buildingData.GetBody();
             header = buildingData.GetHeader();
         }
-        TooltipSystem.instance.Show(body, buildingData.happinessCount, buildingData.controlCount, buildingData.peopleCount, header);
+        TooltipSystem.instance.Show(body, buildingData.happinessCount, buildingData.controlCount, buildingData.peopleCount, buildingData.cost, header);
     }
 
     public void OnPointerExit(PointerEventData eventData)

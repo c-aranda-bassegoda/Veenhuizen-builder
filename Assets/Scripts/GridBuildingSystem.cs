@@ -183,17 +183,18 @@ public class GridBuildingSystem : MonoBehaviour
 
     public PlacedObject RemoveObject(Vector3 worldPosition)
     {
-        PlacedObject placedObject = null;
-
+        if(grid == null) return null;
         grid.GetXYZ(worldPosition, out int x, out int y, out int z);
+
         roadManager.DisconnectObject(new Vector2Int(x, z));
 
         if (buildingSO == null) return null;
         List<Vector2Int> gridPositionList = buildingSO.GetGridPositionList(new Vector2Int(x, z), buildingSO.Direction);
 
-   
         GridObject gridObject = grid.GetGridObj(UtilitiesClass.GetMouseWorldPositionXZ());
-        placedObject = gridObject.GetPlacedObject();
+        if (gridObject == null) return null;
+
+        PlacedObject placedObject = gridObject.GetPlacedObject();
 
         if (placedObject != null)
         {

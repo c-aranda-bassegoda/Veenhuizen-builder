@@ -11,7 +11,7 @@ public class Tooltip : MonoBehaviour
     public int characterWrapLimit;
 
     public GameObject happinessHeader, controlHeader;
-    public TextMeshProUGUI peopleText;
+    public TextMeshProUGUI peopleText, moneyText;
 
     public RectTransform rectTransform;
     public float offset = 100f;
