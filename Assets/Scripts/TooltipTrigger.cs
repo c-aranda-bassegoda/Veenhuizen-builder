@@ -16,7 +16,11 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public TooltipBuildingData buildingData = null;
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (eventData.pointerEnter != gameObject)
+            return;
+
         hoverCoroutine = StartCoroutine(ExecuteAfterDelay());
+        Debug.Log($"Hovering over: {gameObject.name}");
     }
 
     private IEnumerator ExecuteAfterDelay()

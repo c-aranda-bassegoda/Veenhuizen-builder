@@ -1616,7 +1616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: School
   body: 'Happiness: +15
 
@@ -2792,7 +2792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Akker
   body: 
 --- !u!1001 &165771165
@@ -6478,7 +6478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Ziekenzaal
   body: 
 --- !u!1 &413605919
@@ -6655,7 +6655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Gesticht
   body: 
 --- !u!1 &418641789
@@ -7417,7 +7417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Zandweg
   body: 
 --- !u!1001 &474499560
@@ -8938,7 +8938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: Gesticht
   body: 'Indirecte arbeid; huisvesting
 
@@ -12946,7 +12946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: Farm
   body: 'Happiness: +15
 
@@ -13491,7 +13491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: School
   body: 'Happiness: +15
 
@@ -13771,7 +13771,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: School
   body: 
 --- !u!1001 &1032111328
@@ -15447,7 +15447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: School
   body: 'Happiness: +15
 
@@ -16213,7 +16213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Boerderij
   body: 
 --- !u!1 &1146105913
@@ -16462,7 +16462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Opzienerswoning
   body: 
 --- !u!1 &1166583210
@@ -17128,7 +17128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Wachthuisje
   body: 
 --- !u!1 &1212771364
@@ -19152,7 +19152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: Werkplaats
   body: 'Happiness: +15
 
@@ -19324,7 +19324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -20651,7 +20651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: Road
   body: 'Happiness: +15
 
@@ -21103,7 +21103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Werkplaats
   body: 
 --- !u!1 &1524319312
@@ -22941,7 +22941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Slaapzaal
   body: 
 --- !u!1001 &1678835291
@@ -23523,7 +23523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -24354,7 +24354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: Farm
   body: 'Happiness: +15
 
@@ -25123,7 +25123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: School
   body: 'Happiness: +15
 
@@ -25403,7 +25403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Badhuis
   body: 
 --- !u!1 &1954575931
@@ -25566,7 +25566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0.5
+  delay: 0
   header: Kerk
   body: 
 --- !u!1 &1972718143
@@ -26491,7 +26491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: Institution
   body: 'Happiness: +5
 
@@ -28000,7 +28000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7d2b99d1b058349937d28b38dbc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 1
+  delay: 0
   header: Church
   body: 'Happiness: +5
 
