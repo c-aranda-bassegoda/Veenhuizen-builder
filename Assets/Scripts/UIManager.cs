@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI moneyAmountText;
     [SerializeField] TextMeshProUGUI foodAmountText;
 
+    [SerializeField] GameObject skipToNextSeason;
+
     [Header("Calendar")]
     //[SerializeField] TextMeshProUGUI dayNumberText;
     //[SerializeField] TextMeshProUGUI seasonText;
@@ -55,6 +57,15 @@ public class UIManager : MonoBehaviour
     public void UpdateMoney(float newAmount)
     {
         moneyAmountText.text = ((int)newAmount).ToString();
+
+        if(newAmount < 70000)
+        {
+            skipToNextSeason.SetActive(true);
+        }
+        else
+        {
+            skipToNextSeason.SetActive(false);
+        }
     }
 
     public void UpdateCalendar(Season season, float timePassed, float timePerSeason)
