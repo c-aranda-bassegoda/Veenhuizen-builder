@@ -536,9 +536,7 @@ public class RoadManager : MonoBehaviour
             {
                 if (obj.gameObject.CompareTag("Farmland"))
                 {
-                    List<PlacedObject> connectedFarms = GetConnectedFarms(obj);
-
-                    StartCoroutine(DelayedWarningUpdate(obj, connectedFarms));
+                    StartCoroutine(DelayedWarningUpdate(obj));
 
                 }
                 else obj.exclamationMark.SetActive(false);
@@ -554,19 +552,33 @@ public class RoadManager : MonoBehaviour
         }
     }
 
-    IEnumerator DelayedWarningUpdate(PlacedObject farmland, List<PlacedObject> connectedFarms)
+    IEnumerator DelayedWarningUpdate(PlacedObject farmland)
     {
         yield return new WaitForEndOfFrame();
 
-        if(farmland != null)
+        List<PlacedObject> connectedFarms = FindConnectedFarmsOrFarmland(farmland.GetOrigin(), false);
+
+        if (farmland != null)
         {
+            if (farmland.farm != null)
+            {
+                farmland.farm.adjacentFarmlandWorked.Remove(farmland);
+                farmland.farm = null;
+            }
+            farmland.isConnectedFarmland = false;
+
+
+
+            Debug.Log($"Finding New Farms for {farmland.GetOrigin()}");
+
+            //this is true when it shouldnt be
             if (farmland.isConnectedFarmland) farmland.exclamationMark.SetActive(false);
             else
             {
-                List<PlacedObject> newConnectedFarms = FindConnectedFarmsOrFarmland(farmland.GetOrigin(), false);
-                Debug.Log($"Finding New Farms: {newConnectedFarms.Count}");
+                //List<PlacedObject> newConnectedFarms = FindConnectedFarmsOrFarmland(farmland.GetOrigin(), false);
+                //Debug.Log($"Finding New Farms: {newConnectedFarms.Count}");
 
-                foreach(PlacedObject farm in newConnectedFarms)
+                foreach(PlacedObject farm in connectedFarms)
                 {
                     if(farm.adjacentFarmlandWorked.Count < 10)
                     {
