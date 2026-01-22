@@ -61,5 +61,6 @@ public class Tooltip : MonoBehaviour
         rectTransform.pivot = new Vector2(pivotX, pivotY);
         position += new Vector2(200, 0);
         transform.position = position;
+        //transform.GetChild(0).position = position;
     }
 }
