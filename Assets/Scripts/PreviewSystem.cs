@@ -14,6 +14,7 @@ public class PreviewSystem : MonoBehaviour
     [SerializeField] private RoadManager roadManager;
     [SerializeField] private GridBuildingSystem gridSystem;
     private Material previewMaterial, roadPreviewMaterial;
+    [SerializeField] GameObject rightMouseHint;
 
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class PreviewSystem : MonoBehaviour
 
     public void StartPlacementPreview(BuildingScriptableObject buildingSO)
     {
+        if (TimelineManager.Instance == null) rightMouseHint.SetActive(true);
         Debug.Log($"Start placement preview");
         buildingPreview = Instantiate(buildingSO.prefab, new Vector3(0,0,0), Quaternion.identity);
 
@@ -58,13 +60,29 @@ public class PreviewSystem : MonoBehaviour
 
     public void StopPlacementPreview()
     {
+        if (TimelineManager.Instance == null) rightMouseHint.SetActive(false);
         Destroy(buildingPreview);
     }
 
     public void UpdatePreview(Vector3 worldPosition, Quaternion worldRotation, bool validity, bool replaceability)
     {
-        MovePreview(worldPosition, worldRotation);
-        ApplyFeedback(validity, replaceability);
+        if (TimelineManager.Instance != null)
+        {
+            if (TimelineManager.Instance.director.state != UnityEngine.Playables.PlayState.Paused)
+            {
+                MovePreview(new Vector3(1000, 1000, 1000), worldRotation);
+            }
+            else
+            {
+                MovePreview(worldPosition, worldRotation);
+                ApplyFeedback(validity, replaceability);
+            }
+        }
+        else
+        {
+            MovePreview(worldPosition, worldRotation);
+            ApplyFeedback(validity, replaceability);
+        }
     }
 
     private void ApplyFeedback(bool validity, bool replaceability)

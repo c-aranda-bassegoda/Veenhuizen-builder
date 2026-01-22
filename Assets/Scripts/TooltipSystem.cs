@@ -39,6 +39,7 @@ public class TooltipSystem : MonoBehaviour
 
     public void Show(string body, int happinessCount, int controlCount, int peopleCount, int money, string header = "")
     {
+        if (TimelineManager.Instance != null) return;
         Debug.Log("Show Tooltip");
         if(happinessCount > 0)
         {

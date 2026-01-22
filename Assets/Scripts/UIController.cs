@@ -99,7 +99,8 @@ public class UIController : MonoBehaviour
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (TimelineManager.Instance != null) return;
+        if(Input.GetMouseButtonDown(1))
         {
             cursorManager.ChangeCursorTexture1();
             SoundFXManager.Instance.PlaySoundFXClip(clickSound, transform, 1f);

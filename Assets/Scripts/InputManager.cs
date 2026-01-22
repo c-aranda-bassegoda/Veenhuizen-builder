@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
     private Vector2 cameraMovementVector;
     Vector2 lastCursorPosition;
     private Vector3? lastHoverPosition; //can be null
-    bool unlockedMouse;
+    bool unlockedMouse, firstTime;
 
     [SerializeField] Camera mainCamera;
     [SerializeField] private float hoverExitDistanceThreshold = 0.05f;
@@ -22,6 +22,13 @@ public class InputManager : MonoBehaviour
     {
         if(TimelineManager.Instance != null)
         {
+            if(!firstTime)
+            {
+                lastCursorPosition = Input.mousePosition;
+                Cursor.lockState = CursorLockMode.Locked;
+                unlockedMouse = false;
+                firstTime = true;
+            }
             if(TimelineManager.Instance.director.state != UnityEngine.Playables.PlayState.Paused)
             {
                 if(unlockedMouse)
