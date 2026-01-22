@@ -70,7 +70,9 @@ public class EconomyManager : MonoBehaviour
 
     public GameTip GetGameTip()
     {
-        if((happy >= ppl) && (control >= ppl))
+        if(ppl == 0) return GameTip.MorePeople;
+
+        if ((happy >= ppl) && (control >= ppl))
         {
             if (NPCManager.instance.totalWorkingPeople < ppl)
             {
@@ -119,6 +121,7 @@ public class EconomyManager : MonoBehaviour
                 if (seasonsPassed >= 4)
                 {
                     GameEvents.OnGameFinished?.Invoke();
+                    TooltipSystem.Hide();
                     break;
                 }
                 else
@@ -126,6 +129,7 @@ public class EconomyManager : MonoBehaviour
                     //CursorManager.instance.ChangeCursorTexture1();
                     money += extraMoneyEachSeason;
                     GameEvents.OnMoneyChanged?.Invoke(money);
+                    TooltipSystem.Hide();
                     GameEvents.OnShowProgressReport?.Invoke(GetGameTip());
                 }
             }
@@ -176,7 +180,7 @@ public class EconomyManager : MonoBehaviour
         if (buildingSO.buildCost >= money)
         {
             PauseTime();
-            GameEvents.OnErrorMessage("Can't afford building");
+            GameEvents.OnErrorMessage("Niet genoeg geld");
             return false;
         }
 

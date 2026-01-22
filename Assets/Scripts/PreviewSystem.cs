@@ -15,6 +15,7 @@ public class PreviewSystem : MonoBehaviour
     [SerializeField] private GridBuildingSystem gridSystem;
     private Material previewMaterial, roadPreviewMaterial;
     [SerializeField] GameObject rightMouseHint;
+    [SerializeField] GameObject settingsMenu, progressReport;
 
     private void Awake()
     {
@@ -80,8 +81,23 @@ public class PreviewSystem : MonoBehaviour
         }
         else
         {
-            MovePreview(worldPosition, worldRotation);
-            ApplyFeedback(validity, replaceability);
+            if (settingsMenu != null && progressReport != null)
+            {
+                if(settingsMenu.activeSelf || progressReport.activeSelf)
+                {
+                    MovePreview(new Vector3(1000, 1000, 1000), worldRotation);
+                }
+                else
+                {
+                    MovePreview(worldPosition, worldRotation);
+                    ApplyFeedback(validity, replaceability);
+                }
+            }
+            else
+            {
+                MovePreview(worldPosition, worldRotation);
+                ApplyFeedback(validity, replaceability);
+            }
         }
     }
 

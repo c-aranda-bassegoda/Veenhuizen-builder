@@ -35,7 +35,7 @@ public class UIController : MonoBehaviour
     GridBuildingSystem gridBuildingSystem;
 
     [SerializeField] string happinessTip, controlTip, morePeopleTip, moreFarmsTip;
-    [SerializeField] TextMeshProUGUI tipText;
+    [SerializeField] TextMeshProUGUI tipText, endScoreText;
     [SerializeField] GameObject tipObj;
 
     private void Start()
@@ -144,7 +144,7 @@ public class UIController : MonoBehaviour
         cursorManager.ChangeCursorTexture1();
 
         prMoralitySlider.maxValue = economyManager.moralitySlider.maxValue;
-        prMoralitySlider.value = economyManager.moralitySlider.value; ;
+        prMoralitySlider.value = economyManager.moralitySlider.value;
 
         prWorkingText.text = NPCManager.instance.totalWorkingPeople.ToString() + " / " + NPCManager.instance.people.ToString();
 
@@ -175,11 +175,15 @@ public class UIController : MonoBehaviour
 
     public void ShowEndGameReportPanel()
     {
-        if(cursorManager != null) cursorManager.ChangeCursorTexture1();
+        prMoralitySlider.maxValue = economyManager.moralitySlider.maxValue;
+        prMoralitySlider.value = economyManager.moralitySlider.value;
+
+        if (cursorManager != null) cursorManager.ChangeCursorTexture1();
         if(progressReport != null) progressReport.SetActive(true);
         if (gameOverMssg != null)
         {
             gameOverMssg.SetActive(false);
+            endScoreText.text = (prMoralitySlider.value * 10).ToString();
             endYearReportMsg.SetActive(true);
         }
         if(SeeVillageButtom != null) SeeVillageButtom.SetActive(true);
