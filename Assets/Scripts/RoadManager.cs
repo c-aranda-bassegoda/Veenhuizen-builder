@@ -176,6 +176,7 @@ public class RoadManager : MonoBehaviour
             }
         }
 
+        List<List<PlacedObject>> newLists = new();
         List<List<PlacedObject>> listsToRemove = new();
         bool foundAllPositions = false;
 
@@ -222,7 +223,15 @@ public class RoadManager : MonoBehaviour
                                 Debug.Log($"Found all positions, restoring groups to old");
                                 break;
                             }
-                            if (!objectsInNewGroup.Contains(placedObject)) objectsInNewGroup.Add(placedObject);
+                            if (!objectsInNewGroup.Contains(placedObject))
+                            {
+                                bool isUnique = true;
+                                foreach(List<PlacedObject> objList in newLists)
+                                {
+                                    if (objList.Contains(placedObject)) isUnique = false;
+                                }
+                                if(isUnique) objectsInNewGroup.Add(placedObject);
+                            }
                             else Debug.LogWarning("Positions are being checked more than once");
 
                                 List<Vector2Int> newAdjacentPositions = GetAdjacentRoadPositions(uncheckedPos);
@@ -259,20 +268,24 @@ public class RoadManager : MonoBehaviour
                 List<PlacedObject> newObjectList = new();
                 newObjectList.AddRange(objectsInNewGroup);
                 connectedObjectGroups.Add(newObjectList);
+                newLists.Add(newObjectList);
 
                 Debug.Log($"DisconnectObject: new list: {newObjectList.Count}");
                 foreach (PlacedObject obj in newObjectList)
                 {
                     foreach (List<PlacedObject> objList in connectedObjectGroups)
                     {
-                        if ((objList != newObjectList) && (objList.Contains(obj)))
+                        if ( ((!newLists.Contains(objList)) && (objList.Contains(obj))) || (objList.Count == 0) )
                         {
                             listsToRemove.Add(objList);
+                        }
+                        else
+                        {
+                            StartCoroutine(UpdateObjectNotConnectedWarning(null, objList));
                         }
                     }
                     Debug.Log($"DisconnectObject: new object: {obj.name}");
                 }
-                StartCoroutine(UpdateObjectNotConnectedWarning(null, newObjectList));
 
                 if (newObjectList.Count == (oldObjectCount - 1)) break;
             }
