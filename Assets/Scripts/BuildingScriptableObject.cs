@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -31,17 +32,26 @@ public class BuildingScriptableObject : ScriptableObject
     // id?
     public GameObject prefab;
     public GameObject modulePrefab;
-    public List<GameObject> modules;
+    public GameObject coreModularBuilding;
+    public List<BuildingScriptableObject> modules;
     public int width;
     public int height;
     public float hapiness;
     public float control;
+    public float population;
+    public float workersNeeded;
     public float buildCost;
     public float yearlyCost;
     public float yearlyEarnings;
     public int maxPlacements;
+    public string description;
+    public List<string> possibleNpcTypes;
+    public int nonWorkingPopulation;
     [DoNotSerialize] public bool module;
     public bool modular;
+    public bool moduleOnly;
+    public int happinessSymbolCount;
+    public int controlSymbolCount;
     public float GetControl() { return control; }
     public float GetHapiness() { return hapiness; }
     public Dir Direction { get; set; }
@@ -58,6 +68,12 @@ public class BuildingScriptableObject : ScriptableObject
         }
     }
 
+
+    public TooltipBuildingData GetData()
+    {
+        TooltipBuildingData data = new TooltipBuildingData(this);
+        return data;
+    }
     public Vector2Int GetRotationOffset(Dir dir)
     {
         switch (dir)

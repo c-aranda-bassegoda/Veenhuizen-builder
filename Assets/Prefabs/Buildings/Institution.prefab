@@ -450,21 +450,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   origin: {x: 0, y: 0}
-  exclamationMark: {fileID: 2669528807974099412}
-  connectedObjects: []
+  exclamationMark: {fileID: 0}
   modules: []
   isModule: 0
   parent: {fileID: 0}
   inInstitution: 0
-  person: {fileID: 0}
+  person: {fileID: -6640963970777890239, guid: 03509c7b27dbb11499f9a4c9f0bb2adf, type: 3}
   personAmount: 0
   timeBetweenSpawns: 0
   associatedPeople: []
   buildingOrigin: {fileID: 0}
-  moveToCentreMultiplier: 0.01
-  moveToPlaceMultiplier: 0.01
-  matchVelocityMultiplier: 0.125
-  minimumBoidDistance: 3
+  farmlandCount: {fileID: 0}
+  isConnectedFarmland: 0
 --- !u!1001 &3544246356759153340
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,23 +2,94 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 //TODO: Refactoring :(
 public class InputManager : MonoBehaviour
 {
-    public event Action<Vector3> OnClicked, OnMouseHold;
-    public event Action OnMouseUp, OnExit;
+    public event Action<Vector3> OnClicked, OnMouseHold, OnHover;
+    public event Action OnMouseUp, OnExit, OnHoverExit;
     private Vector2 cameraMovementVector;
+    Vector2 lastCursorPosition;
+    private Vector3? lastHoverPosition; //can be null
+    bool unlockedMouse, firstTime;
 
     [SerializeField] Camera mainCamera;
+    [SerializeField] private float hoverExitDistanceThreshold = 0.05f;
 
     public Vector2 CameraMovementVector { get { return cameraMovementVector; } }
 
     private void Update()
     {
+        if(TimelineManager.Instance != null)
+        {
+            if(!firstTime)
+            {
+                lastCursorPosition = Input.mousePosition;
+                Cursor.lockState = CursorLockMode.Locked;
+                unlockedMouse = false;
+                firstTime = true;
+            }
+            if(TimelineManager.Instance.director.state != UnityEngine.Playables.PlayState.Paused)
+            {
+                if(unlockedMouse)
+                {
+                    lastCursorPosition = Input.mousePosition;
+                    Cursor.lockState = CursorLockMode.Locked;
+                    unlockedMouse = false;
+                }
+                return;
+            }
+            else
+            {
+                if (!unlockedMouse)
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Mouse.current.WarpCursorPosition(lastCursorPosition);
+                    Debug.Log($"Warping mouse to {lastCursorPosition}");
+                    unlockedMouse = true;
+                }
+            }
+        }
         CheckClickDownEvent();
         CheckClickUpEvent();
         CheckClickHoldEvent();
         CheckArrowInput();
+        CheckHoverEvent();
+    }
+
+    private void CheckHoverEvent()
+    {
+        if (EventSystem.current.IsPointerOverGameObject()) //ignore UI
+        {
+            ClearHover();
+            return;
+        }
+
+        var position = RaycastGround();
+        if (position == null)
+        {
+            ClearHover();
+            return;
+        }
+        // If lastHoverPosition exists and we moved farther than threshold, trigger exit
+        if (lastHoverPosition != null && Vector3.Distance(lastHoverPosition.Value, position.Value) > hoverExitDistanceThreshold)
+        {
+            OnHoverExit?.Invoke();
+            lastHoverPosition = null;
+        }
+
+        if (lastHoverPosition == null)
+        {
+            lastHoverPosition = position;
+            OnHover?.Invoke(lastHoverPosition.Value);
+        }
+    }
+    private void ClearHover()
+    {
+        if (lastHoverPosition == null) return;
+
+        lastHoverPosition = null;
+        OnHoverExit?.Invoke();
     }
 
     private void CheckArrowInput()
@@ -29,7 +100,7 @@ public class InputManager : MonoBehaviour
 
     private void CheckClickHoldEvent()
     {
-        if (Input.GetMouseButton(0) && EventSystem.current.IsPointerOverGameObject() == false)
+        if (Input.GetMouseButton(0) && IsPointerOverNonWorldSpaceUI() == false)
         {
             var position = RaycastGround();
             if (position != null)
@@ -39,9 +110,48 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    bool IsPointerOverNonWorldSpaceUI()
+    {
+        if (EventSystem.current == null)
+            return false;
+
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        bool foundWorldSpace = false;
+        bool foundNonWorldSpace = false;
+
+        foreach (RaycastResult result in results)
+        {
+            Canvas canvas = result.gameObject.GetComponentInParent<Canvas>();
+            if (canvas == null)
+                continue;
+
+            if (canvas.renderMode == RenderMode.WorldSpace)
+                foundWorldSpace = true;
+            else
+                foundNonWorldSpace = true;
+
+            // Early exit: non-world-space always wins
+            if (foundNonWorldSpace)
+            {
+                Debug.Log($"Found non-world space canvas: {result.gameObject.name}");
+                return true;
+            }
+        }
+
+        // Only true if we found non-world-space UI
+        return false;
+    }
+
     private Vector3? RaycastGround()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y=0 plane
         if (groundPlane.Raycast(ray, out float distance))
         {
@@ -52,7 +162,7 @@ public class InputManager : MonoBehaviour
 
     private void CheckClickUpEvent()
     {
-        if(Input.GetMouseButtonUp(0) && EventSystem.current.IsPointerOverGameObject() == false)
+        if(Input.GetMouseButtonUp(0) && IsPointerOverNonWorldSpaceUI() == false)
         {
             OnMouseUp?.Invoke();
         }
@@ -60,26 +170,7 @@ public class InputManager : MonoBehaviour
 
     private void CheckClickDownEvent()
     {
-        Debug.Log($"IsPointerOverGameObject: {EventSystem.current.IsPointerOverGameObject()}");
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            // Build pointer event data based on current mouse position
-            PointerEventData pointerData = new PointerEventData(EventSystem.current)
-            {
-                position = Input.mousePosition
-            };
-
-            // Raycast into the UI
-            List<RaycastResult> results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(pointerData, results);
-
-            // Log what UI elements we hit
-            foreach (var result in results)
-            {
-                Debug.Log("Pointer is over UI object: " + result.gameObject.name);
-            }
-        }
-        if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() == false)
+        if (Input.GetMouseButtonDown(0) && IsPointerOverNonWorldSpaceUI() == false)
         {
             var position = RaycastGround();
             if (position != null)

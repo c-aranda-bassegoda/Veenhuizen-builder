@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
+  m_Name: Empty
+  m_EditorClassIdentifier: 
+  name: Empty
+  prefab: {fileID: 2613567964260009243, guid: ae133c716d06a5e4cb9f5dc72c67e61e, type: 3}
+  modulePrefab: {fileID: 2613567964260009243, guid: ae133c716d06a5e4cb9f5dc72c67e61e, type: 3}
+  coreModularBuilding: {fileID: 0}
+  modules: []
+  width: 0
+  height: 0
+  hapiness: 0
+  control: 0
+  population: 0
+  workersNeeded: 0
+  buildCost: 0
+  yearlyCost: 0
+  yearlyEarnings: 0
+  maxPlacements: 10
+  description: 
+  possibleNpcTypes: []
+  nonWorkingPopulation: 0
+  module: 1
+  modular: 0
+  moduleOnly: 1

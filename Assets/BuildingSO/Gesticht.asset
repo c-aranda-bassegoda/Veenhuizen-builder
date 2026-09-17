@@ -12,22 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Gesticht
   m_EditorClassIdentifier: 
-  name: House
-  prefab: {fileID: 3202509837292703422, guid: 6712742dd9dc1d844b77cd59231b08d0, type: 3}
-  modulePrefab: {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
+  name: Gesticht
+  prefab: {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}
+  modulePrefab: {fileID: 1460527531912246447, guid: 22c45862c372d29439630af0b22457d8, type: 3}
+  coreModularBuilding: {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}
   modules:
-  - {fileID: 3202509837292703422, guid: 2e9dc21af7b2e664f98922cb4db6f26b, type: 3}
-  - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
-  - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
-  - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
-  - {fileID: 7576616414049445640, guid: dffe66a861011c749a9dfb05a443c2f5, type: 3}
+  - {fileID: 11400000, guid: 50a50848ba1702d46bda3bf6a1bf4d03, type: 2}
+  - {fileID: 11400000, guid: 50a50848ba1702d46bda3bf6a1bf4d03, type: 2}
+  - {fileID: 11400000, guid: 50a50848ba1702d46bda3bf6a1bf4d03, type: 2}
+  - {fileID: 11400000, guid: 50a50848ba1702d46bda3bf6a1bf4d03, type: 2}
   width: 3
   height: 3
-  hapiness: 15
-  control: -5
-  buildCost: 4000
+  hapiness: 2
+  control: 2
+  population: 12
+  workersNeeded: 0
+  buildCost: 65000
   yearlyCost: 1440
   yearlyEarnings: 2700
-  maxPlacements: 10
+  maxPlacements: 3
+  description: 'Inbegrepen: \n 2 slapzaals \n 2 Opzichterswoningen '
+  possibleNpcTypes:
+  - man
+  - woman
+  nonWorkingPopulation: 0
   module: 0
   modular: 1
+  moduleOnly: 0
+  happinessSymbolCount: 2
+  controlSymbolCount: 2

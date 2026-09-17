@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
+  m_Name: Opziener (gst)
+  m_EditorClassIdentifier: 
+  name: Opzienerswoning
+  prefab: {fileID: 8717793308523734593, guid: e296071365724f64eab28783b102ffaf, type: 3}
+  modulePrefab: {fileID: 8717793308523734593, guid: e296071365724f64eab28783b102ffaf, type: 3}
+  coreModularBuilding: {fileID: 0}
+  modules: []
+  width: 1
+  height: 1
+  hapiness: 0
+  control: 1
+  population: 0
+  workersNeeded: 0
+  buildCost: 2000
+  yearlyCost: 60
+  yearlyEarnings: 0
+  maxPlacements: 20
+  description: 
+  possibleNpcTypes:
+  - guard
+  nonWorkingPopulation: 1
+  module: 1
+  modular: 0
+  moduleOnly: 1
+  happinessSymbolCount: 0
+  controlSymbolCount: 1

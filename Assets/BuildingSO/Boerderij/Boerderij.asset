@@ -15,16 +15,17 @@ MonoBehaviour:
   name: Boerderij
   prefab: {fileID: 6600959261270428487, guid: c818ad8b62927c543b17f512eae963bd, type: 3}
   modulePrefab: {fileID: 0}
-  moduleCore: {fileID: 0}
-  moduleBSOs: []
-  modulePositions: []
+  modules: []
   width: 1
   height: 1
-  hapiness: 10
-  control: 10
-  buildCost: 1200
+  hapiness: 0
+  control: 0
+  population: 0
+  workersNeeded: 0
+  buildCost: 18000
   yearlyCost: 480
   yearlyEarnings: 500
   maxPlacements: 10
   module: 0
   modular: 0
+  moduleOnly: 0

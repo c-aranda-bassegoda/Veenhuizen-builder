@@ -14,17 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Akker
   prefab: {fileID: 6600959261270428487, guid: f1a2f95dec199354dba9b2cc6cfc06dd, type: 3}
-  modulePrefab: {fileID: 0}
-  moduleCore: {fileID: 0}
-  moduleBSOs: []
-  modulePositions: []
+  modulePrefab: {fileID: 6600959261270428487, guid: f1a2f95dec199354dba9b2cc6cfc06dd, type: 3}
+  coreModularBuilding: {fileID: 0}
+  modules: []
   width: 1
   height: 1
-  hapiness: 10
-  control: 10
-  buildCost: 80
+  hapiness: 0
+  control: 0
+  population: 0
+  workersNeeded: 1
+  buildCost: 1200
   yearlyCost: 50
   yearlyEarnings: 0
   maxPlacements: 10
+  description: 
+  possibleNpcTypes: []
+  nonWorkingPopulation: 0
   module: 0
   modular: 0
+  moduleOnly: 0

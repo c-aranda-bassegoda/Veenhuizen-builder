@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.AI.Navigation;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class RoadManager : MonoBehaviour
 {
@@ -15,10 +14,30 @@ public class RoadManager : MonoBehaviour
     [SerializeField] GridBuildingSystem gridBuildingSystem;
     [SerializeField] EconomyManager economyManager;
     [SerializeField] NavMeshSurface navMeshSurface;
+    public static RoadManager instance;
+
+    public List<List<PlacedObject>> connectedObjectGroups = new();
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     public void Update()
     {
-
+        //Debug stuff
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log($"Connected Objects:");
+            foreach (List<PlacedObject> objGroup in connectedObjectGroups)
+            {
+                Debug.Log($"Connected Objects: List {connectedObjectGroups.IndexOf(objGroup)}:");
+                foreach (PlacedObject obj in objGroup)
+                {
+                    if(obj != null) Debug.Log($"Connected Objects: {obj.name}:");
+                }
+            }
+        }
     }
 
     public void PlaceRoad(Vector2Int roadPos, MeshFilter newRoadMesh)
@@ -26,7 +45,7 @@ public class RoadManager : MonoBehaviour
         if (!placedRoads.ContainsKey(roadPos))
         {
             placedRoads.Add(roadPos, newRoadMesh);
-            UpdateRoads(roadPos);
+            UpdateConnections(roadPos);
         }
     }
 
@@ -36,7 +55,7 @@ public class RoadManager : MonoBehaviour
         {
             //Destroy(GetPlacedRoad(roadPos));
             placedRoads.Remove(roadPos);
-            UpdateRoads(roadPos);
+            UpdateConnections(roadPos);
         }
     }
 
@@ -46,18 +65,21 @@ public class RoadManager : MonoBehaviour
         List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(newPosition);
         List<bool> isRoadThere = FindAdjacentObjects(adjacentRoadPositions, newPosition);
         string roadConfig = CheckAdjacentRoads(isRoadThere);
+        Debug.Log($"Preview road config: {roadConfig}");
         UpdateRoad(roadToUpdate, roadConfig);
     }
-    public void UpdateRoads(Vector2Int roadPos, bool placingRoad = true)
+    public void UpdateConnections(Vector2Int roadPos, bool placingRoad = true)
     {
+        ConnectNewObject(roadPos);
+
         List<Vector2Int> roadsToUpdate = GetAdjacentRoadPositions(roadPos);
-        if(placingRoad) roadsToUpdate.Add(roadPos);
-        CheckRoadConnectionOnBuild(roadPos);
+        if (placingRoad) roadsToUpdate.Add(roadPos);
+        //CheckRoadConnectionOnBuild(roadPos);
 
         foreach (Vector2Int pos in roadsToUpdate)
         {
             MeshFilter roadToUpdate = GetPlacedRoad(pos);
-            if(roadToUpdate == null) continue;
+            if (roadToUpdate == null) continue;
 
             Debug.Log($"Checking adjacent positions for {pos.x}, {pos.y}");
 
@@ -70,6 +92,13 @@ public class RoadManager : MonoBehaviour
             UpdateRoad(roadToUpdate, roadConfig);
         }
 
+        StartCoroutine(DelayNewNavmesh());
+    }
+
+    IEnumerator DelayNewNavmesh()
+    {
+        yield return new WaitForEndOfFrame();
+        Debug.Log("Building new navmesh");
         navMeshSurface.BuildNavMesh();
     }
 
@@ -99,218 +128,607 @@ public class RoadManager : MonoBehaviour
         return isObjectThere;
     }
 
-    private void CheckRoadConnectionOnBuild(Vector2Int pos)
-    {
-        List<PlacedObject> connectedObjects = GetConnectedObjects(pos, false);
 
-        foreach(PlacedObject connectedObject in connectedObjects)
-        {
-            foreach (PlacedObject addingConnectedObject in connectedObjects)
-            {
-                if( (connectedObject != addingConnectedObject) && (!connectedObject.connectedObjects.Contains(addingConnectedObject)) )
-                {
-                    connectedObject.connectedObjects.Add(addingConnectedObject);
-                }
-            }
-
-            UpdateObjectNotConnectedWarning(connectedObject);
-        }
-    }
-
-    public void CheckRoadConnectionOnDelete(Vector2Int pos)
-    {
-        List<PlacedObject> connectedObjects = GetConnectedObjects(pos, true);
-
-        Debug.Log($"Objects connected to {pos}: {connectedObjects.Count}");
-
-        Dictionary<Vector2Int, PlacedObject> connectedObjectPositions = new();
-
-        foreach(PlacedObject obj in connectedObjects)
-        {
-            Vector2Int objPos = obj.GetOrigin();
-            connectedObjectPositions.Add(objPos, obj);
-
-            //Debug.Log($"Connected Objects: {obj.name} at {objPos}");
-        }
-
-        foreach(KeyValuePair<Vector2Int, PlacedObject> obj in connectedObjectPositions)
-        {
-            List<PlacedObject> currentConnectedObjects = GetConnectedObjects(obj.Key, false);
-            obj.Value.connectedObjects.Clear();
-            Debug.Log($"Clearing {obj.Value.name}");
-            foreach(PlacedObject _obj in currentConnectedObjects)
-            {
-                if (obj.Value != _obj)
-                {
-                    obj.Value.connectedObjects.Add(_obj);
-                    Debug.Log($"Adding: {_obj.name} to {obj.Value.name} at {obj.Key}");
-                }
-            }
-
-            UpdateObjectNotConnectedWarning(obj.Value);
-        }
-    }
-
-    private List<PlacedObject> GetConnectedObjects(Vector2Int pos, bool isDelete)
+    public void DisconnectObject(Vector2Int pos)
     {
         Grid<GridObject> grid = gridBuildingSystem.GetGrid();
-        bool skipFirstObjectCheck = isDelete;
 
-        List<Vector2Int> checkedPositions = new();
-        List<Vector2Int> uncheckedPositions = new();
-        List<PlacedObject> connectedObjects = new();
+        GridObject currentGridObject = null;
+        PlacedObject currentPlacedObject = null;
 
-        uncheckedPositions.Add(pos);
+        if (grid != null) currentGridObject = grid.GetGridObj(pos.x, pos.y);
+        if(currentGridObject != null) currentPlacedObject = currentGridObject.GetPlacedObject();
 
-        while (uncheckedPositions.Count > 0)
+        int oldObjectCount = 0;
+        int oldListAmount = connectedObjectGroups.Count;
+        List<PlacedObject> oldObjGroup = null;
+
+        foreach (List<PlacedObject> objGroup in connectedObjectGroups)
         {
-            List<Vector2Int> newPositionsTempList = new();
-            List<Vector2Int> oldPositionsTempList = new();
-
-            foreach (Vector2Int uncheckedPos in uncheckedPositions)
+            if (objGroup.Contains(currentPlacedObject))
             {
-                //Debug.Log($"Checking New Position: {uncheckedPos}");
-                oldPositionsTempList.Add(uncheckedPos);
-                checkedPositions.Add(uncheckedPos);
-
-                GridObject gridObject = grid.GetGridObj(uncheckedPos.x, uncheckedPos.y);
-                PlacedObject placedObject = null;
-
-                if (gridObject != null)
-                {
-                    placedObject = gridObject.GetPlacedObject();
-                }
-
-                if (placedObject == null && !skipFirstObjectCheck) continue;
-
-                if (!skipFirstObjectCheck)
-                {
-                    if (placedObject.gameObject.tag != "Road" && !connectedObjects.Contains(placedObject))
-                    {
-                        //Debug.Log($"Adding New Position Object: {uncheckedPos} , {placedObject.name}");
-                        connectedObjects.Add(placedObject);
-                    }
-                }
-                skipFirstObjectCheck = false;
-
-                List<Vector2Int> adjacentRoadPositions = GetAdjacentRoadPositions(uncheckedPos);
-
-                foreach (Vector2Int adjRoadPos in adjacentRoadPositions)
-                {
-                    if (!checkedPositions.Contains(adjRoadPos))
-                    {
-                        newPositionsTempList.Add(adjRoadPos);
-                    }
-                }
-            }
-
-            foreach (Vector2Int tempPos in oldPositionsTempList)
-            {
-                uncheckedPositions.Remove(tempPos);
-            }
-
-            foreach (Vector2Int tempPos in newPositionsTempList)
-            {
-                uncheckedPositions.Add(tempPos);
+                oldObjectCount = objGroup.Count;
+                objGroup.Remove(currentPlacedObject);
+                oldObjGroup = objGroup;
+                if (objGroup.Count == 0) connectedObjectGroups.Remove(objGroup);
+                break;
             }
         }
 
-        return connectedObjects;
-    }
 
-    public void UpdateObjectNotConnectedWarning(PlacedObject obj)
-    {
-        BuildingScriptableObject buildingSO = obj.GetScriptableObject();
-        if(obj.connectedObjects.Count > 0)
+        List<Vector2Int> checkedPositions = new();
+        List<Vector2Int> adjPositionsToCheck = GetAdjacentRoadPositions(pos);
+        List<Vector2Int> adjObjectPositions = new();
+
+        List<PlacedObject> adjObjects = new() { currentPlacedObject };
+
+        foreach (Vector2Int adjPosToCheck in adjPositionsToCheck)
         {
-            if(obj.exclamationMark != null) obj.exclamationMark.SetActive(false);
-            Debug.Log($"Connected: {obj.name}");
-            if (buildingSO != null) economyManager.HandleNewConnectedBuilding(buildingSO, obj);
+            Debug.Log($"DisconnectObject: checking {adjPosToCheck})");
+
+            GridObject adjGridObject = grid.GetGridObj(adjPosToCheck.x, adjPosToCheck.y);
+            if (adjGridObject == null) continue;
+            PlacedObject adjPlacedObject = adjGridObject.GetPlacedObject();
+            if (adjPlacedObject != null)
+            {
+                adjObjectPositions.Add(adjPosToCheck);
+                adjObjects.Add(adjPlacedObject);
+            }
+        }
+
+        List<List<PlacedObject>> newLists = new();
+        List<List<PlacedObject>> listsToRemove = new();
+        bool foundAllPositions = false;
+
+        foreach (Vector2Int adjPosToCheck in adjPositionsToCheck)
+        {
+            int foundAdjPositions = 0;
+
+            List<PlacedObject> objectsInNewGroup = new();
+            List<Vector2Int> uncheckedPositions = new() { adjPosToCheck };
+
+            while (uncheckedPositions.Count > 0)
+            {
+                List<Vector2Int> newPositionsTempList = new();
+                List<Vector2Int> oldPositionsTempList = new();
+
+                foreach (Vector2Int uncheckedPos in uncheckedPositions)
+                {
+                    //Debug.Log($"Checking New Position: {uncheckedPos}");
+                    checkedPositions.Add(uncheckedPos);
+                    oldPositionsTempList.Add(uncheckedPos);
+
+                    if (uncheckedPos == pos) continue;
+
+                    GridObject gridObject = grid.GetGridObj(uncheckedPos.x, uncheckedPos.y);
+                    PlacedObject placedObject = null;
+
+                    if (gridObject != null)
+                    {
+                        placedObject = gridObject.GetPlacedObject();
+
+                        if (placedObject != null)
+                        {
+                            //positionsWithObjects.Add(uncheckedPos);
+
+                            if (adjObjectPositions.Contains(uncheckedPos))
+                            {
+                                foundAdjPositions++;
+                                //Debug.Log($"Found adjacent position: {uncheckedPos}");
+                                if (foundAdjPositions == adjObjectPositions.Count) foundAllPositions = true;
+                            }
+
+                            if (foundAllPositions)
+                            {
+                                Debug.Log($"Found all positions, restoring groups to old");
+                                break;
+                            }
+                            if (!objectsInNewGroup.Contains(placedObject))
+                            {
+                                bool isUnique = true;
+                                foreach(List<PlacedObject> objList in newLists)
+                                {
+                                    if (objList.Contains(placedObject)) isUnique = false;
+                                }
+                                if(isUnique) objectsInNewGroup.Add(placedObject);
+                            }
+                            else Debug.LogWarning("Positions are being checked more than once");
+
+                                List<Vector2Int> newAdjacentPositions = GetAdjacentRoadPositions(uncheckedPos);
+                            foreach (Vector2Int newAdjPos in newAdjacentPositions)
+                            {
+                                if (!checkedPositions.Contains(newAdjPos) && (pos != newAdjPos)) newPositionsTempList.Add(newAdjPos);
+                            }
+                        }
+                    }
+                }
+                if (foundAllPositions) break;
+
+                foreach (Vector2Int tempPos in oldPositionsTempList)
+                {
+                    uncheckedPositions.Remove(tempPos);
+                }
+
+                foreach (Vector2Int tempPos in newPositionsTempList)
+                {
+                    if(!uncheckedPositions.Contains(tempPos))
+                    {
+                        if (adjPositionsToCheck.Contains(tempPos)) uncheckedPositions.Insert(0, tempPos);
+                        else uncheckedPositions.Add(tempPos);
+                    }
+                }
+            }
+
+            if (foundAllPositions) break;
+
+            Debug.Log($"DisconnectObject: Old List Amount: {connectedObjectGroups.Count}");
+
+            if (objectsInNewGroup.Count > 0)
+            {
+                List<PlacedObject> newObjectList = new();
+                newObjectList.AddRange(objectsInNewGroup);
+                connectedObjectGroups.Add(newObjectList);
+                newLists.Add(newObjectList);
+
+                Debug.Log($"DisconnectObject: new list: {newObjectList.Count}");
+                foreach (PlacedObject obj in newObjectList)
+                {
+                    foreach (List<PlacedObject> objList in connectedObjectGroups)
+                    {
+                        if ( ((!newLists.Contains(objList)) && (objList.Contains(obj))) || (objList.Count == 0) )
+                        {
+                            listsToRemove.Add(objList);
+                        }
+                        else
+                        {
+                            StartCoroutine(UpdateObjectNotConnectedWarning(null, objList));
+                        }
+                    }
+                    Debug.Log($"DisconnectObject: new object: {obj.name}");
+                }
+
+                if (newObjectList.Count == (oldObjectCount - 1)) break;
+            }
+        }
+
+        if (foundAllPositions)
+        {
+            if (connectedObjectGroups.Count > oldListAmount)
+            {
+                connectedObjectGroups.RemoveRange(oldListAmount, connectedObjectGroups.Count - oldListAmount);
+            }
+
+            if(oldObjGroup != null)
+            {
+                //foreach (PlacedObject obj in oldObjGroup)
+                //{
+                    StartCoroutine(UpdateObjectNotConnectedWarning(null, oldObjGroup));
+                //}
+            }
+
         }
         else
         {
-            if (obj.exclamationMark != null) obj.exclamationMark.SetActive(true);
-            if(buildingSO != null) economyManager.HandleRemovedBuilding(buildingSO, obj);
+
+            foreach (List<PlacedObject> listToRemove in listsToRemove)
+            {
+                connectedObjectGroups.Remove(listToRemove);
+                Debug.Log($"Removing object group, new amount {connectedObjectGroups.Count}");
+            }
+
+            foreach(List<PlacedObject> _list in connectedObjectGroups)
+            {
+                StartCoroutine(UpdateObjectNotConnectedWarning(null, _list));
+            }
         }
+
+        StartCoroutine(DelayNewNavmesh());
     }
-        
+
+    private void ConnectNewObject(Vector2Int pos)
+    {
+        Grid<GridObject> grid = gridBuildingSystem.GetGrid();
+        List<PlacedObject> directlyConnectedObjects = new();
+        List<List<PlacedObject>> groupsToMerge = new();
+
+        GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
+        PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
+
+        if (currentPlacedObject.inInstitution) currentPlacedObject = currentPlacedObject.parent;
+        List<Vector2Int> adjacentRoadPositions = null;
+        if (currentPlacedObject.name == "Gesticht")
+        {
+            adjacentRoadPositions = GetAdjacentRoadPositionsGesticht(currentPlacedObject.GetOrigin());
+        }
+        else
+        {
+            adjacentRoadPositions = GetAdjacentRoadPositions(pos);
+        }
+
+        foreach (Vector2Int gridPos in adjacentRoadPositions)
+        {
+            GridObject gridObject = grid.GetGridObj(gridPos.x, gridPos.y);
+
+            if (gridObject != null)
+            {
+                PlacedObject placedObject = gridObject.GetPlacedObject();
+                if (placedObject != null)
+                {
+                    if (placedObject.inInstitution)
+                    {
+                        if (!directlyConnectedObjects.Contains(placedObject.parent)) directlyConnectedObjects.Add(placedObject.parent);
+                    }
+                    else if (placedObject.name == "Gesticht")
+                    {
+                        if (!directlyConnectedObjects.Contains(placedObject)) directlyConnectedObjects.Add(placedObject);
+                    }
+                    else directlyConnectedObjects.Add(placedObject);
+                }
+            }
+        }
+
+        Debug.Log($"Connected: connected objects: {directlyConnectedObjects.Count}");
+        bool debugthingy = false;
+        List<PlacedObject> firstObjGroup = null;
+
+        foreach (PlacedObject placedObject in directlyConnectedObjects)
+        {
+            foreach (List<PlacedObject> placedObjGroup in connectedObjectGroups)
+            {
+                if (placedObjGroup.Contains(placedObject))
+                {
+                    if (firstObjGroup == null)
+                    {
+                        firstObjGroup = placedObjGroup;
+                        if (!groupsToMerge.Contains(firstObjGroup)) groupsToMerge.Add(firstObjGroup);
+                    }
+
+                    if (placedObjGroup != firstObjGroup)
+                    {
+                        if (!groupsToMerge.Contains(placedObjGroup)) groupsToMerge.Add(placedObjGroup);
+
+                        debugthingy = true;
+                    }
+                }
+            }
+            if (!debugthingy) Debug.Log($"Connected: object not in group");
+        }
+
+        if (groupsToMerge.Count > 1)
+        {
+            foreach (List<PlacedObject> objGroup in groupsToMerge)
+            {
+                if (groupsToMerge.IndexOf(objGroup) != 0)
+                {
+                    groupsToMerge[0].AddRange(objGroup);
+                    connectedObjectGroups.Remove(objGroup);
+                }
+            }
+            groupsToMerge[0].Add(currentPlacedObject);
+            //foreach (PlacedObject placedObject in groupsToMerge[0])
+            //{
+                StartCoroutine(UpdateObjectNotConnectedWarning(null, groupsToMerge[0]));
+            
+        }
+        else if (groupsToMerge.Count == 1)
+        {
+            groupsToMerge[0].Add(currentPlacedObject);
+            //foreach (PlacedObject placedObject in groupsToMerge[0])
+            //{
+                StartCoroutine(UpdateObjectNotConnectedWarning(null, groupsToMerge[0]));
+            //}
+        }
+        else
+        {
+            connectedObjectGroups.Add(new List<PlacedObject> { currentPlacedObject });
+            StartCoroutine(UpdateObjectNotConnectedWarning(currentPlacedObject, connectedObjectGroups[connectedObjectGroups.Count - 1]));
+        }
+
+        //UpdateObjectNotConnectedWarning(currentPlacedObject);
+    }
+
+    //Get farms or farmland only connected by other farm and farmland
+    public List<PlacedObject> FindConnectedFarmsOrFarmland(Vector2Int pos, bool findFarmland)
+    {
+        Grid<GridObject> grid = gridBuildingSystem.GetGrid();
+        List<PlacedObject> directlyConnectedObjects = new();
+
+        GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
+        PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
+
+        List<Vector2Int> uncheckedPositions = new List<Vector2Int>() { pos };
+        List<Vector2Int> checkedPositions = new();
+
+        while (uncheckedPositions.Count > 0)
+        {
+            Vector2Int newPos = uncheckedPositions[0];
+            List<Vector2Int> newAdjacentPositions = GetAdjacentRoadPositions(newPos);
+
+            uncheckedPositions.Remove(newPos);
+            checkedPositions.Add(newPos);
+
+            foreach (Vector2Int newAdjPos in newAdjacentPositions)
+            {
+                if (checkedPositions.Contains(newAdjPos)) continue;
+                checkedPositions.Add(newAdjPos);
+
+                GridObject adjGridObject = grid.GetGridObj(newAdjPos.x, newAdjPos.y);
+                if (adjGridObject == null) continue;
+                PlacedObject adjPlacedObject = adjGridObject.GetPlacedObject();
+                if (adjPlacedObject == null) continue;
+
+                Debug.Log($"Found adjacent object: {adjPlacedObject.name} at {adjPlacedObject.GetOrigin()}");
+
+                if (findFarmland)
+                {
+                    if (adjPlacedObject.name == "Boerderij")
+                    {
+                        uncheckedPositions.Add(newAdjPos);
+                    }
+                    else if (adjPlacedObject.name == "Akker")
+                    {
+                        uncheckedPositions.Add(newAdjPos);
+                        directlyConnectedObjects.Add(adjPlacedObject);
+                    }
+                }
+                else
+                {
+                    if (adjPlacedObject.name == "Boerderij")
+                    {
+                        directlyConnectedObjects.Add(adjPlacedObject);
+                        uncheckedPositions.Add(newAdjPos);
+                    }
+                    else if (adjPlacedObject.name == "Akker")
+                    {
+                        uncheckedPositions.Add(newAdjPos);
+                    }
+                }
+            }
+        }
+
+        foreach (PlacedObject obj in directlyConnectedObjects)
+        {
+            Debug.Log($"Directly Connected Object: {obj.name}");
+        }
+
+        return directlyConnectedObjects;
+    }
+
+    //Returns farms that are connected via road to origin building
+    public List<PlacedObject> GetConnectedFarms(PlacedObject originBuilding)
+    {
+        List<PlacedObject> targetObjectGroup = new();
+        foreach (List<PlacedObject> objGroup in connectedObjectGroups)
+        {
+            if (objGroup.Contains(originBuilding)) targetObjectGroup = objGroup;
+        }
+        List<PlacedObject> connectedFarms = new();
+        foreach (PlacedObject obj in targetObjectGroup)
+        {
+            if (obj != null)
+            {
+                Debug.Log($"Object in {originBuilding.name} object group: {obj.name}");
+                if (obj.name == "Boerderij") connectedFarms.Add(obj);
+            }
+        }
+        return connectedFarms;
+    }
+
+    private List<PlacedObject> GetConnectedObjects(Vector2Int pos)
+    {
+        Grid<GridObject> grid = gridBuildingSystem.GetGrid();
+        GridObject currentGridObject = grid.GetGridObj(pos.x, pos.y);
+        PlacedObject currentPlacedObject = currentGridObject.GetPlacedObject();
+
+        foreach (List<PlacedObject> objGroup in connectedObjectGroups)
+        {
+            if (objGroup.Contains(currentPlacedObject)) return objGroup;
+        }
+        throw new Exception("Object not in any group");
+    }
+
+    public IEnumerator UpdateObjectNotConnectedWarning(PlacedObject obj, List<PlacedObject> objGroup)
+    {
+        yield return new WaitForEndOfFrame();
+
+        List<PlacedObject> handledObjects = new();
+
+        //List<PlacedObject> farmsInObjectGroup = new();
+
+        foreach(PlacedObject _obj in objGroup)
+        {
+            if(_obj != null)
+            {
+                if (_obj.name == "Boerderij")
+                {
+                    //farmsInObjectGroup.Add(_obj);
+                    if (_obj.adjacentFarmlandWorked.Count < 10) handledObjects.AddRange(_obj.ConnectFarmland(false));
+                    else handledObjects.AddRange(_obj.adjacentFarmlandWorked.Keys.ToList());
+                }
+            }
+        }
+
+        //Debug.Log($"Farms in object group: {farmsInObjectGroup.Count}");
+
+        foreach(PlacedObject _obj in objGroup)
+        {
+            if (_obj != null)
+            {
+                if (_obj.name == "Akker")
+                {
+                    if (handledObjects.Contains(_obj))
+                    {
+                        _obj.exclamationMark.SetActive(false);
+                        
+                    }
+                    else
+                    {
+                        Debug.Log($"Unused farmland at {_obj.GetOrigin()}");
+                        if (_obj.farm != null)
+                        {
+                            _obj.farm.SendNpcBack(_obj.farm.adjacentFarmlandWorked[_obj], false);
+                            _obj.farm.adjacentFarmlandWorked.Remove(_obj);
+                            _obj.farm = null;
+                        }
+                        _obj.isConnectedFarmland = false;
+                        _obj.exclamationMark.SetActive(true);
+                    }
+                }
+            }
+        }
+
+        //if (obj == null)
+        //{
+        //    foreach (PlacedObject _obj in objGroup)
+        //    {
+        //        BuildingScriptableObject buildingSO = _obj.GetScriptableObject();
+        //        if (_obj.exclamationMark != null)
+        //        {
+        //            if (_obj.gameObject.CompareTag("Farmland"))
+        //            {
+        //                DelayedWarningUpdate(_obj, unhandledObjects);
+        //            }
+        //            else _obj.exclamationMark.SetActive(false);
+        //        }
+        //        Debug.Log($"Connected: {_obj.name}");
+        //        if (buildingSO != null) economyManager.HandleNewConnectedBuilding(buildingSO, _obj);
+        //    }
+        //}
+        //else
+        //{
+        //    BuildingScriptableObject buildingSO = obj.GetScriptableObject();
+        //    if (obj.exclamationMark != null)
+        //    {
+        //        if (obj.gameObject.CompareTag("Farmland"))
+        //        {
+        //            if (unhandledObjects.Contains(obj)) DelayedWarningUpdate(obj, unhandledObjects);
+        //        }
+        //        else obj.exclamationMark.SetActive(false);
+        //    }
+        //    Debug.Log($"Connected: {obj.name}");
+        //    if (buildingSO != null) economyManager.HandleNewConnectedBuilding(buildingSO, obj);
+        //}
+    }
+
+    void DelayedWarningUpdate(PlacedObject farmland, List<PlacedObject> unhandledObjects)
+    {
+        List<PlacedObject> connectedFarms = FindConnectedFarmsOrFarmland(farmland.GetOrigin(), false);
+
+        if (farmland != null)
+        {
+            if (farmland.farm != null)
+            {
+                farmland.farm.adjacentFarmlandWorked.Remove(farmland);
+                farmland.farm = null;
+            }
+            farmland.isConnectedFarmland = false;
+
+
+
+            Debug.Log($"Finding New Farms for {farmland.GetOrigin()}");
+
+            //this is true when it shouldnt be
+            if (farmland.isConnectedFarmland) farmland.exclamationMark.SetActive(false);
+            else
+            {
+                foreach(PlacedObject farm in connectedFarms)
+                {
+                    if(farm.adjacentFarmlandWorked.Count < 10)
+                    {
+                        farm.adjacentFarmlandWorked.Add(farmland, null);
+                        farmland.isConnectedFarmland = true;
+                        farmland.farm = farm;
+                        break;
+                    }
+                }
+                
+            }
+
+            if(farmland.isConnectedFarmland) farmland.exclamationMark.SetActive(false);
+            else farmland.exclamationMark.SetActive(true);
+        }
+
+    }
+
 
     void UpdateRoad(MeshFilter road, string config)
     {
         //4 way intersection
-        if(config == "crossroad" || config == "zero")
+        if (config == "crossroad" || config == "zero")
         {
             road.mesh = roadCrossroad;
+            road.transform.rotation = Quaternion.Euler(270, 0, 0);
+
         }
 
         //straight road vertical
-        else if(config == "oneUp" || config == "oneDown" || config == "upDown")
+        else if (config == "oneUp" || config == "oneDown" || config == "upDown")
         {
             road.mesh = roadStraight;
-            road.transform.rotation = Quaternion.identity;
+            road.transform.rotation = Quaternion.Euler(270, 0, 0);
         }
 
         //straight road horizontal
-        else if(config == "oneLeft" || config == "oneRight" || config == "rightLeft")
+        else if (config == "oneLeft" || config == "oneRight" || config == "rightLeft")
         {
             road.mesh = roadStraight;
-            road.transform.rotation = Quaternion.Euler(0, 90, 0);
+            road.transform.rotation = Quaternion.Euler(270, 90, 0);
         }
 
         //turn: ^ >
-        else if(config == "downRight")
+        else if (config == "downRight")
         {
             road.mesh = roadTurn;
-            road.transform.rotation = Quaternion.Euler(0, 180, 0);
+            road.transform.rotation = Quaternion.Euler(270, 180, 0);
         }
 
         //turn ^ <
-        else if(config == "downLeft")
+        else if (config == "downLeft")
         {
             road.mesh = roadTurn;
-            road.transform.rotation = Quaternion.Euler(0, 270, 0);
+            road.transform.rotation = Quaternion.Euler(270, 270, 0);
         }
 
         //turn: > ^ 
-        else if(config == "upLeft")
+        else if (config == "upLeft")
         {
             road.mesh = roadTurn;
-            road.transform.rotation = Quaternion.identity;
+            road.transform.rotation = Quaternion.Euler(270, 0, 0);
         }
 
         //turn: < ^ 
-        else if(config == "upRight")
+        else if (config == "upRight")
         {
             road.mesh = roadTurn;
-            road.transform.rotation = Quaternion.Euler(0, 90, 0);
+            road.transform.rotation = Quaternion.Euler(270, 90, 0);
         }
 
         //3 way, not up
-        else if(config == "notUp")
+        else if (config == "notUp")
         {
             road.mesh = roadIntsct3;
-            road.transform.rotation = Quaternion.Euler(0, 270, 0);
+            road.transform.rotation = Quaternion.Euler(270, 180, 0);
         }
 
         //3 way, not down
-        else if(config == "notDown")
+        else if (config == "notDown")
         {
             road.mesh = roadIntsct3;
-            road.transform.rotation = Quaternion.Euler(0, 90, 0);
+            road.transform.rotation = Quaternion.Euler(270, 0, 0);
         }
 
         //3 way, not right
-        else if(config == "notRight")
+        else if (config == "notRight")
         {
             road.mesh = roadIntsct3;
-            road.transform.rotation = Quaternion.identity;
+            road.transform.rotation = Quaternion.Euler(270, 270, 0);
         }
 
         //3 way, not left
-        else if(config == "notLeft")
+        else if (config == "notLeft")
         {
             road.mesh = roadIntsct3;
-            road.transform.rotation = Quaternion.Euler(0, 180, 0);
+            road.transform.rotation = Quaternion.Euler(270, 90, 0);
         }
     }
 
@@ -324,52 +742,52 @@ public class RoadManager : MonoBehaviour
         bool isRoadLeft = isObjectThere[3];
 
         //No surrounding roads, crossroads
-        if(!isRoadUp && !isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "zero";
+        if (!isRoadUp && !isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "zero";
 
         //1 surrounding road (up), keep straight
-        else if(isRoadUp && !isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "oneUp";
+        else if (isRoadUp && !isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "oneUp";
 
         //1 surrounding road (down), keep straight
-        else if(!isRoadUp && isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "oneDown";
+        else if (!isRoadUp && isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "oneDown";
 
         //1 surrounding road (right)
-        else if(!isRoadUp && !isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "oneRight";
+        else if (!isRoadUp && !isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "oneRight";
 
         //1 surrounding road (left)
-        else if(!isRoadUp && !isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "oneLeft";
+        else if (!isRoadUp && !isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "oneLeft";
 
         //2 surrounding roads (up, down)
-        else if(isRoadUp && isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "upDown";
+        else if (isRoadUp && isRoadDown && !isRoadRight && !isRoadLeft) roadConfig = "upDown";
 
         //2 surrounding roads (up, right)
-        else if(isRoadUp && !isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "upRight";
+        else if (isRoadUp && !isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "upRight";
 
         //2 surrounding roads (up, left)
-        else if(isRoadUp && !isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "upLeft";
+        else if (isRoadUp && !isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "upLeft";
 
         //2 surrounding roads (down, right)
-        else if(!isRoadUp && isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "downRight";
+        else if (!isRoadUp && isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "downRight";
 
         //2 surrounding roads (down, left)
-        else if(!isRoadUp && isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "downLeft";
+        else if (!isRoadUp && isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "downLeft";
 
         //2 surrounding roads (left, right)
-        else if(!isRoadUp && !isRoadDown && isRoadRight && isRoadLeft) roadConfig = "rightLeft";
+        else if (!isRoadUp && !isRoadDown && isRoadRight && isRoadLeft) roadConfig = "rightLeft";
 
         //3 surrounding roads (not up)
-        else if(!isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "notUp";
+        else if (!isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "notUp";
 
         //3 surrounding roads (not down)
-        else if(isRoadUp && !isRoadDown && isRoadRight && isRoadLeft) roadConfig = "notDown";
+        else if (isRoadUp && !isRoadDown && isRoadRight && isRoadLeft) roadConfig = "notDown";
 
         //3 surrounding roads (not right)
-        else if(isRoadUp && isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "notRight";
+        else if (isRoadUp && isRoadDown && !isRoadRight && isRoadLeft) roadConfig = "notRight";
 
         //3 surrounding roads (not left)
-        else if(isRoadUp && isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "notLeft";
+        else if (isRoadUp && isRoadDown && isRoadRight && !isRoadLeft) roadConfig = "notLeft";
 
         //4 surrounding roads, crossroads
-        else if(isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "crossroad";
+        else if (isRoadUp && isRoadDown && isRoadRight && isRoadLeft) roadConfig = "crossroad";
 
         Debug.Log($"Config for road: {roadConfig} ({isRoadUp}, {isRoadDown}, {isRoadRight}, {isRoadLeft}");
 
@@ -399,9 +817,72 @@ public class RoadManager : MonoBehaviour
         return adjacentRoads;
     }
 
+    List<Vector2Int> GetAdjacentRoadPositionsGesticht(Vector2Int origin)
+    {
+        List<Vector2Int> adjacentRoads = new();
+
+        Vector2Int downLeft = origin;
+        downLeft.y -= 1;
+        adjacentRoads.Add(downLeft);
+
+        Vector2Int downMiddle = origin;
+        downLeft.y -= 1;
+        downLeft.x += 1;
+        adjacentRoads.Add(downMiddle);
+
+        Vector2Int downRight = origin;
+        downLeft.y -= 1;
+        downLeft.x += 2;
+        adjacentRoads.Add(downLeft);
+
+        Vector2Int leftDown = origin;
+        leftDown.x -= 1;
+        adjacentRoads.Add(leftDown);
+
+        Vector2Int leftMiddle = origin;
+        leftMiddle.x -= 1;
+        leftMiddle.y += 1;
+        adjacentRoads.Add(leftMiddle);
+
+        Vector2Int leftUp = origin;
+        leftUp.x -= 1;
+        leftUp.y += 2;
+        adjacentRoads.Add(leftUp);
+
+        Vector2Int rightDown = origin;
+        rightDown.x += 3;
+        adjacentRoads.Add(rightDown);
+
+        Vector2Int rightMiddle = origin;
+        rightMiddle.x += 3;
+        rightMiddle.y += 1;
+        adjacentRoads.Add(rightMiddle);
+
+        Vector2Int rightUp = origin;
+        rightUp.x += 3;
+        rightUp.y += 2;
+        adjacentRoads.Add(rightUp);
+
+        Vector2Int upLeft = origin;
+        upLeft.y += 3;
+        adjacentRoads.Add(upLeft);
+
+        Vector2Int upMiddle = origin;
+        upMiddle.y += 3;
+        upMiddle.x += 1;
+        adjacentRoads.Add(upMiddle);
+
+        Vector2Int upRight = origin;
+        upRight.x += 3;
+        upMiddle.x += 2;
+        adjacentRoads.Add(upRight);
+
+        return adjacentRoads;
+    }
+
     MeshFilter GetPlacedRoad(Vector2Int roadPos)
     {
-        if(placedRoads.ContainsKey(roadPos))
+        if (placedRoads.ContainsKey(roadPos))
         {
             return placedRoads[roadPos];
         }

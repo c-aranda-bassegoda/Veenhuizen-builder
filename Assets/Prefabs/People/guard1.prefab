@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 411c7586eb24322409e6fe47b8e29e19, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 10be7c16b041c3e40881e842e3880457, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: -6640963970777890239}
   - component: {fileID: 5173809219066261808}
   m_Layer: 11
-  m_Name: Person
+  m_Name: guard1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,7 +219,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8048819763237961149}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.05
   m_Speed: 3.5
@@ -233,7 +233,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0.17
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &-6640963970777890239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,9 +246,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 143f1bc7250391c4e9c0ca25dcb08f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destinationBuilding: {fileID: 0}
+  targetFarm: {fileID: 0}
+  navmeshDestination: {x: 0, y: 0, z: 0}
   charImage: {fileID: 7655569852120085863}
-  yBobTarget: 1
+  yBobTarget: 15
   bobSpeed: 2
+  rotateSpeed: 48
+  idleSpeed: 3
+  isHappy: 0
+  shouldRotate: 0
+  shouldIdleInGesticht: 0
+  planeSize: {x: 10, y: 10}
+  idleWaitTime: 1
+  returningToGesticht: 0
 --- !u!54 &5173809219066261808
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -271,7 +282,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112

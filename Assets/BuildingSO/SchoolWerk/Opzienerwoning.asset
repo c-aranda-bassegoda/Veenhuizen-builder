@@ -12,17 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Opzienerwoning
   m_EditorClassIdentifier: 
-  name: School
-  prefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
+  name: Wachthuisje
+  prefab: {fileID: 6600959261270428487, guid: 0746228175eea1a4891f1d91375b5370, type: 3}
+  modulePrefab: {fileID: 6600959261270428487, guid: 0746228175eea1a4891f1d91375b5370, type: 3}
+  coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
   height: 1
-  hapiness: 15
-  control: 10
-  buildCost: 180
+  hapiness: 0
+  control: 3
+  population: 0
+  workersNeeded: 0
+  buildCost: 3500
   yearlyCost: 60
   yearlyEarnings: 0
   maxPlacements: 20
-  module: 1
+  description: 
+  possibleNpcTypes:
+  - guard
+  nonWorkingPopulation: 1
+  module: 0
   modular: 0
+  moduleOnly: 0
+  happinessSymbolCount: 0
+  controlSymbolCount: 3

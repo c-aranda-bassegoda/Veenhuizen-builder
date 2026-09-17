@@ -12,17 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Werkplaats
   m_EditorClassIdentifier: 
-  name: School
-  prefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
-  modulePrefab: {fileID: 6600959261270428487, guid: da1ee874c7cceba4b8f661b22f6261bf, type: 3}
+  name: Werkplaats
+  prefab: {fileID: 2906430575383778528, guid: 30f7aafcbb6fa1b4a888dd10514dd6d5, type: 3}
+  modulePrefab: {fileID: 2906430575383778528, guid: 30f7aafcbb6fa1b4a888dd10514dd6d5, type: 3}
+  coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
   height: 1
-  hapiness: 15
-  control: 10
-  buildCost: 380
+  hapiness: 1
+  control: 1
+  population: 0
+  workersNeeded: 0
+  buildCost: 4000
   yearlyCost: 216
   yearlyEarnings: 400
   maxPlacements: 20
+  description: 
+  possibleNpcTypes: []
+  nonWorkingPopulation: 0
   module: 1
   modular: 0
+  moduleOnly: 1
+  happinessSymbolCount: 1
+  controlSymbolCount: 1

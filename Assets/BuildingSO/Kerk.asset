@@ -12,17 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44df10689db3c846bf2b1b478155ca6, type: 3}
   m_Name: Kerk
   m_EditorClassIdentifier: 
-  name: Church
+  name: Kerk
   prefab: {fileID: 6600959261270428487, guid: 80d3ebaa941b85545868173bb448ad3c, type: 3}
   modulePrefab: {fileID: 0}
+  coreModularBuilding: {fileID: 0}
   modules: []
   width: 1
   height: 1
-  hapiness: 10
-  control: 10
-  buildCost: 900
+  hapiness: 6
+  control: 12
+  population: 0
+  workersNeeded: 0
+  buildCost: 70000
   yearlyCost: 360
   yearlyEarnings: 0
   maxPlacements: 10
+  description: 
+  possibleNpcTypes:
+  - monk
+  nonWorkingPopulation: 1
   module: 0
   modular: 0
+  moduleOnly: 0
+  happinessSymbolCount: 6
+  controlSymbolCount: 12

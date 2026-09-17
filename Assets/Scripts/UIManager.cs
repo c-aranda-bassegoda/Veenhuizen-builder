@@ -1,58 +1,118 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance;
-    public GameObject happyOut, controlOut;
-    [SerializeField] public EconomyManager manager;
+
+    [SerializeField] TextMeshProUGUI peopleText;
+    [SerializeField] TextMeshProUGUI happynessText;
+    [SerializeField] TextMeshProUGUI workingPeopleText;
+
     [SerializeField] TextMeshProUGUI moneyAmountText;
     [SerializeField] TextMeshProUGUI foodAmountText;
 
+    [SerializeField] GameObject skipToNextSeason;
+
     [Header("Calendar")]
-    [SerializeField] TextMeshProUGUI dayNumberText;
-    [SerializeField] TextMeshProUGUI seasonText;
-    [SerializeField] TextMeshProUGUI yearNumberText;
+    //[SerializeField] TextMeshProUGUI dayNumberText;
+    //[SerializeField] TextMeshProUGUI seasonText;
+    //[SerializeField] TextMeshProUGUI yearNumberText;
+    [SerializeField] Transform sliderPin;
+    private int workingPpl = 0;
+    float _timePassed, _timePerSeason;
+    Season _season;
 
-    private void Awake()
+
+
+    private void OnEnable()
     {
-        instance = this;
+        GameEvents.OnStatsChanged += UpdateStats;
+        GameEvents.OnMoneyChanged += UpdateMoney;
+        GameEvents.OnCalendarChanged += UpdateCalendar;
+        GameEvents.OnWorkingChanged += UpdateWorkers;
     }
 
-    public void UpdateStats()
+    private void OnDisable()
     {
-        happyOut.GetComponentInChildren<TMP_Text>().text = manager.happy.ToString();
-        controlOut.GetComponentInChildren<TMP_Text>().text = manager.control.ToString();
+        GameEvents.OnStatsChanged -= UpdateStats;
+        GameEvents.OnMoneyChanged -= UpdateMoney;
+        GameEvents.OnCalendarChanged -= UpdateCalendar;
+        GameEvents.OnWorkingChanged -= UpdateWorkers;
     }
+
+    private void UpdateWorkers(int totWorking)
+    {
+        workingPeopleText.text = totWorking.ToString();
+        workingPpl = totWorking;
+    }
+
+    public void UpdateStats(float happy, float control, float ppl)
+    {
+        happynessText.text = ((int)(workingPpl > happy ? happy : workingPpl)).ToString();
+        //workingPeopleText.text = ((int)(ppl > control? control : ppl)).ToString();
+        peopleText.text = ((int) ppl).ToString();
+    }
+
+
 
     public void UpdateMoney(float newAmount)
     {
         moneyAmountText.text = ((int)newAmount).ToString();
+
+        if(skipToNextSeason != null)
+        {
+            if((newAmount < 70000) && (_season != Season.Spring || _timePassed >= (_timePerSeason / 2)))
+            {
+                skipToNextSeason.SetActive(true);
+            }
+            else
+            {
+                skipToNextSeason.SetActive(false);
+            }
+        }
     }
 
-    public void UpdateCalendar(int dayNumber, int yearNumber)
+    public void UpdateCalendar(Season season, float timePassed, float timePerSeason)
     {
-        yearNumberText.text = yearNumber.ToString();
-        if(dayNumber <= 31)
+        //between 90 and -90
+        _timePassed = timePassed;
+        _timePerSeason = timePerSeason;
+        _season = season;
+
+        float pinAngle = 90f;
+
+        float seasonDegrees = 0f;
+
+        switch(season)
         {
-            dayNumberText.text = dayNumber.ToString();
-            seasonText.text = "Spring";
+            case Season.Spring:
+                seasonDegrees = 0f;
+            break;
+            case Season.Summer:
+                seasonDegrees = 45;
+            break;
+            case Season.Autumn:
+                seasonDegrees = 90;
+            break;
+            case Season.Winter:
+                seasonDegrees = 135f;
+            break;
         }
-        else if (dayNumber <= 62)
+
+        pinAngle -= seasonDegrees;
+
+        float secondsDegrees = 0;
+
+        if(timePassed != 0)
         {
-            dayNumberText.text = (dayNumber - 31).ToString();
-            seasonText.text = "Summer";
+            secondsDegrees = (timePassed / timePerSeason) * 45;
         }
-        else if (dayNumber <= 93)
-        {
-            dayNumberText.text = (dayNumber - 62).ToString();
-            seasonText.text = "Autumn";
-        }
-        else if (dayNumber <= 124)
-        {
-            dayNumberText.text = (dayNumber - 93).ToString();
-            seasonText.text = "Winter";
-        }
+
+        pinAngle -= secondsDegrees;
+
+        sliderPin.transform.rotation = Quaternion.Euler(0f, 0f, pinAngle);
+
     }
 
     public void UpdateFood(int foodAmount)

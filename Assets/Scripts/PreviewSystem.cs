@@ -10,26 +10,38 @@ public class PreviewSystem : MonoBehaviour
     private GameObject buildingPreview;
 
     [SerializeField] private Material previewMaterialPrefab;
-    [SerializeField] private Material roadPreviewMaterial;
+    [SerializeField] private Material roadPreviewMaterialPrefab;
     [SerializeField] private RoadManager roadManager;
     [SerializeField] private GridBuildingSystem gridSystem;
-    private Material previewMaterial;
+    private Material previewMaterial, roadPreviewMaterial;
+    [SerializeField] GameObject rightMouseHint;
+    [SerializeField] GameObject settingsMenu, progressReport;
 
     private void Awake()
     {
         previewMaterial = new Material(previewMaterialPrefab);
+        roadPreviewMaterial = new Material(roadPreviewMaterialPrefab);
     }
 
     public void StartRoadPlacementPreview(BuildingScriptableObject roadSO)
     {
+        Debug.Log($"Start placement preview: road");
         buildingPreview = Instantiate(roadSO.prefab, new Vector3(0, 0, 0), Quaternion.identity);
         buildingPreview.transform.GetChild(0).GetComponent<MeshRenderer>().material = roadPreviewMaterial;
     }
 
     public void StartPlacementPreview(BuildingScriptableObject buildingSO)
     {
+        if (TimelineManager.Instance == null) rightMouseHint.SetActive(true);
+        Debug.Log($"Start placement preview");
         buildingPreview = Instantiate(buildingSO.prefab, new Vector3(0,0,0), Quaternion.identity);
-        buildingPreview.transform.GetChild(0).rotation = Quaternion.Euler(0, buildingSO.GetRotationAngle(buildingSO.Direction), 0);
+
+        Transform buildingPreviewTransform = null;
+
+        if (buildingSO.module) buildingPreviewTransform = buildingPreview.transform;
+        else buildingPreviewTransform = buildingPreview.transform.GetChild(0);
+
+        buildingPreviewTransform.rotation = Quaternion.Euler(0, buildingSO.GetRotationAngle(buildingSO.Direction), 0);
         PreparePreview(buildingPreview);
     }
 
@@ -49,13 +61,44 @@ public class PreviewSystem : MonoBehaviour
 
     public void StopPlacementPreview()
     {
+        if (TimelineManager.Instance == null) rightMouseHint.SetActive(false);
         Destroy(buildingPreview);
     }
 
-    public void UpdatePreview(Vector3 worldPosition, bool validity, bool replaceability)
+    public void UpdatePreview(Vector3 worldPosition, Quaternion worldRotation, bool validity, bool replaceability)
     {
-        MovePreview(worldPosition);
-        ApplyFeedback(validity, replaceability);
+        if (TimelineManager.Instance != null)
+        {
+            if (TimelineManager.Instance.director.state != UnityEngine.Playables.PlayState.Paused)
+            {
+                MovePreview(new Vector3(1000, 1000, 1000), worldRotation);
+            }
+            else
+            {
+                MovePreview(worldPosition, worldRotation);
+                ApplyFeedback(validity, replaceability);
+            }
+        }
+        else
+        {
+            if (settingsMenu != null && progressReport != null)
+            {
+                if(settingsMenu.activeSelf || progressReport.activeSelf)
+                {
+                    MovePreview(new Vector3(1000, 1000, 1000), worldRotation);
+                }
+                else
+                {
+                    MovePreview(worldPosition, worldRotation);
+                    ApplyFeedback(validity, replaceability);
+                }
+            }
+            else
+            {
+                MovePreview(worldPosition, worldRotation);
+                ApplyFeedback(validity, replaceability);
+            }
+        }
     }
 
     private void ApplyFeedback(bool validity, bool replaceability)
@@ -63,10 +106,11 @@ public class PreviewSystem : MonoBehaviour
         Color c = validity ? Color.blue : (replaceability ? Color.green : Color.red);
         c.a = 0.5f;
         previewMaterial.color = c;
+        if (validity) c = new Color(0, 1, 1, .5f);
         roadPreviewMaterial.color = c;
     }
 
-    private void MovePreview(Vector3 worldPosition)
+    private void MovePreview(Vector3 worldPosition, Quaternion worldRotation)
     {
         if(buildingPreview.CompareTag("Road"))
         {
@@ -78,6 +122,7 @@ public class PreviewSystem : MonoBehaviour
         else
         {
             buildingPreview.transform.position = new Vector3(worldPosition.x, worldPosition.y + previewYOffset, worldPosition.z);
+            buildingPreview.transform.rotation = worldRotation;
         }
     }
 }

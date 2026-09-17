@@ -99,3 +99,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09104d2bdc4471f4d85ac8384be20e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  origin: {x: 0, y: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
+  worldRotation: {x: 0, y: 0, z: 0, w: 0}
+  exclamationMark: {fileID: 0}
+  modules: []
+  isModule: 0
+  parent: {fileID: 0}
+  inInstitution: 0
+  personAmount: 0
+  timeBetweenSpawns: 0
+  associatedWorkingPeople: []
+  associatedNonWorkingPeople: []
+  buildingOrigin: {fileID: 0}
+  farmlandCount: {fileID: 0}
+  isConnectedFarmland: 0

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
@@ -9,9 +10,9 @@ public class GameManager : MonoBehaviour
     public InputManager inputManager;
     public GridBuildingSystem gridBuildingSystem;
     public UIController controller;
-    public UIManager uiManager;
     public EconomyManager economyManager;
     int buildingIdx = -1;
+
 
     private void Start()
     {
@@ -20,6 +21,12 @@ public class GameManager : MonoBehaviour
         controller.OnDelete += BuildingDeletionHandler;
         controller.OnPlaceRoad += RoadPlacingHandler;
         inputManager.OnClicked += HandleMouseClick;
+        GameEvents.OnGameFinished += GameOver;
+    }
+
+    private void GameOver()
+    {
+        controller.ShowEndGameReportPanel();
     }
 
     private void BuildingDeletionHandler()
@@ -29,8 +36,8 @@ public class GameManager : MonoBehaviour
         gridBuildingSystem.PlacingRoad = false;
         gridBuildingSystem.StopPlacementPreview();
 
-        //inputManager.OnClicked -= HandleMouseClick;
-        //inputManager.OnClicked += HandleMouseClick;
+        inputManager.OnClicked -= HandleMouseClick;
+        inputManager.OnClicked += HandleMouseClick;
     }
 
     private void BuildingRotateHandler()
@@ -44,14 +51,15 @@ public class GameManager : MonoBehaviour
         gridBuildingSystem.AddingBuilding = true;
         gridBuildingSystem.PlacingRoad = false;
         gridBuildingSystem.StopPlacementPreview();
-        gridBuildingSystem.StartPlacementPreview(buildingSO);
+        if(buildingSO.name == "Zandweg") gridBuildingSystem.StartRoadPlacementPreview();
+        else gridBuildingSystem.StartPlacementPreview(buildingSO);
 
         //HandleStats(buildingIdx);
 
-        //inputManager.OnClicked -= HandleMouseClick; 
-        //inputManager.OnClicked += HandleMouseClick;
+        inputManager.OnClicked -= HandleMouseClick;
+        inputManager.OnClicked += HandleMouseClick;
 
-        //Debug.Log($"Building placement handler: {gridBuildingSystem.AddingBuilding}");
+        Debug.Log($"Building placement handler: {gridBuildingSystem.AddingBuilding}");
     }
 
     private void RoadPlacingHandler()
@@ -64,8 +72,8 @@ public class GameManager : MonoBehaviour
 
         //HandleStats();
 
-        //inputManager.OnClicked -= HandleMouseClick;
-        //inputManager.OnClicked += HandleMouseClick;
+        inputManager.OnClicked -= HandleMouseClick;
+        inputManager.OnClicked += HandleMouseClick;
         //gridBuildingSystem.PlaceRoad();
     }
 
@@ -86,9 +94,8 @@ public class GameManager : MonoBehaviour
         if (gridBuildingSystem.RemovingBuilding)
         {
             PlacedObject objToRemove = gridBuildingSystem.RemoveObject(position);
-            objectSO = objToRemove.GetScriptableObject();
-            economyManager.HandleRemovedBuilding(objectSO, objToRemove);
-            uiManager.UpdateStats();
+            if (objToRemove != null) 
+                objectSO = objToRemove.GetScriptableObject();
         }
         if (gridBuildingSystem.AddingBuilding)
         {
@@ -100,7 +107,6 @@ public class GameManager : MonoBehaviour
             //if (economyManager.HandleNewBuilding(objectSO))
             Debug.Log("Adding building");
             gridBuildingSystem.PlaceObject(position);
-            uiManager.UpdateStats();
         }
         //controller.HideHousingPanel();
     }
@@ -110,4 +116,16 @@ public class GameManager : MonoBehaviour
         controller.OnPlaceBuilding -= BuildingPlacementHandler;
         inputManager.OnClicked -= HandleMouseClick;
     }
+}
+
+public static class GameEvents
+{
+    public static Action<float, float, float> OnStatsChanged;
+    public static Action<float> OnMoneyChanged;
+    public static Action<Season, float, float> OnCalendarChanged; 
+    public static Action<GameTip> OnShowProgressReport;
+    public static Action OnResumeTime;
+    public static Action<string> OnErrorMessage;
+    public static Action<int> OnWorkingChanged;
+    public static Action OnGameFinished;
 }

@@ -10,6 +10,9 @@ public class Tooltip : MonoBehaviour
     public LayoutElement layoutElement;
     public int characterWrapLimit;
 
+    public GameObject happinessHeader, controlHeader;
+    public TextMeshProUGUI peopleText, moneyText;
+
     public RectTransform rectTransform;
     public float offset = 100f;
 
@@ -29,22 +32,22 @@ public class Tooltip : MonoBehaviour
             headerField.gameObject.SetActive(true);
             headerField.text = header;
         }
-        bodyField.text = body;
+        //bodyField.text = body;
         
-        int headerLength = headerField.text.Length;
-        int bodyLength = bodyField.text.Length;
+        //int headerLength = headerField.text.Length;
+        //int bodyLength = bodyField.text.Length;
 
-        layoutElement.enabled = (headerLength > characterWrapLimit || bodyLength > characterWrapLimit);
+        //layoutElement.enabled = (headerLength > characterWrapLimit /*|| bodyLength > characterWrapLimit*/);
     }
     void Update()
     {
-        if (Application.isEditor)
-        {
-            int headerLength = headerField.text.Length;
-            int bodyLength = bodyField.text.Length;
+        //if (Application.isEditor)
+        //{
+        //    int headerLength = headerField.text.Length;
+        //    int bodyLength = bodyField.text.Length;
 
-            layoutElement.enabled = (headerLength > characterWrapLimit ||  bodyLength > characterWrapLimit); 
-        }
+        //    layoutElement.enabled = (headerLength > characterWrapLimit ||  bodyLength > characterWrapLimit); 
+        //}
 
         Vector2 position = Input.mousePosition;
 
@@ -56,6 +59,8 @@ public class Tooltip : MonoBehaviour
             pivotY -= (offset / Screen.height);
 
         rectTransform.pivot = new Vector2(pivotX, pivotY);
+        position += new Vector2(200, 0);
         transform.position = position;
+        //transform.GetChild(0).position = position;
     }
 }
